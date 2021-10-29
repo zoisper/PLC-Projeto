@@ -1,28 +1,38 @@
 import re
+import _json
 from typing import List 
 
 with open('/home/gomes/Desktop/PLC/Trabalho/clav-users.txt', 'r') as f: 
     inputline_raw = f.readlines()
-    list = []
-    entity_dict = {}
+    name_dict = {}
     entity_list_temp = []
+    level_dic = {}
+    entity_dict = {}
+    final_dict = {}
+
 
     for line in inputline_raw:
-        print(line)
-        print()
+
         param_line = re.split(r': ',line)
         name = re.search(r'^([A-Z][a-z]+\s)((([A-Z][a-z]+|(de)|(da)|(do)))\s)+:', line)
         entity = re.search(r'ent_[A-Za-z0-9]+(-\w+)?',line)
+        level = re.search(r': \d :', line)
         
         entity_list_temp.append(entity.group())
 
         if name != None and entity != None:
             # Lista(nome,entidade) ordenada por entidade
-            list.append((name.group()[:-2],entity.group()))
-            list.sort()
+            name_dict[name.group()[:-2]] = entity.group()
 
-            #Lista(entidade, nº usetilizadores) ordenada por entidade 
+            #Lista de nivel 
+            lvl = level.group()[2:][:-2]
+            if lvl in level_dic.keys():
+                level_dic[lvl]+=1
+            else: 
+                level_dic[lvl] = 1
+            
 
+#Lista(entidade, nº usetilizadores) ordenada por entidade 
 
     for x in entity_list_temp:
         if x in entity_dict:
@@ -30,26 +40,26 @@ with open('/home/gomes/Desktop/PLC/Trabalho/clav-users.txt', 'r') as f:
         else: 
             entity_dict[x]=1
 
-    for ent in sorted(entity_dict.items()):
-        print(ent)
-    
-    
+    print("\nTeste\n")
+    for entity in entity_dict.keys():
+        for key,value in name_dict.items():
+            if value == entity:
+                if entity in final_dict.keys():
+                    final_dict[entity].append(key)
+                else:
+                    final_dict[entity] = [key] 
 
+    print("Numero de usuarios: ", len(name_dict.keys()))
+    print()
+    print("Numero de entitidades: ", len(entity_dict.keys()))
+    print()
+    
+    for ent in final_dict.keys(): 
+        print("Entidade: ", ent, " contem ", len(final_dict[ent]), " usuarios.")
 
     print()
-    for x in list:
-        print(x)
 
+    for lvl in level_dic.keys():
+        print("O nivel ", lvl, " tem ", level_dic[lvl], " usuarios.")
 
-
-#entidades = re.findall(r'ent_[A-Za-z0-9]+(-\w+)?', inputline_raw)
-
-
-
-#print()
-#print(nomes)
-#print()
-#print(entidades)
-
-#^([A-Z][a-z]+\s)((([A-Z][a-z]+|(de)|(da)|(do)))\s)+:
-    
+#Json output
