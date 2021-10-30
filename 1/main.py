@@ -10,6 +10,7 @@ resultados conforme solicitado a seguir:'''
 
 fp = open('clav-users.txt', 'r')
 text = fp.readlines()
+fp.close()
 
 # Produz uma listagem apenas com o nome e a entidade do utilizador, ordenada alfabeticamente por nome;
 
@@ -138,23 +139,23 @@ def json_20():
         list.append((user,email,entity,level,calls))
 
     file_name = input("Digite Nome Do Ficheiro de Output\n>> ")
-    fp_output = open(file_name, 'w')
+    fp = open(file_name, 'w')
 
-    fp_output.write("{\n\t\"registos\":[")
+    fp.write("{\n\t\"registos\":[")
     for i in range(len(list)):
         l = list[i]
-        fp_output.write("\t\t{\n")
-        fp_output.write(f"\t\t\t \"utilizador\":\"{l[0]}\",\n")
-        fp_output.write(f"\t\t\t \"email\":\"{l[1]}\",\n")
-        fp_output.write(f"\t\t\t \"entidade\":\"{l[2]}\",\n")
-        fp_output.write(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",\n")
-        fp_output.write(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"\n")
+        fp.write("\t\t{\n")
+        fp.write(f"\t\t\t \"utilizador\":\"{l[0]}\",\n")
+        fp.write(f"\t\t\t \"email\":\"{l[1]}\",\n")
+        fp.write(f"\t\t\t \"entidade\":\"{l[2]}\",\n")
+        fp.write(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",\n")
+        fp.write(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"\n")
         if i != 19:
-            fp_output.write("\t\t},\n")
+            fp.write("\t\t},\n")
         else:
-            fp_output.write("\t\t}\n")
-    fp_output.write("\t]\n}\n")
-    fp_output.close()
+            fp.write("\t\t}\n")
+    fp.write("\t]\n}\n")
+    fp.close()
 
 
 
@@ -178,8 +179,8 @@ def menu():
     while inputfromuser != '0':
         print("***Selecione Opção***")
         for i in range(len(options)):
-            print(f"{i+1} {options[i]}")
-        print("0 Sair.")
+            print(f"{i+1}. {options[i]}")
+        print("0. Sair.")
 
         inputfromuser = input(">> ")
         while int(inputfromuser) > len(options) or int(inputfromuser) < 0:
@@ -208,4 +209,4 @@ def menu():
 
 
 menu()
-fp.close()
+
