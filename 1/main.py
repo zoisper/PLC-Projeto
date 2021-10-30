@@ -15,7 +15,7 @@ text = fp.readlines()
 def name_entity_list():
     result = []
     for line in text:
-        name =  re.match(r'(^\w+\s*(\w+\s*)*\b)',line).group()
+        name =  re.match(r'(\w+\s*(\w+\s*)*\b)',line).group()
         entity = re.search(r'ent_\w*',line).group()
         result.append((name, entity))
 
@@ -90,7 +90,7 @@ def name_entity_group():
 
 
 
-#name_entity_list()
+name_entity_list()
 #print("")
 #entity_num_elements_list()
 #print("")
