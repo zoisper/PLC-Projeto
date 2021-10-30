@@ -137,20 +137,24 @@ def json_20():
         calls = re.search(r'\d+', broken_line[4]).group()
         list.append((user,email,entity,level,calls))
 
-    print("{\n\t\"registos\":[")
+    file_name = input("Digite Nome Do Ficheiro de Output\n>> ")
+    fp_output = open(file_name, 'w')
+
+    fp_output.write("{\n\t\"registos\":[")
     for i in range(len(list)):
         l = list[i]
-        print("\t\t{")
-        print(f"\t\t\t \"utilizador\":\"{l[0]}\",")
-        print(f"\t\t\t \"email\":\"{l[1]}\",")
-        print(f"\t\t\t \"entidade\":\"{l[2]}\",")
-        print(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",")
-        print(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"")
+        fp_output.write("\t\t{\n")
+        fp_output.write(f"\t\t\t \"utilizador\":\"{l[0]}\",\n")
+        fp_output.write(f"\t\t\t \"email\":\"{l[1]}\",\n")
+        fp_output.write(f"\t\t\t \"entidade\":\"{l[2]}\",\n")
+        fp_output.write(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",\n")
+        fp_output.write(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"\n")
         if i != 19:
-            print("\t\t},")
+            fp_output.write("\t\t},\n")
         else:
-            print("\t\t}")
-    print("\t]\n}")
+            fp_output.write("\t\t}\n")
+    fp_output.write("\t]\n}\n")
+    fp_output.close()
 
 
 
@@ -197,10 +201,11 @@ def menu():
         else:
             json_20()
 
-        input("\nPressione Enter ")
+        input("\nPressione Enter\n>> ")
         cls()
 
 
 
-#menu()
-json_20()
+
+menu()
+fp.close()
