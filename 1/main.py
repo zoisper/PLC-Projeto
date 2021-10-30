@@ -124,10 +124,37 @@ def indicators():
     for level in sorted(levels.keys()):
         print(f"* {level} - {levels[level]}")
 
-#Para terminar, deve imprimir os 20 primeiros registos num novo cheiro de output mas em formato.
+#Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato.
 
 def json_20():
-    return 0
+    list = []
+    for i in range(20):
+        broken_line = re.split(r'::', text[i])
+        user = re.match(r'(\w+\s*(\w+\s*)*\b)', broken_line[0]).group()
+        email = re.search(r'(\w+|\.|@|_|-)+', broken_line[1]).group()
+        entity = re.search(r'ent_\w*', broken_line[2]).group()
+        level = re.search(r'\d+\.?\d*', broken_line[3]).group()
+        calls = re.search(r'\d+', broken_line[4]).group()
+        list.append((user,email,entity,level,calls))
+
+    print("{\n\t\"registos\":[")
+    for i in range(len(list)):
+        l = list[i]
+        print("\t\t{")
+        print(f"\t\t\t \"utilizador\":\"{l[0]}\",")
+        print(f"\t\t\t \"email\":\"{l[1]}\",")
+        print(f"\t\t\t \"entidade\":\"{l[2]}\",")
+        print(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",")
+        print(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"")
+        if i != 19:
+            print("\t\t},")
+        else:
+            print("\t\t}")
+    print("\t]\n}")
+
+
+
+
 
 
 
@@ -175,4 +202,5 @@ def menu():
 
 
 
-menu()
+#menu()
+json_20()
