@@ -2,7 +2,7 @@ import re
 import _json
 from typing import List 
 
-with open('/home/gomes/Desktop/PLC/Trabalho/clav-users.txt', 'r') as f: 
+with open('clav-users.txt', 'r') as f:
     inputline_raw = f.readlines()
     name_dict = {}
     entity_list_temp = []
@@ -15,6 +15,7 @@ with open('/home/gomes/Desktop/PLC/Trabalho/clav-users.txt', 'r') as f:
 
         param_line = re.split(r': ',line)
         name = re.search(r'^([A-Z][a-z]+\s)((([A-Z][a-z]+|(de)|(da)|(do)))\s)+:', line)
+        print(name)
         entity = re.search(r'ent_[A-Za-z0-9]+(-\w+)?',line)
         level = re.search(r': \d :', line)
         
