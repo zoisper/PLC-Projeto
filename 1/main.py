@@ -173,7 +173,7 @@ def menu():
     options.append("Distribuição de utilizadores por níveis de acesso.")
     options.append("Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.")
     options.append("Mostrar alguns indicadores.")
-    options.append("Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason")
+    options.append("Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.")
 
     while inputfromuser != '0':
         print("***Selecione Opção***")
