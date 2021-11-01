@@ -33,11 +33,11 @@ def name_entity_list():
 def entity_num_elements_list():
     entities = {}
     for line in text:
-        entity = re.search(r'ent_\w*', line)
-        if entity.group() not in entities:
-            entities[entity.group()] = 1
+        entity = re.search(r'ent_\w*', line).group()
+        if entity not in entities:
+            entities[entity] = 1
         else:
-            entities[entity.group()] +=1
+            entities[entity] +=1
 
     result = list(entities.items())
     result.sort()
