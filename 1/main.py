@@ -17,7 +17,7 @@ fp.close()
 def name_entity_list():
     result = []
     for line in text:
-        name =  re.match(r'(\w+\s*(\w+\s*)*\b)',line).group()
+        name =  re.match(r'(\w+\s*(-?\w+\s*)*\b)',line).group()
         entity = re.search(r'ent_\w*',line).group()
         result.append((name, entity))
 
@@ -69,7 +69,7 @@ def dist_users_level():
 def name_entity_group():
     result = {}
     for line in text:
-        name = re.match(r'(^\w+\s*(\w+\s*)*\b)', line).group()
+        name = re.match(r'(\w+\s*(-?\w+\s*)*\b)', line).group()
         entity = re.search(r'ent_\w*', line).group()
         if entity not in result:
             result[entity] = [name]
