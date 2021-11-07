@@ -17,12 +17,12 @@ fp.close()
 def name_entity_list():
     result = []
     for line in text:
-        name =  re.match(r'(\w+\s*(-?\w+\s*)*\b)',line).group()
+        user =  re.match(r'(\w+\s*(-?\w+\s*)*\b)',line).group()
         entity = re.search(r'ent_\w*',line).group()
-        result.append((name, entity))
+        result.append((user, entity))
 
     result.sort(key=lambda x: unidecode.unidecode(x[0].casefold()))
-    print("*** Utilizadores - Entidades ***")
+    print("\n*** Utilizadores - Entidades ***\n")
     for r in result:
         print(r[0], "-", r[1])
 
@@ -41,7 +41,7 @@ def entity_num_elements_list():
 
     result = list(entities.items())
     result.sort()
-    print("*** Entidades - Nº Utilizadores  ***")
+    print("\n*** Entidades - Nº Utilizadores  ***\n")
     for r in result:
         print(r[0], "-", r[1])
 
@@ -49,19 +49,28 @@ def entity_num_elements_list():
 
 def dist_users_level():
     levels = {}
+    users = set()
     for line in text:
         broken_line = re.split(r'::', line)
+        user = re.match(r'(\w+\s*(-?\w+\s*)*\b)', broken_line[0]).group()
         level = re.search(r'\d+\.?\d*',broken_line[3]).group()
         if level not in levels:
-            levels[level] = 1
+            levels[level] = set()
+            levels[level].add(user)
         else:
-            levels[level] += 1
+            levels[level].add(user)
+        users.add(user)
     result = list(levels.items())
     result.sort()
-    total_users = sum(x[1] for x in result )
-    print("*** Nivel de Acesso - Distribuição  ***")
+    total_users = len(users)
+    print("\n*** Nivel de Acesso - Distribuição  ***\n")
     for r in result:
-        print(f"{r[0]} - {round((r[1]/total_users)*100,2)}%" )
+        print(f"Nivel {r[0]} - {round((len(r[1])/total_users)*100)}%" )
+        for user in sorted(r[1], key=lambda x: unidecode.unidecode(x.casefold())):
+            print(user)
+        if(result.index(r) != len(result)-1):
+            print("")
+
 
 #Produz uma listagem dos utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta
 #pelo nome;
@@ -78,7 +87,7 @@ def name_entity_group():
 
     entities = list(result.keys())
     entities.sort()
-    print("*** Utilizadores agrupados por entidade  ***")
+    print("\n*** Utilizadores agrupados por entidade ***\n")
     for entity in entities:
         print(f"{entity}:")
         result[entity].sort(key=lambda x: unidecode.unidecode(x.casefold()))
@@ -112,11 +121,14 @@ def indicators():
         else:
             levels[level] += 1
 
-    print("*** Indicadores ***")
-    print(len(users), "Utilizadores")
-    print(len(entities.keys()), "Entidades")
+    print("\n*** Indicadores ***\n")
     print("")
-
+    print("Número de Utilizadores:")
+    print(len(users))
+    print("")
+    print("Número de Entidades:")
+    print(len(entities.keys()))
+    print("")
     print("Distribuição de utilizadores por entidade:")
     for entity in sorted(entities.keys()):
         print(f"* {entity} - {entities[entity]}")
@@ -138,7 +150,7 @@ def json_20():
         calls = re.search(r'\d+', broken_line[4]).group()
         list.append((user,email,entity,level,calls))
 
-    file_name = input("Digite Nome Do Ficheiro de Output\n>> ")
+    file_name = input("\nDigite Nome Do Ficheiro de Output!\n>> ")
     fp = open(file_name, 'w')
 
     fp.write("{\n\t\"registos\":[")
@@ -156,6 +168,7 @@ def json_20():
             fp.write("\t\t}\n")
     fp.write("\t]\n}\n")
     fp.close()
+    print("\nFicheiro gerado com sucesso!")
 
 
 
@@ -175,16 +188,16 @@ def menu():
     options.append("Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.")
     options.append("Mostrar alguns indicadores.")
     options.append("Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.")
-
+    cls()
     while inputfromuser != '0':
-        print("***Selecione Opção***")
+        print("*** Selecione Opção ***\n")
         for i in range(len(options)):
             print(f"{i+1}. {options[i]}")
         print("0. Sair.")
 
         inputfromuser = input(">> ")
-        while int(inputfromuser) > len(options) or int(inputfromuser) < 0:
-            print("Opçao Invalida")
+        while not inputfromuser.isdigit() or int(inputfromuser) > len(options) or int(inputfromuser) < 0:
+            print("Opçao Invalida!")
             inputfromuser = input(">> ")
 
         if inputfromuser == '0':
@@ -202,7 +215,7 @@ def menu():
         else:
             json_20()
 
-        input("\nPressione Enter\n>> ")
+        input("\nPressione Enter!\n>> ")
         cls()
 
 
