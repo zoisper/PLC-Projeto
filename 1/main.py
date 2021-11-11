@@ -153,7 +153,7 @@ def json_20():
     file_name = input("\nDigite Nome Do Ficheiro de Output!\n>> ")
     fp = open(file_name, 'w')
 
-    fp.write("{\n\t\"registos\":[")
+    fp.write("{\n\t\"registos\":[\n")
     for i in range(len(list)):
         l = list[i]
         fp.write("\t\t{\n")
