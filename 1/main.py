@@ -8,23 +8,23 @@ têm a seguinte ordem: nome, email, entidade, nível, número de chamadas ao bac
 resultados conforme solicitado a seguir:'''
 
 
-fp = open('clav-users.txt', 'r')
-text = fp.readlines()
-fp.close()
-
 # Produz uma listagem apenas com o nome e a entidade do utilizador, ordenada alfabeticamente por nome;
 
 def name_entity_list():
-    result = []
+    result = {}
     for line in text:
         user =  re.match(r'(\w+\s*(-?\w+\s*)*\b)',line).group()
         entity = re.search(r'ent_\w*',line).group()
-        result.append((user, entity))
-
+        if user not in result:
+            result[user] = [entity]
+        else:
+            result[user].append(', ')
+            result[user].append(entity)
+    result = list(result.items())
     result.sort(key=lambda x: unidecode.unidecode(x[0].casefold()))
-    print("\n*** Utilizadores - Entidades ***\n")
+    print("\n*** Utilizador : Entidade(s) ***\n")
     for r in result:
-        print(r[0], "-", r[1])
+        print(r[0], ":", "".join(r[1]))
 
 
 #Produz uma lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos
@@ -41,9 +41,9 @@ def entity_num_elements_list():
 
     result = list(entities.items())
     result.sort()
-    print("\n*** Entidades - Nº Utilizadores  ***\n")
+    print("\n*** Entidade : Nº Utilizadores ***\n")
     for r in result:
-        print(r[0], "-", r[1])
+        print(r[0], ":", r[1])
 
 #Qual a distribuição de utilizadores por níveis de acesso?
 
@@ -63,11 +63,11 @@ def dist_users_level():
     result = list(levels.items())
     result.sort()
     total_users = len(users)
-    print("\n*** Nivel de Acesso - Distribuição  ***\n")
+    print("\n*** Nivel de Acesso : Distribuição ***\n")
     for r in result:
-        print(f"Nivel {r[0]} - {round((len(r[1])/total_users)*100)}%" )
+        print(f"Nivel {r[0]} : {round((len(r[1])/total_users)*100)}%" )
         for user in sorted(r[1], key=lambda x: unidecode.unidecode(x.casefold())):
-            print(user)
+            print("*",user)
         if(result.index(r) != len(result)-1):
             print("")
 
@@ -122,20 +122,17 @@ def indicators():
             levels[level] += 1
 
     print("\n*** Indicadores ***\n")
+    print("Número de Utilizadores:",len(users))
     print("")
-    print("Número de Utilizadores:")
-    print(len(users))
-    print("")
-    print("Número de Entidades:")
-    print(len(entities.keys()))
+    print("Número de Entidades:",len(entities.keys()))
     print("")
     print("Distribuição de utilizadores por entidade:")
     for entity in sorted(entities.keys()):
-        print(f"* {entity} - {entities[entity]}")
+        print(f"* {entity} : {entities[entity]}")
     print("")
     print("Distribuição de utilizadores por nivel:")
     for level in sorted(levels.keys()):
-        print(f"* {level} - {levels[level]}")
+        print(f"* Nivel {level} : {levels[level]}")
 
 #Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato.
 
@@ -219,7 +216,9 @@ def menu():
         cls()
 
 
-
+fp = open('clav-users.txt', 'r')
+text = fp.readlines()
+fp.close()
 
 menu()
 
