@@ -95,7 +95,7 @@
        \textbf{Trabalho Prático 1}\\ Relatório de Desenvolvimento \\ \textbf{Grupo 17}\\ Problema 3
        } %Titulo do documento
 %\title{Um Exemplo de Artigo em \LaTeX}
-\author{José Pedro Gomes Ferreira\\ A91636 \and Pedro Paulo Costa Pereira\\ A88062
+\author{José Pedro Gomes Ferreira\\ A91636 \\  \and Pedro Paulo Costa Pereira\\ A88062
          \and Tiago André Oliveira Leite\\ A91693
        } %autores do documento
 \date{\today} %data
@@ -165,6 +165,7 @@ Por forma a tornar a resolução do trabalho mais simples, decidimos criar uma f
 Na execução do programa todas as linhas do ficheiro 'clav-users.txt' são lidas para uma variavel que depois será utlizada por cada uma da funções.\\
 Por uma questão de simplicidade, sempre que for necessário ordenar, a ordem utilizada é a a ordem alfabetica.
 \section{Funcionalidades}
+Todas as funções descritas neste capítulo podem ser encontradas no anexo A do documento.
 \subsection{Executar o programa.}
 Para executar o programa o utilizador terá que colocar na mesma diretoria os ficheiro 'main.py' e 'clav-users.txt'. De seguida basta abrir o terminal nessa diretoria e exceutar o comando:
 \begin{verbatim}
@@ -218,23 +219,560 @@ Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do fiche
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Demonstração de Funcionamento}
+
+\section{O menu.}
+\begin{small}
+\begin{verbatim}
+*** Selecione Opção ***
+
+1. Listagem com o nome e a entidade do utilizador, ordenada alfabeticamente por nome.
+2. Lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados.
+3. Distribuição de utilizadores por níveis de acesso.
+4. Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.
+5. Mostrar alguns indicadores.
+6. Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.
+0. Sair.
+>> 
+
+\end{verbatim}
+\end{small}
+
 \section{Nome dos utilizadores ordenados e respetiva entidade.}
+
+\begin{verbatim}
+>> 1
+
+*** Utilizador : Entidade(s) ***
+
+Alda do Carmo Namora Soares de Andrade : ent_FLUL
+Alexadre Teixeira : ent_KEEP
+Alexandra Lourenço : ent_DGLAB
+Alexandra Maria Alves Coutinho Rodrigues : ent_UTAD
+Alexandra Testes : ent_A3ES
+Alexandre Teixeira : ent_A3ES
+Aluno de DAW2020 : ent_A3ES
+Ana Lúcia Cabrita Guerreiro : ent_CCDR
+Ana Maria Teixeira Gaspar : ent_SGMF
+António José Morim Brandão : ent_MdP
+Carlos Barbosa : ent_A3ES
+Carlos Matoso : ent_IEFP
+Cármen Isabel Amador Francisco : ent_CMSNS
+Cátia João Matias Trindade : ent_DGLAB
+Cátia Trindade : ent_DGLAB
+clara cristina rainho viegas : ent_DGLAB
+CLAV-migrator : ent_A3ES
+David Ferreira : ent_IEFP
+DAW2020-teste : ent_A3ES
+Design-DGLAB : ent_DGLAB
+Duarte Freitas : ent_A3ES
+Élia Cristina Viegas Pedro : ent_CCDR
+Fernando Manuel Antunes Marques da Silva : ent_STI
+Filipa Carvalho : ent_DGLAB
+Filipe Ferreira Cardoso Leitão : ent_CMSPS
+Formação DGLAB : ent_DGLAB
+Frederico Pinto : ent_ACSS
+jcm : ent_AAN
+jcr-rep-entidade : ent_A3ES
+Joana Braga : ent_IEFP
+João Paulo de Melo Esteves Pereira : ent_APA
+João Pimentel : ent_A3ES
+José Carlos Leite Ramalho : ent_A3ES, ent_DGLAB
+José Carlos Martins : ent_A3ES
+Madalena Ribeiro : ent_DGLAB, ent_DGLAB
+Manuel Monteiro : ent_A3ES
+Maria Celeste Pereira : ent_DGLAB
+Maria José Maciel Chaves : ent_DGLAB
+Maria Leonor da Conceição Fresco Franco : ent_CCDR
+Maria Matos de Almeida Talhada Correia : ent_ICNF
+Maria Rita Gago : ent_DGLAB
+Miguel Ferreira : ent_KEEP
+Nuno Filipe Casas Novas : ent_CCDR
+octavio : ent_A3ES
+Paulo Lima : ent_KEEP
+Pedro Penteado : ent_DGLAB
+PRI2020-teste : ent_A3ES
+Regina Neves Lopes : ent_SGMF
+Ricardo Almeida : ent_DGEG
+Ricardo Canela : ent_BdP
+Rui Araújo : ent_II
+Rui Araújo Entidade : ent_AAN
+Rui Araújo Simples : ent_LNEC
+Sandra Cristina Patrício da Silva : ent_CMSNS
+Silvestre Lacerda : ent_DGLAB
+Sónia Isabel Ferreira Gonçalves Negrão : ent_CMABF
+Sónia Patrícia Pinheiro Reis : ent_ICNF
+Zélia Gomes : ent_DGLAB
+
+Pressione Enter!
+>> 
+\end{verbatim}
+
+
 \section{Entidades ordenadas e número de utilizadores registados em cada uma.}
+
+\begin{verbatim}
+>> 2
+
+*** Entidade : Nº Utilizadores ***
+
+ent_A3ES : 14
+ent_AAN : 2
+ent_ACSS : 1
+ent_APA : 1
+ent_BdP : 1
+ent_CCDR : 4
+ent_CMABF : 1
+ent_CMSNS : 2
+ent_CMSPS : 1
+ent_DGEG : 1
+ent_DGLAB : 16
+ent_FLUL : 1
+ent_ICNF : 2
+ent_IEFP : 3
+ent_II : 1
+ent_KEEP : 3
+ent_LNEC : 1
+ent_MdP : 1
+ent_SGMF : 2
+ent_STI : 1
+ent_UTAD : 1
+
+Pressione Enter!
+>> 
+\end{verbatim}
+
+
+
 \section{Distribuiçao dos utilizadores por nivel de acesso.}
+
+\begin{verbatim}
+>> 3
+
+*** Nivel de Acesso : Distribuição ***
+
+Nivel 1 : 40%
+* Alda do Carmo Namora Soares de Andrade
+* Alexandra Maria Alves Coutinho Rodrigues
+* Alexandra Testes
+* Ana Lúcia Cabrita Guerreiro
+* Ana Maria Teixeira Gaspar
+* António José Morim Brandão
+* Cármen Isabel Amador Francisco
+* Élia Cristina Viegas Pedro
+* Fernando Manuel Antunes Marques da Silva
+* Filipe Ferreira Cardoso Leitão
+* jcm
+* jcr-rep-entidade
+* João Paulo de Melo Esteves Pereira
+* Maria Leonor da Conceição Fresco Franco
+* Maria Matos de Almeida Talhada Correia
+* Nuno Filipe Casas Novas
+* Regina Neves Lopes
+* Ricardo Almeida
+* Rui Araújo Entidade
+* Rui Araújo Simples
+* Sandra Cristina Patrício da Silva
+* Sónia Isabel Ferreira Gonçalves Negrão
+* Sónia Patrícia Pinheiro Reis
+
+Nivel 2 : 12%
+* Aluno de DAW2020
+* Carlos Matoso
+* David Ferreira
+* DAW2020-teste
+* Joana Braga
+* octavio
+* PRI2020-teste
+
+Nivel 3 : 2%
+* Ricardo Canela
+
+Nivel 3.5 : 2%
+* Formação DGLAB
+
+Nivel 4 : 14%
+* Cátia João Matias Trindade
+* Cátia Trindade
+* clara cristina rainho viegas
+* Filipa Carvalho
+* Madalena Ribeiro
+* Maria Celeste Pereira
+* Maria José Maciel Chaves
+* Zélia Gomes
+
+Nivel 5 : 3%
+* Pedro Penteado
+* Silvestre Lacerda
+
+Nivel 6 : 3%
+* Madalena Ribeiro
+* Maria Rita Gago
+
+Nivel 7 : 26%
+* Alexadre Teixeira
+* Alexandra Lourenço
+* Alexandre Teixeira
+* Carlos Barbosa
+* CLAV-migrator
+* Design-DGLAB
+* Duarte Freitas
+* Frederico Pinto
+* João Pimentel
+* José Carlos Leite Ramalho
+* José Carlos Martins
+* Manuel Monteiro
+* Miguel Ferreira
+* Paulo Lima
+* Rui Araújo
+
+Pressione Enter!
+>> 
+\end{verbatim}
+
+
 \section{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
+
+\begin{verbatim}
+>> 4
+
+*** Utilizadores agrupados por entidade ***
+
+ent_A3ES:
+* Alexandra Testes
+* Alexandre Teixeira
+* Aluno de DAW2020
+* Carlos Barbosa
+* CLAV-migrator
+* DAW2020-teste
+* Duarte Freitas
+* jcr-rep-entidade
+* João Pimentel
+* José Carlos Leite Ramalho
+* José Carlos Martins
+* Manuel Monteiro
+* octavio
+* PRI2020-teste
+
+ent_AAN:
+* jcm
+* Rui Araújo Entidade
+
+ent_ACSS:
+* Frederico Pinto
+
+ent_APA:
+* João Paulo de Melo Esteves Pereira
+
+ent_BdP:
+* Ricardo Canela
+
+ent_CCDR:
+* Ana Lúcia Cabrita Guerreiro
+* Élia Cristina Viegas Pedro
+* Maria Leonor da Conceição Fresco Franco
+* Nuno Filipe Casas Novas
+
+ent_CMABF:
+* Sónia Isabel Ferreira Gonçalves Negrão
+
+ent_CMSNS:
+* Cármen Isabel Amador Francisco
+* Sandra Cristina Patrício da Silva
+
+ent_CMSPS:
+* Filipe Ferreira Cardoso Leitão
+
+ent_DGEG:
+* Ricardo Almeida
+
+ent_DGLAB:
+* Alexandra Lourenço
+* Cátia João Matias Trindade
+* Cátia Trindade
+* clara cristina rainho viegas
+* Design-DGLAB
+* Filipa Carvalho
+* Formação DGLAB
+* José Carlos Leite Ramalho
+* Madalena Ribeiro
+* Madalena Ribeiro
+* Maria Celeste Pereira
+* Maria José Maciel Chaves
+* Maria Rita Gago
+* Pedro Penteado
+* Silvestre Lacerda
+* Zélia Gomes
+
+ent_FLUL:
+* Alda do Carmo Namora Soares de Andrade
+
+ent_ICNF:
+* Maria Matos de Almeida Talhada Correia
+* Sónia Patrícia Pinheiro Reis
+
+ent_IEFP:
+* Carlos Matoso
+* David Ferreira
+* Joana Braga
+
+ent_II:
+* Rui Araújo
+
+ent_KEEP:
+* Alexadre Teixeira
+* Miguel Ferreira
+* Paulo Lima
+
+ent_LNEC:
+* Rui Araújo Simples
+
+ent_MdP:
+* António José Morim Brandão
+
+ent_SGMF:
+* Ana Maria Teixeira Gaspar
+* Regina Neves Lopes
+
+ent_STI:
+* Fernando Manuel Antunes Marques da Silva
+
+ent_UTAD:
+* Alexandra Maria Alves Coutinho Rodrigues
+
+
+Pressione Enter!
+>>
+\end{verbatim}
+
+
+
 \section{Mostrar alguns indicadores.}
+
+\begin{verbatim}
+>> 5
+
+*** Indicadores ***
+
+Número de Utilizadores: 58
+
+Número de Entidades: 21
+
+Distribuição de utilizadores por entidade:
+* ent_A3ES : 14
+* ent_AAN : 2
+* ent_ACSS : 1
+* ent_APA : 1
+* ent_BdP : 1
+* ent_CCDR : 4
+* ent_CMABF : 1
+* ent_CMSNS : 2
+* ent_CMSPS : 1
+* ent_DGEG : 1
+* ent_DGLAB : 16
+* ent_FLUL : 1
+* ent_ICNF : 2
+* ent_IEFP : 3
+* ent_II : 1
+* ent_KEEP : 3
+* ent_LNEC : 1
+* ent_MdP : 1
+* ent_SGMF : 2
+* ent_STI : 1
+* ent_UTAD : 1
+
+Distribuição de utilizadores por nivel:
+* Nivel 1 : 23
+* Nivel 2 : 7
+* Nivel 3 : 1
+* Nivel 3.5 : 1
+* Nivel 4 : 8
+* Nivel 5 : 2
+* Nivel 6 : 2
+* Nivel 7 : 16
+
+Pressione Enter!
+>> 
+\end{verbatim}
+
+
+
 \section{Imprimir num ficheiro Json os 20 primeiros registos.}
 
-%\VerbatimInput{teste1.txt}
+\begin{verbatim}
+>> 6
+
+Digite Nome Do Ficheiro de Output!
+>> json.txt
+
+Ficheiro gerado com sucesso!
+
+Pressione Enter!
+>> 
+\end{verbatim}
+
+\textbf{Conteudo do ficheiro json.txt}
+
+\begin{verbatim}
+{
+    "registos":[
+        {
+             "utilizador":"Élia Cristina Viegas Pedro",
+             "email":"epedro@ccdr-alg.pt",
+             "entidade":"ent_CCDR",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Formação DGLAB",
+             "email":"lurdes.almeida@dglab.gov.pt",
+             "entidade":"ent_DGLAB",
+             "nivel de acesso":"3.5",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Nuno Filipe Casas Novas",
+             "email":"nuno.novas@ccdr-lvt.pt",
+             "entidade":"ent_CCDR",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Sónia Patrícia Pinheiro Reis",
+             "email":"sonia.reis@icnf.pt",
+             "entidade":"ent_ICNF",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Sónia Isabel Ferreira Gonçalves Negrão",
+             "email":"sonia.negrao@cm-albufeira.pt",
+             "entidade":"ent_CMABF",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Filipe Ferreira Cardoso Leitão",
+             "email":"arquivo@cm-spsul.pt",
+             "entidade":"ent_CMSPS",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Ana Lúcia Cabrita Guerreiro",
+             "email":"alucia@ccdr-alg.pt",
+             "entidade":"ent_CCDR",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Alda do Carmo Namora Soares de Andrade",
+             "email":"aandrade@letras.ulisboa.pt",
+             "entidade":"ent_FLUL",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Ricardo Almeida",
+             "email":"ricardo.almeida@dgeg.gov.pt",
+             "entidade":"ent_DGEG",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Sandra Cristina Patrício da Silva",
+             "email":"spatricio@mun-sines.pt",
+             "entidade":"ent_CMSNS",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Cátia João Matias Trindade",
+             "email":"catia.trindade@dglab.gov.pt",
+             "entidade":"ent_DGLAB",
+             "nivel de acesso":"4",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Ricardo Canela",
+             "email":"tyty@tyty.pt",
+             "entidade":"ent_BdP",
+             "nivel de acesso":"3",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Cátia Trindade",
+             "email":"matiasjcatia@gmail.com",
+             "entidade":"ent_DGLAB",
+             "nivel de acesso":"4",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Miguel Ferreira",
+             "email":"mferreira@keep.pt",
+             "entidade":"ent_KEEP",
+             "nivel de acesso":"7",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Fernando Manuel Antunes Marques da Silva",
+             "email":"fernando.marques.silva@marinha.pt",
+             "entidade":"ent_STI",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Ana Maria Teixeira Gaspar",
+             "email":"ana.gaspar@sgmf.gov.pt",
+             "entidade":"ent_SGMF",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Maria Matos de Almeida Talhada Correia",
+             "email":"MariaMatos.Correia@icnf.pt",
+             "entidade":"ent_ICNF",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Cármen Isabel Amador Francisco",
+             "email":"carmem@mun-sines.pt",
+             "entidade":"ent_CMSNS",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Maria Leonor da Conceição Fresco Franco",
+             "email":"leonor.mina@ccdr-lvt.pt",
+             "entidade":"ent_CCDR",
+             "nivel de acesso":"1",
+             "número de chamadas ao backend":"0"
+        },
+        {
+             "utilizador":"Maria Rita Gago",
+             "email":"m-rita.gago@dglab.gov.pt",
+             "entidade":"ent_DGLAB",
+             "nivel de acesso":"6",
+             "número de chamadas ao backend":"3"
+        }
+    ]
+}
+\end{verbatim}
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo5%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Conclusão} \label{concl}
-Síntese do Documento~\cite{araujo:2018,martini:2018}.\\
-Estado final do projecto; Análise crítica dos resultados~\cite{Sto77a}.\\
-Trabalho futuro.
+Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos e que o nosso programa respeite os princípios da disciplina.
+Numa primeira aborgagem tentanto fazer a captura dos nomes de utilizador com a função \verb findAll , no entanto não esta a ser muito facil obter resultados por causa do inicio de linha, pelo que optamos por em todos os exercios iterar linha a linha.
+No problema que nos foi proposto, em cada uma das alineas é nos pedido que façamos um programa, no entanto achamos que a utilização do menu, na qual podemos escolher qual a funcionaliadade, torna a experiencia do utilizador mais simples e agradavel.
+Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e com recuso à biblioteca 're', facilitou bastante a sua implementação.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo6%%%%%%%%

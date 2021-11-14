@@ -134,7 +134,7 @@ def indicators():
     for level in sorted(levels.keys()):
         print(f"* Nivel {level} : {levels[level]}")
 
-#Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato.
+#Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato json.
 
 def json_20():
     list = []
