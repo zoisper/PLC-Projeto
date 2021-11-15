@@ -190,7 +190,7 @@ Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, n
 
 \subsection{Distribuiçao dos utilizadores por nível de acesso.}
 Esta funcionalidade é implementada pela função \verb dist_users_level() . \\
-Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '::' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' \ e vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . O resultado de capturar o nível de acesso e nome de utilizador são armazenados num dicionário em que a chave  é o nivel de acesso e o valor é um conjunto com os utilizadores com esse nível de acesso. Optamos por um conjunto para evitar repetições, uma vez que existem utilizadores com mais do que um nível de acesso. Caso o nível de acesso capturado nao exista no dicionario, é criada uma entrada cuja chave é o nível de acesso e cujo valor é um conjunto com o utilizador capturado, caso contrario, o utilizador é acrescentado ao conjunto de utilizadores ja existente para aquela chave. Para ser mais facil de contar o nº de utilizadores total utilizamos tambem um conjunto onde vamos colocando cada utilizador capturado.\\
+Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' \ e vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . O resultado de capturar o nível de acesso e nome de utilizador são armazenados num dicionário em que a chave  é o nivel de acesso e o valor é um conjunto com os utilizadores com esse nível de acesso. Optamos por um conjunto para evitar repetições, uma vez que existem utilizadores com mais do que um nível de acesso. Caso o nível de acesso capturado nao exista no dicionario, é criada uma entrada cuja chave é o nível de acesso e cujo valor é um conjunto com o utilizador capturado, caso contrario, o utilizador é acrescentado ao conjunto de utilizadores ja existente para aquela chave. Para ser mais facil de contar o nº de utilizadores total utilizamos tambem um conjunto onde vamos colocando cada utilizador capturado.\\
 Por fim, transformamos o dicionario numa lista composta pelos pares (nível de acesso, utilizadores) ordenada por nível de acesso e fazemos uma impressão dos utilizadores presentes em cada nível de acesso assim como a percentagem de utilizadores por nível. \\ \\
 \textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
 
@@ -205,22 +205,90 @@ Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, u
 
 \subsection{Mostrar alguns indicadores.}
 Esta funcionalidade é implementada pela função \verb indicators() . \\
-Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '::' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' \,vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , e  vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . Os nomes de utilizadores capturados anteriormente são armazenados num conjunto, para evitar repetiçoes, enquanto que as entidades e níveis de acesso capturados anteriormente são armazenados em dois dicionarios. Num dos dicionarios o par chaves e valores são a entidade e respetivo número de utilizadores enquanto que no outro o par chave e valores são o nível de acesso e respetivo número de utilizadores. \\
+Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' \,vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , e  vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . Os nomes de utilizadores capturados anteriormente são armazenados num conjunto, para evitar repetiçoes, enquanto que as entidades e níveis de acesso capturados anteriormente são armazenados em dois dicionarios. Num dos dicionarios o par chaves e valores são a entidade e respetivo número de utilizadores enquanto que no outro o par chave e valores são o nível de acesso e respetivo número de utilizadores. \\
 Por fim, fazemos um impressão do número total de utilizadores, o número total de entidades, o número de utilizadores por entidade e o número de utilizadores por nível de acesso. \\ \\
 \textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.  
 
 \subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
 Esta funcionalidade é implementada pela função \verb json_20() . \\
-Na sua implementação vamos iterar por cada umas das 20 primeiras linhas do texto e partir cada uma destas pelo separador \verb '::' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' , vamos capturar o email de utilizador no segundo elemento (index 1) da linha partida com a função \verb re.search \ e a expressão regular \verb '(\w+|\.|@|_|-)+'  , vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' , e vamos capturar o número de chamadas ao backend no quinto elemento da linha partida (index 4) com a função \verb re.search \ e a expressão regular \verb '\d+' . O resultado de cada linha é armazenado numa lista de tuplos (node de utilizador, email, entidade, nível de acesso, número de chamadas ao backend).  \\ 
-Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do ficheiro para o qual quer imprimir os dados recolhidos. Depois abrimos o fichero e procedemos à impressão de cada registo (tuplo armazenado na lista) num formato json. 
+Na sua implementação vamos iterar por cada umas das 20 primeiras linhas do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\s*(-?\w+\s*)*\b)' , vamos capturar o email de utilizador no segundo elemento (index 1) da linha partida com a função \verb re.search \ e a expressão regular \verb '(\w+|\.|@|_|-)+'  , vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' , e vamos capturar o número de chamadas ao backend no quinto elemento da linha partida (index 4) com a função \verb re.search \ e a expressão regular \verb '\d+' . O resultado de cada linha é armazenado numa lista de tuplos (node de utilizador, email, entidade, nível de acesso, número de chamadas ao backend).  \\
+Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do ficheiro para o qual quer imprimir os dados recolhidos. Depois abrimos o fichero e procedemos à impressão de cada registo (tuplo armazenado na lista) num formato json. \\ \\
+\textbf{Nota:} Caso o ficheiro não possua 20 linhas, a função vai iterar por todas as linhas existentes no texto e apresentar os registos encontrados. \\
+
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo4%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Demonstração de Funcionamento}
+\section{Ficheiro: 'clav-users'}
+\subsection{Conteudo do ficheiro}
 
-\section{O menu.}
+\begin{verbatim}
+Élia Cristina Viegas Pedro :: epedro@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
+Formação DGLAB :: lurdes.almeida@dglab.gov.pt :: ent_DGLAB :: 3.5 :: 0
+Nuno Filipe Casas Novas :: nuno.novas@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
+Sónia Patrícia Pinheiro Reis :: sonia.reis@icnf.pt :: ent_ICNF :: 1 :: 0
+Sónia Isabel Ferreira Gonçalves Negrão :: sonia.negrao@cm-albufeira.pt :: ent_CMABF :: 1 :: 0
+Filipe Ferreira Cardoso Leitão :: arquivo@cm-spsul.pt :: ent_CMSPS :: 1 :: 0
+Ana Lúcia Cabrita Guerreiro :: alucia@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
+Alda do Carmo Namora Soares de Andrade :: aandrade@letras.ulisboa.pt :: ent_FLUL :: 1 :: 0
+Ricardo Almeida :: ricardo.almeida@dgeg.gov.pt :: ent_DGEG :: 1 :: 0
+Sandra Cristina Patrício da Silva :: spatricio@mun-sines.pt :: ent_CMSNS :: 1 :: 0
+Cátia João Matias Trindade :: catia.trindade@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Ricardo Canela :: tyty@tyty.pt :: ent_BdP :: 3 :: 0
+Cátia Trindade :: matiasjcatia@gmail.com :: ent_DGLAB :: 4 :: 0
+Miguel Ferreira :: mferreira@keep.pt :: ent_KEEP :: 7 :: 0
+Fernando Manuel Antunes Marques da Silva :: fernando.marques.silva@marinha.pt :: ent_STI-M :: 1 :: 0
+Ana Maria Teixeira Gaspar :: ana.gaspar@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
+Maria Matos de Almeida Talhada Correia :: MariaMatos.Correia@icnf.pt :: ent_ICNF :: 1 :: 0
+Cármen Isabel Amador Francisco :: carmem@mun-sines.pt :: ent_CMSNS :: 1 :: 0
+Maria Leonor da Conceição Fresco Franco :: leonor.mina@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
+Maria Rita Gago :: m-rita.gago@dglab.gov.pt :: ent_DGLAB :: 6 :: 3
+José Carlos Leite Ramalho :: jcr@di.uminho.pt :: ent_A3ES :: 7 :: 3
+Regina Neves Lopes :: Regina.Lopes@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
+João Paulo de Melo Esteves Pereira :: joao.pereira@apambiente.pt :: ent_APA :: 1 :: 0
+António José Morim Brandão :: Antonio.brandao@metrodoporto.pt :: ent_MdP :: 1 :: 0
+Alexandra Lourenço :: alexandra.lourenco@dglab.gov.pt :: ent_DGLAB :: 7 :: 3
+Rui Araújo :: pg38425@alunos.uminho.pt :: ent_II :: 7 :: 9
+Filipa Carvalho :: filipa.carvalho@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+clara cristina rainho viegas :: clara.viegas@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Madalena Ribeiro :: madalena.ribeiro@dglab.gov.pt :: ent_DGLAB :: 6 :: 0
+Zélia Gomes :: zelia.gomes@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Frederico Pinto :: frederico21pinto@hotmail.com :: ent_ACSS :: 7 :: 0
+Pedro Penteado :: pedro.penteado@dglab.gov.pt :: ent_DGLAB :: 5 :: 1
+Madalena Ribeiro :: madalena.ribeiro07@gmail.com :: ent_DGLAB :: 4 :: 2
+Alexandre Teixeira :: a73547@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+octavio :: octaviojmaia@gmail.com :: ent_A3ES :: 2 :: 0
+José Carlos Martins :: a78821@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Silvestre Lacerda :: silvestre.lacerda@dglab.gov.pt :: ent_DGLAB :: 5 :: 0
+Design-DGLAB :: a75536@alunos.uminho.pt :: ent_DGLAB :: 7 :: 0
+João Pimentel :: A80874@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Maria Celeste Pereira :: m-celeste.pereira@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+CLAV-migrator :: a74036@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Alexadre Teixeira :: alex@keep.pt :: ent_KEEP :: 7 :: 0
+Carlos Barbosa :: A82324@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Rui Araújo Simples :: 0.rffa.0@gmail.com :: ent_LNEC :: 1 :: 0
+Manuel Monteiro :: a74036@alunos.uminhopt :: ent_A3ES :: 7 :: 0
+Rui Araújo Entidade :: ruifilipearaujo@hotmail.com :: ent_AAN :: 1 :: 0
+Duarte Freitas :: a63129@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Maria José Maciel Chaves :: m-jose.chaves@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+jcm :: jcm@live.com :: ent_AAN :: 1 :: 0
+José Carlos Leite Ramalho :: jcr@dglab.pt :: ent_DGLAB :: 7 :: 0
+Alexandra Testes :: m-alexandra.lourenco@dglab.gov.pt :: ent_A3ES :: 1 :: 0
+Paulo Lima :: plima@keep.pt :: ent_KEEP :: 7 :: 0
+Alexandra Maria Alves Coutinho Rodrigues :: acoutinh@utad.pt :: ent_UTAD :: 1 :: 0
+Aluno de DAW2020 :: leo.ramalho99@gmail.com :: ent_A3ES :: 2 :: 0
+PRI2020-teste :: pri2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
+DAW2020-teste :: daw2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
+jcr-rep-entidade :: zzglider@gmail.com :: ent_A3ES :: 1 :: 0
+Carlos Matoso :: cmatoso@ambisig.com :: ent_IEFP :: 2 :: 0
+Joana Braga :: jbraga@ambisig.com :: ent_IEFP :: 2 :: 0
+David Ferreira :: david.ferreira@ambisig.com :: ent_IEFP :: 2 :: 0
+\end{verbatim}
+
+
+\subsection{O menu.}
 \begin{small}
 \begin{verbatim}
 *** Selecione Opção ***
@@ -237,7 +305,7 @@ Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do fiche
 \end{verbatim}
 \end{small}
 
-\section{Nome dos utilizadores ordenados e respetiva entidade.}
+\subsection{Nome dos utilizadores ordenados e respetiva entidade.}
 
 \begin{verbatim}
 >> 1
@@ -308,7 +376,7 @@ Pressione Enter!
 \end{verbatim}
 
 
-\section{Entidades ordenadas e número de utilizadores registados em cada uma.}
+\subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
 
 \begin{verbatim}
 >> 2
@@ -343,7 +411,7 @@ Pressione Enter!
 
 
 
-\section{Distribuiçao dos utilizadores por nivel de acesso.}
+\subsection{Distribuiçao dos utilizadores por nivel de acesso.}
 
 \begin{verbatim}
 >> 3
@@ -430,7 +498,7 @@ Pressione Enter!
 \end{verbatim}
 
 
-\section{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
+\subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
 
 \begin{verbatim}
 >> 4
@@ -546,7 +614,7 @@ Pressione Enter!
 
 
 
-\section{Mostrar alguns indicadores.}
+\subsection{Mostrar alguns indicadores.}
 
 \begin{verbatim}
 >> 5
@@ -596,7 +664,7 @@ Pressione Enter!
 
 
 
-\section{Imprimir num ficheiro Json os 20 primeiros registos.}
+\subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
 
 \begin{verbatim}
 >> 6
@@ -787,6 +855,7 @@ Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem '
 import re
 import unidecode
 import sys
+import os.path
 
 
 def name_entity_list():
@@ -826,7 +895,7 @@ def dist_users_level():
     levels = {}
     users = set()
     for line in text:
-        broken_line = re.split(r'::', line)
+        broken_line = re.split(r'[:,|]+', line)
         user = re.match(r'(\w+\s*(-?\w+\s*)*\b)', broken_line[0]).group()
         level = re.search(r'\d+\.?\d*',broken_line[3]).group()
         if level not in levels:
@@ -873,7 +942,7 @@ def indicators():
     entities = {}
     levels = {}
     for line in text:
-        broken_line = re.split(r'::', line)
+        broken_line = re.split(r'[:,|]+', line)
         users.add(re.match(r'(\w+\s*(\w+\s*)*\b)',broken_line[0]).group())
         entity = re.search(r'ent_\w*', broken_line[2]).group()
         level = re.search(r'\d+\.?\d*', broken_line[3]).group()
@@ -903,8 +972,12 @@ def indicators():
 
 def json_20():
     list = []
-    for i in range(20):
-        broken_line = re.split(r'::', text[i])
+    N = len(text)
+    if N >= 20:
+        N = 20
+
+    for i in range(N):
+        broken_line = re.split(r'[:,|]+', text[i])
         user = re.match(r'(\w+\s*(\w+\s*)*\b)', broken_line[0]).group()
         email = re.search(r'(\w+|\.|@|_|-)+', broken_line[1]).group()
         entity = re.search(r'ent_\w*', broken_line[2]).group()
@@ -932,7 +1005,7 @@ def json_20():
     fp.close()
     print("\nFicheiro gerado com sucesso!")
 
-
+s
 def menu():
     cls = lambda: print('\n' * 50)
     inputfromuser = ""
@@ -979,11 +1052,16 @@ if len(sys.argv)>1:
 else:
     text_source = 'clav-users.txt'
 
+if not os.path.exists(text_source):
+    print(f"Ficheiro \"{text_source}\" não encontrado!")
+    sys.exit(0)
 
 fp = open(text_source, 'r')
 text = fp.readlines()
 fp.close()
+
 menu()
+
 
 
 \end{verbatim}

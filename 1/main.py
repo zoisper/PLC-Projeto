@@ -1,6 +1,7 @@
 import re
 import unidecode
 import sys
+import os.path
 
 
 '''Construa agora um ou vários programas
@@ -52,7 +53,7 @@ def dist_users_level():
     levels = {}
     users = set()
     for line in text:
-        broken_line = re.split(r'::', line)
+        broken_line = re.split(r'[:,|]+', line)
         user = re.match(r'(\w+\s*(-?\w+\s*)*\b)', broken_line[0]).group()
         level = re.search(r'\d+\.?\d*',broken_line[3]).group()
         if level not in levels:
@@ -108,7 +109,7 @@ def indicators():
     entities = {}
     levels = {}
     for line in text:
-        broken_line = re.split(r'::', line)
+        broken_line = re.split(r'[:,|]+', line)
         users.add(re.match(r'(\w+\s*(\w+\s*)*\b)',broken_line[0]).group())
         entity = re.search(r'ent_\w*', broken_line[2]).group()
         level = re.search(r'\d+\.?\d*', broken_line[3]).group()
@@ -139,8 +140,12 @@ def indicators():
 
 def json_20():
     list = []
-    for i in range(20):
-        broken_line = re.split(r'::', text[i])
+    N = len(text)
+    if N >= 20:
+        N = 20
+
+    for i in range(N):
+        broken_line = re.split(r'[:,|]+', text[i])
         user = re.match(r'(\w+\s*(\w+\s*)*\b)', broken_line[0]).group()
         email = re.search(r'(\w+|\.|@|_|-)+', broken_line[1]).group()
         entity = re.search(r'ent_\w*', broken_line[2]).group()
@@ -216,10 +221,15 @@ def menu():
         input("\nPressione Enter!\n>> ")
         cls()
 
+
 if len(sys.argv)>1:
     text_source = sys.argv[1]
 else:
     text_source = 'clav-users.txt'
+
+if not os.path.exists(text_source):
+    print(f"Ficheiro \"{text_source}\" não encontrado!")
+    sys.exit(0)
 
 fp = open(text_source, 'r')
 text = fp.readlines()
