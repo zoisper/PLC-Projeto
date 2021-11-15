@@ -1,0 +1,52 @@
+Anabela Pereira | a87990@alunos.uminho.pt | ent_G12 | 1 | 0
+André Filipe Oliveira Araújo | a87987@alunos.uminho.pt | ent_G09 | 1 | 0
+André Gonçalves | a87942@alunos.uminho.pt | ent_G12 | 1 | 0
+André Oliveira Boechat Morandi | a86912@alunos.uminho.pt | ent_G14 | 1 | 1
+André Ribeiro Fernandes | a87938@alunos.uminho.pt | ent_G01 | 1 | 0
+Aureo Bendito | a76068@alunos.uminho.pt | ent_G18 | 1 | 0
+Bruna Alvarães | a84729@alunos.uminho.pt | ent_G07 | 1 | 2
+Bruna Dias Carvalho | a87982@alunos.uminho.pt | ent_G15 | 1 | 0
+Bruna Gonçalves Araújo | a84408@alunos.uminho.pt | ent_G02 | 1 | 0
+Bruno Alexandre Dias Novais de Sousa | a84945@alunos.uminho.pt | ent_G05 | 1 | 1
+Bruno Miguel Pinheiro Alves | a85481@alunos.uminho.pt | ent_G17 | 1 | 0
+Carlos Henrique Senra Ferreira | a87953@alunos.uminho.pt | ent_G08 | 1 | 1
+Daniel André Rocha Ribeiro | a87994@alunos.uminho.pt | ent_G08 | 1 | 2
+Daniel Martins Carvalho Ferreira | a85670@alunos.uminho.pt | ent_G02 | 1 | 0
+David Ferreira | a80673@alunos.uminho.pt | ent_G19 | 2 | 1
+David Silvestre Ölund Matos | a87997@alunos.uminho.pt | ent_G03 | 1 | 1
+Diogo Costa Fernandes | a87968@alunos.uminho.pt | ent_G04 | 1 | 1
+Diogo Sambento | a87965@alunos.uminho.pt | ent_G16 | 1 | 1
+Eduardo Luis Vieira Pereira | a87965@alunos.uminho.pt | ent_G00 | 1 | 0
+Fernando Augusto Marques Lobo | a87988@alunos.uminho.pt | ent_G04 | 1 | 0
+Filipe Matias Antas Viana | a85948@alunos.uminho.pt | ent_G13 | 1 | 1
+Francisco Domingos Martins Oliveira | a82066@alunos.uminho.pt | ent_G13 | 1 | 3
+Gil Miguel da Mota Marques | a84076@alunos.uminho.pt | ent_G19 | 2 | 1
+Gilberto Rui Nogueira Cunha | a89142@alunos.uminho.pt | ent_G06 | 2 | 1
+Guilherme Santos | a85115@alunos.uminho.pt | ent_G07 | 1 | 1
+Hélder Cristiano Lopes | a87951@alunos.uminho.pt | ent_G14 | 1 | 2
+João Carlos Viana Pereira Marques | a84684@alunos.uminho.pt | ent_G17 | 1 | 1
+João Diogo Torres Cardosa da Silva | a87939@alunos.uminho.pt | ent_G20 | 1 | 0
+João Domingos Pereira Barbosa | a82044@alunos.uminho.pt | ent_G20 | 1 | 0
+João Guilherme Reis | a84671@alunos.uminho.pt | ent_G21 | 1 | 1
+João Manuel Silva Antunes | a81663@alunos.uminho.pt | ent_G13 | 1 | 0
+João Pedro Antunes | a86813@alunos.uminho.pt | ent_G10 | 1 | 3
+João Pedro Duarte Coutinho | a83545@alunos.uminho.pt | ent_G00 | 1 | 1
+João Pedro Oliveira Correia | a87945@alunos.uminho.pt | ent_G03 | 1 | 1
+Jorge André Vieira Freitas | a87944@alunos.uminho.pt | ent_G03 | 1 | 0
+José Luís Antunes Martins | a75583@alunos.uminho.pt | ent_G19 | 2 | 1
+José Luís Cerqueira Pires | a84552@alunos.uminho.pt | ent_G11 | 1 | 0
+José Manuel Neves C.L. Machado | a87979@alunos.uminho.pt | ent_G01 | 1 | 2
+Luís Almeida | a84180@alunos.uminho.pt | ent_G10 | 1 | 1
+Luís Miguel Rodrigues Guimarães | a87947@alunos.uminho.pt | ent_G04 | 1 | 1
+Márcia Filipa da Cruz Cerqueira | a87992@alunos.uminho.pt | ent_G11 | 1 | 0
+Márlon Daniel Duarte Ferreira | a81735@alunos.uminho.pt | ent_G15 | 1 | 1
+Paulo Ricardo Dias da Costa | a87986@alunos.uminho.pt | ent_G09 | 1 | 1
+Pedro Beir | a80656@alunos.uminho.pt | ent_G18 | 1 | 1
+Pedro Henrique Costa | a87959@alunos.uminho.pt | ent_G16 | 1 | 1
+Pedro Miguel Martins | a87964@alunos.uminho.pt | ent_G16 | 1 | 1
+Ricardo Nuno de Castro Cruz | a86789@alunos.uminho.pt | ent_G02 | 1 | 0
+Rui Filipe Traila de Sousa | a85908@alunos.uminho.pt | ent_G21 | 1 | 3
+Rui Jorge de Oliveira Faria | a87957@alunos.uminho.pt | ent_G01 | 1 | 1
+Rui Miguel Pimenta e Cunha | a85877@alunos.uminho.pt | ent_G05 | 1 | 2
+Tomás Barros Carneiro | a82552@alunos.uminho.pt | ent_G06 | 2 | 3
+Tomás Salazar Valente | a85172@alunos.uminho.pt | ent_G00 | 1 | 1
