@@ -786,6 +786,7 @@ Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem '
 \begin{verbatim}
 import re
 import unidecode
+import sys
 
 
 def name_entity_list():
@@ -973,7 +974,13 @@ def menu():
         cls()
 
 
-fp = open('clav-users.txt', 'r')
+if len(sys.argv)>1:
+    text_source = sys.argv[1]
+else:
+    text_source = 'clav-users.txt'
+
+
+fp = open(text_source, 'r')
 text = fp.readlines()
 fp.close()
 menu()

@@ -1,5 +1,6 @@
 import re
 import unidecode
+import sys
 
 
 '''Construa agora um ou vários programas
@@ -215,8 +216,12 @@ def menu():
         input("\nPressione Enter!\n>> ")
         cls()
 
+if len(sys.argv)>1:
+    text_source = sys.argv[1]
+else:
+    text_source = 'clav-users.txt'
 
-fp = open('clav-users.txt', 'r')
+fp = open(text_source, 'r')
 text = fp.readlines()
 fp.close()
 
