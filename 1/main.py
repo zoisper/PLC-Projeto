@@ -15,8 +15,8 @@ resultados conforme solicitado a seguir:'''
 def name_entity_list():
     result = {}
     for line in text:
-        user =  re.match(r'(\w+\s*(-?\w+\s*)*\b)',line).group()
-        entity = re.search(r'ent_\w*',line).group()
+        user =  re.match(user_er,line).group()
+        entity = re.search(entity_er,line).group()
         if user not in result:
             result[user] = [entity]
         else:
@@ -35,7 +35,7 @@ def name_entity_list():
 def entity_num_elements_list():
     entities = {}
     for line in text:
-        entity = re.search(r'ent_\w*', line).group()
+        entity = re.search(entity_er, line).group()
         if entity not in entities:
             entities[entity] = 1
         else:
@@ -53,9 +53,9 @@ def dist_users_level():
     levels = {}
     users = set()
     for line in text:
-        broken_line = re.split(r'[:,|]+', line)
-        user = re.match(r'(\w+\s*(-?\w+\s*)*\b)', broken_line[0]).group()
-        level = re.search(r'\d+\.?\d*',broken_line[3]).group()
+        broken_line = re.split(separator_er, line)
+        user = re.match(user_er, broken_line[0]).group()
+        level = re.search(level_er,broken_line[3]).group()
         if level not in levels:
             levels[level] = set()
             levels[level].add(user)
@@ -65,9 +65,9 @@ def dist_users_level():
     result = list(levels.items())
     result.sort()
     total_users = len(users)
-    print("\n*** Nivel de Acesso : Distribuição ***\n")
+    print("\n*** Nível de Acesso : Distribuição ***\n")
     for r in result:
-        print(f"Nivel {r[0]} : {round((len(r[1])/total_users)*100)}%" )
+        print(f"Nível {r[0]} : {round((len(r[1])/total_users)*100)}%" )
         for user in sorted(r[1], key=lambda x: unidecode.unidecode(x.casefold())):
             print("*",user)
         if(result.index(r) != len(result)-1):
@@ -80,12 +80,12 @@ def dist_users_level():
 def name_entity_group():
     result = {}
     for line in text:
-        name = re.match(r'(\w+\s*(-?\w+\s*)*\b)', line).group()
-        entity = re.search(r'ent_\w*', line).group()
+        user = re.match(user_er, line).group()
+        entity = re.search(entity_er, line).group()
         if entity not in result:
-            result[entity] = [name]
+            result[entity] = [user]
         else:
-            result[entity].append(name)
+            result[entity].append(user)
 
     entities = list(result.keys())
     entities.sort()
@@ -110,9 +110,9 @@ def indicators():
     levels = {}
     for line in text:
         broken_line = re.split(r'[:,|]+', line)
-        users.add(re.match(r'(\w+\s*(\w+\s*)*\b)',broken_line[0]).group())
-        entity = re.search(r'ent_\w*', broken_line[2]).group()
-        level = re.search(r'\d+\.?\d*', broken_line[3]).group()
+        users.add(re.match(user_er,broken_line[0]).group())
+        entity = re.search(entity_er, broken_line[2]).group()
+        level = re.search(level_er, broken_line[3]).group()
 
         if entity not in entities:
             entities[entity] = 1
@@ -132,9 +132,9 @@ def indicators():
     for entity in sorted(entities.keys()):
         print(f"* {entity} : {entities[entity]}")
     print("")
-    print("Distribuição de utilizadores por nivel:")
+    print("Distribuição de utilizadores por nível:")
     for level in sorted(levels.keys()):
-        print(f"* Nivel {level} : {levels[level]}")
+        print(f"* Nível {level} : {levels[level]}")
 
 #Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato json.
 
@@ -145,15 +145,15 @@ def json_20():
         N = 20
 
     for i in range(N):
-        broken_line = re.split(r'[:,|]+', text[i])
-        user = re.match(r'(\w+\s*(\w+\s*)*\b)', broken_line[0]).group()
-        email = re.search(r'(\w+|\.|@|_|-)+', broken_line[1]).group()
-        entity = re.search(r'ent_\w*', broken_line[2]).group()
-        level = re.search(r'\d+\.?\d*', broken_line[3]).group()
-        calls = re.search(r'\d+', broken_line[4]).group()
+        broken_line = re.split(separator_er, text[i])
+        user = re.match(user_er, broken_line[0]).group()
+        email = re.search(email_er, broken_line[1]).group()
+        entity = re.search(entity_er, broken_line[2]).group()
+        level = re.search(level_er, broken_line[3]).group()
+        calls = re.search(calls_er, broken_line[4]).group()
         list.append((user,email,entity,level,calls))
 
-    file_name = input("\nDigite Nome Do Ficheiro de Output!\n>> ")
+    file_name = input("\nDigite nome do ficheiro de output!\n>> ")
     fp = open(file_name, 'w')
 
     fp.write("{\n\t\"registos\":[\n")
@@ -163,7 +163,7 @@ def json_20():
         fp.write(f"\t\t\t \"utilizador\":\"{l[0]}\",\n")
         fp.write(f"\t\t\t \"email\":\"{l[1]}\",\n")
         fp.write(f"\t\t\t \"entidade\":\"{l[2]}\",\n")
-        fp.write(f"\t\t\t \"nivel de acesso\":\"{l[3]}\",\n")
+        fp.write(f"\t\t\t \"nível de acesso\":\"{l[3]}\",\n")
         fp.write(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"\n")
         if i != 19:
             fp.write("\t\t},\n")
@@ -171,7 +171,7 @@ def json_20():
             fp.write("\t\t}\n")
     fp.write("\t]\n}\n")
     fp.close()
-    print("\nFicheiro gerado com sucesso!")
+    print(f"\nFicheiro \"{file_name}\" gerado com sucesso!")
 
 
 
@@ -234,6 +234,13 @@ if not os.path.exists(text_source):
 fp = open(text_source, 'r')
 text = fp.readlines()
 fp.close()
+
+calls_er = r'\d+'
+entity_er = r'ent_\w*'
+email_er = r'(\w+|\.|@|_|-)+'
+level_er = r'\d+\.?\d*'
+separator_er = r'[:,|]+'
+user_er = r'(\w+\.?\s*(-?\w+\.?\s*)*\b)'
 
 menu()
 

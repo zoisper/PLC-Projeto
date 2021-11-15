@@ -1,0 +1,16 @@
+Pedro Penedo da Rocha Calhau , parte_pedra@gmail.com , ent_op , 1 , 5
+Engenheiro Socrates , animal_feroz@yahoo.pt, ent_dr, 3, 2
+Professor Marcelo, marselfie@hotmail.com, ent_dr, 2, 2
+CR7, cristianinho@hotmail.com, ent_fig, 7, 7
+Eng. Fernando Santos, mete_mais_um_trinco@protonmail.com , ent_fig, 3, 10
+Xico Esperto, o.xico.esperto@protonmail.com, ent_op, 4 ,  7
+Dona Dolores , mae_coragem@yahoo.com, ent_fig, 2, 7
+Dr. R. Salgado, ddt@protonmail.com, ent_dr, 2, 30
+Jacinto Leite Capelo Rego, jacintorego@outlook.pt, ent_op, 2, 4
+Passos Dias Aguiar Mota, pdamota@gmail.com, ent_op, 8, 2
+JJ, peaners@hotmail.com, ent_fig, 3, 88
+Zé Povinho, zezinho@gmail.com, ent_op, 2, 0
+Inacio, naosejasinacio@hotmail.com, ent_fig, 4, 2
+Geremias, geremeias666@yahoo.pt, ent_op, 4, 3
+registado777, registado777@gmail.com, ent_op, 2, 1
+ativista, a.t.i.v.i.s.t.a@hotmail.com, ent_fig, 2, 3  
