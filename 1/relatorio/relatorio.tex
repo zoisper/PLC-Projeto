@@ -116,8 +116,9 @@
 
 \chapter{Introdução} \label{chap:intro} %referência cruzada
 
-Neste documento vamos explicar a solução que implementamos para a resolução do probelma proposto no ambito da unidade curricular de Processsamento de Linguagens e Compiladores. \\
-O problema proposto consiste em analisar o ficheiro de texto $calv$-$users.txt$ e atraves da utilização da linguagem Python e da biblioteca de expressões regulares 're' extrair informação de forma a produzir alguns resultados.\\No desenvolvimento do programa procuramos utilizar o conhecimento adquirido nas aulas, esperando por isso que o resultado final cumpra todos os requisitos. 
+Este documento tem como objetivo explicar a solução que implementamos para a resolução do probelma proposto no âmbito da unidade curricular de Processsamento de Linguagens e Compiladores. \\ \\
+O problema consiste em analisar um ficheiro de texto 'calv-users.txt' e através da utilização da linguagem Python e da biblioteca de expressões regulares 're' extrair informação de forma a produzir alguns resultados. \\ \\ Para além do texto fornecido, na solução apresentada, utilizamos outros textos de input, nos quais  os dados a recolher possuem uma estrutura um pouco diferente da presente no texto 'calv-users.txt'. Essas diferenças vão se refletir nas expressões regulares que utilizamos, que vão ser mais genéricas.\\ \\
+No desenvolvimento do programa procuramos utilizar o conhecimento adquirido nas aulas, esperando por isso que o resultado final cumpra todos os requisitos.  
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -134,11 +135,11 @@ para processar o texto ' clav-users.txt ' em que campos de informação
 têm a seguinte ordem: nome, email, entidade, nível, número de chamadas ao backend, com o intuito de calcular alguns
 resultados conforme solicitado a seguir:
 \begin{itemize}
-\item Produz uma listagem apenas com o nome e a entidade do utilizador, ordenada alfabeticamente por nome;
-\item Produz uma lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados;
+\item Produzir uma listagem apenas com o nome e a entidade do utilizador, ordenada alfabeticamente por nome;
+\item Produzir uma lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados;
 \item Qual a distribuição de utilizadores por níveis de acesso?
-\item Produz uma listagem dos utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome;
-\item Por fim, produz os seguintes indicadores:
+\item Produzir uma listagem dos utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome;
+\item Por fim, produzir os seguintes indicadores:
 \begin{enumerate}[1.]
 \item Quantos utilizadores?
 \item Quantas entidades?
@@ -160,14 +161,15 @@ Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de outpu
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Concepção/desenho da Resolução}
-\section{Organização}
-Por forma a tornar a resolução do trabalho mais simples, decidimos criar uma função especifica para resolver cada uma das alineas do problema. Assim sendo, a solução do problema vai ser composta por 6 funções mais uma que vai servir de menu para o utilizador poder escolher qual das funcionalidades do prograna quer utilizar.\\
-Na execução do programa todas as linhas do ficheiro 'clav-users.txt' são lidas para uma variavel que depois será utlizada por cada uma da funções.\\
-Por uma questão de simplicidade, sempre que for necessário ordenar, a ordem utilizada é a a ordem alfabética \\
-No codigo do programa decidimos colocar as expressões regulares utilizadas como variaveis globais de forma a que seja mais facíl, no futuro, melhorar o programa. No entanto, na descrição das implemetações que faremos de seguida optamos por escrever as expressões regulares utilizadas em cada função.
+\section{Organização e estrutura}
+Por forma a tornar a resolução do trabalho mais simples, decidimos criar uma função especifica para resolver cada uma das alineas do problema. Assim sendo, a solução do problema vai ser composta por \textbf{6} funções mais uma que vai servir de menu para o utilizador poder escolher qual das funcionalidades do programa quer utilizar.\\
+Na execução do programa todas as linhas do ficheiro de input são lidas para uma variável global que depois será utlizada por cada uma da funções. Também as expressões regulares utilizadas foram armazenadas em variáveis globais de forma a que seja mais fácil, no futuro, melhorar o programa. No entanto, na descrição das implementações que faremos de seguida optamos por, em cada uma delas, escrever integralmente as expressões regulares utilizadas. 
 
 \section{Funcionalidades}
 Todas as funções descritas neste capítulo podem ser encontradas no anexo A do documento.
+Na implementação das função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
+Também definimos que em cada linha do texto de input não pode haver mais do que um registo do mesmo utilizador com a mesma entidade. Pensamos que isso não faria muito sentido.\\
+Por uma questão de simplicidade, sempre que for necessário ordenar, a ordem utilizada é a ordem alfabética
 \subsection{Executar o programa.}
 Para executar o programa o utilizador terá que colocar na mesma diretoria os ficheiro 'main.py' e o ficheiro de input. De seguida basta abrir o terminal nessa diretoria e exceutar o comando:
 \begin{verbatim}
@@ -181,46 +183,41 @@ o programa, por defeito, vai tentar abrir e ler o ficheiro 'clav-users.txt'
 \subsection{O menu.}
 O menu do programa é implementado pela função \verb menu() . \\
 Esta função cria um ciclo \verb while \ que mostra ao utilizador todas as opções de funcionalidades disponiveis. De seguida lê a opção escolhida pelo utilizador e caso a opção esteja entre 1 e 6 vai invocar a função que implementa a funcionalidade selecionada. Se a opção escolhida pelo utilizador for menor que 0 ou maior que 6 vai ser mostrada uma mensagem de erro  sendo solicitado ao  utilizador que escolha novamente. Caso a opção seja 0, o programa termina a sua execução.\\
-Para tornar a experiencia mais agradavel aos olhos, entre a execução de cada funcionalidade, é feita uma limpeza do ecrã atravês da impressão de 50 paragrafos. 
+Para tornar a experiencia mais agradavel, entre a execução de cada funcionalidade, é feita uma limpeza do ecrã atravês da impressão de 50 paragrafos. 
 
 \subsection{Nome dos utilizadores ordenados e respetiva entidade.}
 Esta funcionalidade é implementada pela função \verb name_entity_list() . \\
-Na sua implementação vamos iterar por cada linha do texto e em cada uma vamos procurar o nome de utilizador e a entidade correspondente. Para capturar o nome do utlizador vamos utilizar a função \verb re.match \ com a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e para capturar a entidade utilizamos a função \verb re.search \ com a expressão regular \verb 'ent_\w*' . De seguida armazenamos o resultado num dicionario em que a chave é o nome do utilizador e o valor é uma lista com as entindades desse utilizador. Caso o utilizador ainda nao exista no dicionario é criada uma nova entrada, caso contrario, a entidade capturada é acrescentada na lista do utilizador. \\ 
-Por fim, transformamos o dicionario numa lista composta pelos pares (nome de utilizador, entidade(s)), ordenada por nome de utilizador, e fazemos a impresão de cada utilizador e respetiva(s) entidade(s).\\ \\
-\textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
+Na sua implementação vamos iterar por cada linha do texto e em cada uma vamos procurar o nome de utilizador e a entidade correspondente. Para capturar o nome do utlizador vamos utilizar a função \verb re.match \ com a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e para capturar a entidade utilizamos a função \verb re.search \ com a expressão regular \verb 'ent_\w*' . De seguida armazenamos o resultado num dicionario em que a chave é o nome do utilizador e o valor é uma lista com as entidades desse utilizador. Caso o utilizador ainda nao exista no dicionario é criada uma nova entrada, caso contrário a entidade capturada é acrescentada na lista do utilizador. \\ 
+Por fim, transformamos o dicionario numa lista composta pelos pares (nome de utilizador, entidade(s)), ordenada por nome de utilizador, e fazemos a impresão de cada utilizador e respetiva(s) entidade(s).
 
 \subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
 Esta funcionalidade é implementada pela função \verb entity_num_elements_list() . \\
-Na sua implementação vamos iterar por cada linha do texto e através da função \verb re.search \ com a expressão regular \verb 'ent_\w*'  \ vamos capturar a entidade presente nessa linha. A entidade capturada é armazenada num dicionario cuja chave é o nome da entidade e o valor é o numero de utilizadores nessa entidade. Caso a entidade ainda não exista no dicionario  é criada uma nova entrada com o valor 1, caso contrario, o valor dessa entidade no dicionario é incrementado em 1. \\
-Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, nº de utilizadores), ordenada por entidade, e fazemos a impresão de cada entidade e respetivo nº de utilizadores. \\ \\
-\textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
+Na sua implementação vamos iterar por cada linha do texto e através da função \verb re.search \ com a expressão regular \verb 'ent_\w*'  \ vamos capturar a entidade presente nessa linha. A entidade capturada é armazenada num dicionario cuja chave é o nome da entidade e o valor é o número de utilizadores nessa entidade. Caso a entidade ainda não exista no dicionario  é criada uma nova entrada com o valor 1, caso contrário, o valor dessa entidade no dicionario é incrementado em 1. \\
+Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, nº de utilizadores), ordenada por entidade, e fazemos a impresão de cada entidade e respetivo nº de utilizadores. 
 
 \subsection{Distribuiçao dos utilizadores por nível de acesso.}
 Esta funcionalidade é implementada pela função \verb dist_users_level() . \\
-Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . O resultado de capturar o nível de acesso e nome de utilizador são armazenados num dicionário em que a chave  é o nível de acesso e o valor é um conjunto com os utilizadores com esse nível de acesso. Optamos por um conjunto para evitar repetições, uma vez que existem utilizadores com mais do que um nível de acesso. Caso o nível de acesso capturado nao exista no dicionario, é criada uma entrada cuja chave é o nível de acesso e cujo valor é um conjunto com o utilizador capturado, caso contrario, o utilizador é acrescentado ao conjunto de utilizadores ja existente para aquela chave. Para ser mais facil de contar o nº de utilizadores total utilizamos tambem um conjunto onde vamos colocando cada utilizador capturado.\\
-Por fim, transformamos o dicionario numa lista composta pelos pares (nível de acesso, utilizadores) ordenada por nível de acesso e fazemos uma impressão dos utilizadores presentes em cada nível de acesso assim como a percentagem de utilizadores por nível. \\ \\
-\textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
+Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . O resultado de capturar o nível de acesso e nome de utilizador são armazenados num dicionário em que a chave  é o nível de acesso e o valor é um conjunto com os utilizadores com esse nível de acesso. Optamos por um conjunto para evitar repetições, uma vez que existem utilizadores com mais do que um nível de acesso. Caso o nível de acesso capturado nao exista no dicionario, é criada uma entrada cuja chave é o nível de acesso e cujo valor é um conjunto com o utilizador capturado, caso contrário o utilizador é acrescentado ao conjunto de utilizadores ja existente para aquela chave. Para ser mais fácil de contar o nº de utilizadores total utilizamos tambem um conjunto onde vamos colocando cada utilizador capturado.\\
+Por fim, transformamos o dicionario numa lista composta pelos pares (nível de acesso, utilizadores) ordenada por nível de acesso e fazemos uma impressão dos utilizadores presentes em cada nível de acesso assim como a percentagem de utilizadores por nível. 
 
 
 \subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
 Esta funcionalidade é implementada pela função \verb name_entity_group() . \\
 Na sua implementação vamos iterar por cada linha do texto e em cada uma vamos procurar o nome de utilizador e a entidade correspondente. Para capturar o nome do utlizador vamos utilizar a função \verb re.match \ com a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e para capturar a entidade utilizamos a função \verb re.search \ com a expressão regular \verb 'ent_\w*' .
-De seguida armazenamos o resultado num dicionario em que a chave é a entidade e o valor é uma lista com os utilizadores dessa entidade. Caso a entidade ainda nao exista no dicionario é criada uma nova entrada, caso contrario, o utilizadore capturado é acrescentada na lista da entidade. \\ 
-Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, utilizador), ordenada por entidade, e fazemos a impresão de cada entidade e respetivos utilizadores ordenados por nome.\\ \\
-\textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
+De seguida armazenamos o resultado num dicionario em que a chave é a entidade e o valor é uma lista com os utilizadores dessa entidade. Caso a entidade ainda nao exista no dicionario é criada uma nova entrada, caso contrário, o utilizador capturado é acrescentado na lista da entidade correspondente. \\ 
+Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, utilizador), ordenada por entidade, e fazemos a impressão de cada entidade e respetivos utilizadores ordenados por nome.
 
 
 \subsection{Mostrar alguns indicadores.}
 Esta funcionalidade é implementada pela função \verb indicators() . \\
-Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \,vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , e  vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . Os nomes de utilizadores capturados anteriormente são armazenados num conjunto, para evitar repetiçoes, enquanto que as entidades e níveis de acesso capturados anteriormente são armazenados em dois dicionarios. Num dos dicionarios o par chaves e valores são a entidade e respetivo número de utilizadores enquanto que no outro o par chave e valores são o nível de acesso e respetivo número de utilizadores. \\
-Por fim, fazemos um impressão do número total de utilizadores, o número total de entidades, o número de utilizadores por entidade e o número de utilizadores por nível de acesso. \\ \\
-\textbf{Nota:} Na implementação desta função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.  
+Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' ,\\vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , e  vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . Os nomes de utilizadores capturados anteriormente são armazenados num conjunto, para evitar repetiçoes, enquanto que as entidades e níveis de acesso capturados anteriormente são armazenados em dois dicionarios. Num dos dicionarios o par chave e valore são a entidade e respetivo número de utilizadores enquanto que no outro o par chave e valore são o nível de acesso e respetivo número de utilizadores. \\
+Por fim, fazemos um impressão do número total de utilizadores, o número total de entidades, o número de utilizadores por entidade e o número de utilizadores por nível de acesso. 
 
 \subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
 Esta funcionalidade é implementada pela função \verb json_20() . \\
 Na sua implementação vamos iterar por cada umas das 20 primeiras linhas do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' , vamos capturar o email de utilizador no segundo elemento (index 1) da linha partida com a função \verb re.search \ e a expressão regular \verb '(\w+|\.|@|_|-)+'  , vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' , e vamos capturar o número de chamadas ao backend no quinto elemento da linha partida (index 4) com a função \verb re.search \ e a expressão regular \verb '\d+' . O resultado de cada linha é armazenado numa lista de tuplos (node de utilizador, email, entidade, nível de acesso, número de chamadas ao backend).  \\
 Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do ficheiro para o qual quer imprimir os dados recolhidos. Depois abrimos o fichero e procedemos à impressão de cada registo (tuplo armazenado na lista) num formato json. \\ \\
-\textbf{Nota:} Caso o ficheiro não possua 20 linhas, a função vai iterar por todas as linhas existentes no texto e apresentar os registos encontrados. \\
+\textbf{Nota:} Caso o ficheiro de input não possua 20 linhas, a função vai iterar por todas as linhas existentes no texto e apresentar os registos encontrados. \\
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -841,22 +838,28 @@ Pressione Enter!
 \subsection{Conteúdo do ficheiro.}
 
 \begin{verbatim}
-Pedro Penedo da Rocha Calhau , parte_pedra@gmail.com , ent_op , 1 , 5
-Engenheiro Socrates , animal_feroz@yahoo.pt, ent_dr, 3, 2
-Professor Marcelo, marselfie@hotmail.com, ent_dr, 2, 2
-CR7, cristianinho@hotmail.com, ent_fig, 7, 7
-Eng. Fernando Santos, mete_mais_um_trinco@protonmail.com , ent_fig, 3, 10
-Xico Esperto, o.xico.esperto@protonmail.com, ent_op, 4 ,  7
-Dona Dolores , mae_coragem@yahoo.com, ent_fig, 2, 7
-Dr. R. Salgado, ddt@protonmail.com, ent_dr, 2, 30
-Jacinto Leite Capelo Rego, jacintorego@outlook.pt, ent_op, 2, 4
-Passos Dias Aguiar Mota, pdamota@gmail.com, ent_op, 8, 2
-JJ, peaners@hotmail.com, ent_fig, 3, 88
-Zé Povinho, zezinho@gmail.com, ent_op, 2, 0
-Inacio, naosejasinacio@hotmail.com, ent_fig, 4, 2
-Geremias, geremeias666@yahoo.pt, ent_op, 4, 3
-registado777, registado777@gmail.com, ent_op, 2, 1
-ativista, a.t.i.v.i.s.t.a@hotmail.com, ent_fig, 2, 3  
+registado777, registado777@gmail.com, ent_C, 2, 1
+Dolores , mae_coragem@yahoo.com, ent_V, 2, 7
+Prof. Marcelo, marselfie@hotmail.com, ent_P, 1, 2
+CR7, siiiiiim@hotmail.com, ent_D, 7, 7
+Eng. F. Santos, mete_mais_um_trinco@protonmail.com , ent_D, 3, 10
+Xico Esperto, o.xico.esperto@protonmail.com, ent_C, 4 ,  7
+Dr. Salgado, ddt@protonmail.com, ent_D, 2, 30
+Sr. Doutor, sedutor@gmail.com, ent_D, 5, 1
+Passos Dias Aguiar Mota, pdamota@gmail.com, ent_C, 8, 2
+JJ, peaners@hotmail.com, ent_D, 3, 88
+Zé Povinho, zezinho@gmail.com, ent_C, 2, 0
+Socrates , animal_feroz@yahoo.pt, ent_P, 3, 2
+Inacio, naosejasinacio@hotmail.com, ent_C, 4, 2
+Geremias, geremeias666@yahoo.pt, ent_C, 4, 3
+ativista, a.t.i.v.i.s.t.a@hotmail.com, ent_C, 2, 3
+Baltasar Sete-Sóis, b72@hotmail.com, ent_V, 6, 1
+geringonça, passarola@outlook.pt, ent_P, 4, 9
+abelha maia, maia_a_abelha@yahoo.com, ent_V, 3, 4
+Blimunda Sete-Luas, b_7_l@gmail.com, ent_V, 8, 1
+mister_vitinho, i_speak_with-the-true@gmail.com, ent_D, 4, 8
+o_faneca , faneca_xpto@yahoo.com, ent_C, 2, 7
+Peppa , peppa_pig@gmail.com, ent_V, 5, 1 
 \end{verbatim}
 
 
@@ -885,22 +888,28 @@ ativista, a.t.i.v.i.s.t.a@hotmail.com, ent_fig, 2, 3
 
 *** Utilizador : Entidade(s) ***
 
-ativista : ent_fig
-CR7 : ent_fig
-Dona Dolores : ent_fig
-Dr. R. Salgado : ent_dr
-Eng. Fernando Santos : ent_fig
-Engenheiro Socrates : ent_dr
-Geremias : ent_op
-Inacio : ent_fig
-Jacinto Leite Capelo Rego : ent_op
-JJ : ent_fig
-Passos Dias Aguiar Mota : ent_op
-Pedro Penedo da Rocha Calhau : ent_op
-Professor Marcelo : ent_dr
-registado777 : ent_op
-Xico Esperto : ent_op
-Zé Povinho : ent_op
+abelha maia : ent_V
+ativista : ent_C
+Baltasar Sete-Sóis : ent_V
+Blimunda Sete-Luas : ent_V
+CR7 : ent_D
+Dolores : ent_V
+Dr. Salgado : ent_D
+Eng. F. Santos : ent_D
+Geremias : ent_C
+geringonça : ent_P
+Inacio : ent_C
+JJ : ent_D
+mister_vitinho : ent_D
+o_faneca : ent_C
+Passos Dias Aguiar Mota : ent_C
+Peppa : ent_V
+Prof. Marcelo : ent_P
+registado777 : ent_C
+Socrates : ent_P
+Sr. Doutor : ent_D
+Xico Esperto : ent_C
+Zé Povinho : ent_C
 
 Pressione Enter!
 >> 
@@ -914,9 +923,10 @@ Pressione Enter!
 
 *** Entidade : Nº Utilizadores ***
 
-ent_dr : 3
-ent_fig : 6
-ent_op : 7
+ent_C : 8
+ent_D : 6
+ent_P : 3
+ent_V : 5
 
 Pressione Enter!
 >> 
@@ -931,33 +941,44 @@ Pressione Enter!
 
 *** Nível de Acesso : Distribuição ***
 
-Nível 1 : 6%
-* Pedro Penedo da Rocha Calhau
+Nível 1 : 5%
+* Prof. Marcelo
 
-Nível 2 : 44%
+Nível 2 : 27%
 * ativista
-* Dona Dolores
-* Dr. R. Salgado
-* Jacinto Leite Capelo Rego
-* Professor Marcelo
+* Dolores
+* Dr. Salgado
+* o_faneca
 * registado777
 * Zé Povinho
 
-Nível 3 : 19%
-* Eng. Fernando Santos
-* Engenheiro Socrates
+Nível 3 : 18%
+* abelha maia
+* Eng. F. Santos
 * JJ
+* Socrates
 
-Nível 4 : 19%
+Nível 4 : 23%
 * Geremias
+* geringonça
 * Inacio
+* mister_vitinho
 * Xico Esperto
 
-Nível 7 : 6%
+Nível 5 : 9%
+* Peppa
+* Sr. Doutor
+
+Nível 6 : 5%
+* Baltasar Sete-Sóis
+
+Nível 7 : 5%
 * CR7
 
-Nível 8 : 6%
+Nível 8 : 9%
+* Blimunda Sete-Luas
 * Passos Dias Aguiar Mota
+
 
 Pressione Enter!
 >> 
@@ -971,27 +992,35 @@ Pressione Enter!
 
 *** Utilizadores agrupados por entidade ***
 
-ent_dr:
-* Dr. R. Salgado
-* Engenheiro Socrates
-* Professor Marcelo
-
-ent_fig:
+ent_C:
 * ativista
-* CR7
-* Dona Dolores
-* Eng. Fernando Santos
-* Inacio
-* JJ
-
-ent_op:
 * Geremias
-* Jacinto Leite Capelo Rego
+* Inacio
+* o_faneca
 * Passos Dias Aguiar Mota
-* Pedro Penedo da Rocha Calhau
 * registado777
 * Xico Esperto
 * Zé Povinho
+
+ent_D:
+* CR7
+* Dr. Salgado
+* Eng. F. Santos
+* JJ
+* mister_vitinho
+* Sr. Doutor
+
+ent_P:
+* geringonça
+* Prof. Marcelo
+* Socrates
+
+ent_V:
+* abelha maia
+* Baltasar Sete-Sóis
+* Blimunda Sete-Luas
+* Dolores
+* Peppa
 
 
 Pressione Enter!
@@ -1007,22 +1036,25 @@ Pressione Enter!
 
 *** Indicadores ***
 
-Número de Utilizadores: 16
+Número de Utilizadores: 22
 
-Número de Entidades: 3
+Número de Entidades: 4
 
 Distribuição de utilizadores por entidade:
-* ent_dr : 3
-* ent_fig : 6
-* ent_op : 7
+* ent_C : 8
+* ent_D : 6
+* ent_P : 3
+* ent_V : 5
 
 Distribuição de utilizadores por nível:
 * Nível 1 : 1
-* Nível 2 : 7
-* Nível 3 : 3
-* Nível 4 : 3
+* Nível 2 : 6
+* Nível 3 : 4
+* Nível 4 : 5
+* Nível 5 : 2
+* Nível 6 : 1
 * Nível 7 : 1
-* Nível 8 : 1
+* Nível 8 : 2
 
 Pressione Enter!
 >> 
@@ -1050,184 +1082,212 @@ Pressione Enter!
 {
   "registos":[
     {
-       "utilizador":"Pedro Penedo da Rocha Calhau",
-       "email":"parte_pedra@gmail.com",
-       "entidade":"ent_op",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"5"
-    },
-    {
-       "utilizador":"Engenheiro Socrates",
-       "email":"animal_feroz@yahoo.pt",
-       "entidade":"ent_dr",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"Professor Marcelo",
-       "email":"marselfie@hotmail.com",
-       "entidade":"ent_dr",
+       "utilizador":"registado777",
+       "email":"registado777@gmail.com",
+       "entidade":"ent_C",
        "nível de acesso":"2",
+       "número de chamadas ao backend":"1"
+    },
+    {
+       "utilizador":"Dolores",
+       "email":"mae_coragem@yahoo.com",
+       "entidade":"ent_V",
+       "nível de acesso":"2",
+       "número de chamadas ao backend":"7"
+    },
+    {
+       "utilizador":"Prof. Marcelo",
+       "email":"marselfie@hotmail.com",
+       "entidade":"ent_P",
+       "nível de acesso":"1",
        "número de chamadas ao backend":"2"
     },
     {
        "utilizador":"CR7",
-       "email":"cristianinho@hotmail.com",
-       "entidade":"ent_fig",
+       "email":"siiiiiim@hotmail.com",
+       "entidade":"ent_D",
        "nível de acesso":"7",
        "número de chamadas ao backend":"7"
     },
     {
-       "utilizador":"Eng. Fernando Santos",
+       "utilizador":"Eng. F. Santos",
        "email":"mete_mais_um_trinco@protonmail.com",
-       "entidade":"ent_fig",
+       "entidade":"ent_D",
        "nível de acesso":"3",
        "número de chamadas ao backend":"10"
     },
     {
        "utilizador":"Xico Esperto",
        "email":"o.xico.esperto@protonmail.com",
-       "entidade":"ent_op",
+       "entidade":"ent_C",
        "nível de acesso":"4",
        "número de chamadas ao backend":"7"
     },
     {
-       "utilizador":"Dona Dolores",
-       "email":"mae_coragem@yahoo.com",
-       "entidade":"ent_fig",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"7"
-    },
-    {
-       "utilizador":"Dr. R. Salgado",
+       "utilizador":"Dr. Salgado",
        "email":"ddt@protonmail.com",
-       "entidade":"ent_dr",
+       "entidade":"ent_D",
        "nível de acesso":"2",
        "número de chamadas ao backend":"30"
     },
     {
-       "utilizador":"Jacinto Leite Capelo Rego",
-       "email":"jacintorego@outlook.pt",
-       "entidade":"ent_op",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"4"
+       "utilizador":"Sr. Doutor",
+       "email":"sedutor@gmail.com",
+       "entidade":"ent_D",
+       "nível de acesso":"5",
+       "número de chamadas ao backend":"1"
     },
     {
        "utilizador":"Passos Dias Aguiar Mota",
        "email":"pdamota@gmail.com",
-       "entidade":"ent_op",
+       "entidade":"ent_C",
        "nível de acesso":"8",
        "número de chamadas ao backend":"2"
     },
     {
        "utilizador":"JJ",
        "email":"peaners@hotmail.com",
-       "entidade":"ent_fig",
+       "entidade":"ent_D",
        "nível de acesso":"3",
        "número de chamadas ao backend":"88"
     },
     {
        "utilizador":"Zé Povinho",
        "email":"zezinho@gmail.com",
-       "entidade":"ent_op",
+       "entidade":"ent_C",
        "nível de acesso":"2",
        "número de chamadas ao backend":"0"
     },
     {
+       "utilizador":"Socrates",
+       "email":"animal_feroz@yahoo.pt",
+       "entidade":"ent_P",
+       "nível de acesso":"3",
+       "número de chamadas ao backend":"2"
+    },
+    {
        "utilizador":"Inacio",
        "email":"naosejasinacio@hotmail.com",
-       "entidade":"ent_fig",
+       "entidade":"ent_C",
        "nível de acesso":"4",
        "número de chamadas ao backend":"2"
     },
     {
        "utilizador":"Geremias",
        "email":"geremeias666@yahoo.pt",
-       "entidade":"ent_op",
+       "entidade":"ent_C",
        "nível de acesso":"4",
        "número de chamadas ao backend":"3"
     },
     {
-       "utilizador":"registado777",
-       "email":"registado777@gmail.com",
-       "entidade":"ent_op",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"1"
-    },
-    {
        "utilizador":"ativista",
        "email":"a.t.i.v.i.s.t.a@hotmail.com",
-       "entidade":"ent_fig",
+       "entidade":"ent_C",
        "nível de acesso":"2",
        "número de chamadas ao backend":"3"
     },
+    {
+       "utilizador":"Baltasar Sete-Sóis",
+       "email":"b72@hotmail.com",
+       "entidade":"ent_V",
+       "nível de acesso":"6",
+       "número de chamadas ao backend":"1"
+    },
+    {
+       "utilizador":"geringonça",
+       "email":"passarola@outlook.pt",
+       "entidade":"ent_P",
+       "nível de acesso":"4",
+       "número de chamadas ao backend":"9"
+    },
+    {
+       "utilizador":"abelha maia",
+       "email":"maia_a_abelha@yahoo.com",
+       "entidade":"ent_V",
+       "nível de acesso":"3",
+       "número de chamadas ao backend":"4"
+    },
+    {
+       "utilizador":"Blimunda Sete-Luas",
+       "email":"b_7_l@gmail.com",
+       "entidade":"ent_V",
+       "nível de acesso":"8",
+       "número de chamadas ao backend":"1"
+    },
+    {
+       "utilizador":"mister_vitinho",
+       "email":"i_speak_with-the-true@gmail.com",
+       "entidade":"ent_D",
+       "nível de acesso":"4",
+       "número de chamadas ao backend":"8"
+    }
   ]
 }
 \end{verbatim}
 
-\section{Ficheiro: 'plc2021.txt'}
+\section{Ficheiro: 'classroom.txt'}
 \subsection{Conteúdo do ficheiro.}
 
 \begin{verbatim}
-Anabela Pereira | a87990@alunos.uminho.pt | ent_G12 | 1 | 0
-André Filipe Oliveira Araújo | a87987@alunos.uminho.pt | ent_G09 | 1 | 0
-André Gonçalves | a87942@alunos.uminho.pt | ent_G12 | 1 | 0
-André Oliveira Boechat Morandi | a86912@alunos.uminho.pt | ent_G14 | 1 | 1
-André Ribeiro Fernandes | a87938@alunos.uminho.pt | ent_G01 | 1 | 0
-Aureo Bendito | a76068@alunos.uminho.pt | ent_G18 | 1 | 0
-Bruna Alvarães | a84729@alunos.uminho.pt | ent_G07 | 1 | 2
-Bruna Dias Carvalho | a87982@alunos.uminho.pt | ent_G15 | 1 | 0
-Bruna Gonçalves Araújo | a84408@alunos.uminho.pt | ent_G02 | 1 | 0
-Bruno Alexandre Dias Novais de Sousa | a84945@alunos.uminho.pt | ent_G05 | 1 | 1
-Bruno Miguel Pinheiro Alves | a85481@alunos.uminho.pt | ent_G17 | 1 | 0
-Carlos Henrique Senra Ferreira | a87953@alunos.uminho.pt | ent_G08 | 1 | 1
-Daniel André Rocha Ribeiro | a87994@alunos.uminho.pt | ent_G08 | 1 | 2
-Daniel Martins Carvalho Ferreira | a85670@alunos.uminho.pt | ent_G02 | 1 | 0
-David Ferreira | a80673@alunos.uminho.pt | ent_G19 | 2 | 1
-David Silvestre Ölund Matos | a87997@alunos.uminho.pt | ent_G03 | 1 | 1
-Diogo Costa Fernandes | a87968@alunos.uminho.pt | ent_G04 | 1 | 1
-Diogo Sambento | a87965@alunos.uminho.pt | ent_G16 | 1 | 1
-Eduardo Luis Vieira Pereira | a87965@alunos.uminho.pt | ent_G00 | 1 | 0
-Fernando Augusto Marques Lobo | a87988@alunos.uminho.pt | ent_G04 | 1 | 0
-Filipe Matias Antas Viana | a85948@alunos.uminho.pt | ent_G13 | 1 | 1
-Francisco Domingos Martins Oliveira | a82066@alunos.uminho.pt | ent_G13 | 1 | 3
-Gil Miguel da Mota Marques | a84076@alunos.uminho.pt | ent_G19 | 2 | 1
-Gilberto Rui Nogueira Cunha | a89142@alunos.uminho.pt | ent_G06 | 2 | 1
-Guilherme Santos | a85115@alunos.uminho.pt | ent_G07 | 1 | 1
-Hélder Cristiano Lopes | a87951@alunos.uminho.pt | ent_G14 | 1 | 2
-João Carlos Viana Pereira Marques | a84684@alunos.uminho.pt | ent_G17 | 1 | 1
-João Diogo Torres Cardosa da Silva | a87939@alunos.uminho.pt | ent_G20 | 1 | 0
-João Domingos Pereira Barbosa | a82044@alunos.uminho.pt | ent_G20 | 1 | 0
-João Guilherme Reis | a84671@alunos.uminho.pt | ent_G21 | 1 | 1
-João Manuel Silva Antunes | a81663@alunos.uminho.pt | ent_G13 | 1 | 0
-João Pedro Antunes | a86813@alunos.uminho.pt | ent_G10 | 1 | 3
-João Pedro Duarte Coutinho | a83545@alunos.uminho.pt | ent_G00 | 1 | 1
-João Pedro Oliveira Correia | a87945@alunos.uminho.pt | ent_G03 | 1 | 1
-Jorge André Vieira Freitas | a87944@alunos.uminho.pt | ent_G03 | 1 | 0
-José Luís Antunes Martins | a75583@alunos.uminho.pt | ent_G19 | 2 | 1
-José Luís Cerqueira Pires | a84552@alunos.uminho.pt | ent_G11 | 1 | 0
-José Manuel Neves C.L. Machado | a87979@alunos.uminho.pt | ent_G01 | 1 | 2
-Luís Almeida | a84180@alunos.uminho.pt | ent_G10 | 1 | 1
-Luís Miguel Rodrigues Guimarães | a87947@alunos.uminho.pt | ent_G04 | 1 | 1
-Márcia Filipa da Cruz Cerqueira | a87992@alunos.uminho.pt | ent_G11 | 1 | 0
-Márlon Daniel Duarte Ferreira | a81735@alunos.uminho.pt | ent_G15 | 1 | 1
-Paulo Ricardo Dias da Costa | a87986@alunos.uminho.pt | ent_G09 | 1 | 1
-Pedro Beir | a80656@alunos.uminho.pt | ent_G18 | 1 | 1
-Pedro Henrique Costa | a87959@alunos.uminho.pt | ent_G16 | 1 | 1
-Pedro Miguel Martins | a87964@alunos.uminho.pt | ent_G16 | 1 | 1
-Ricardo Nuno de Castro Cruz | a86789@alunos.uminho.pt | ent_G02 | 1 | 0
-Rui Filipe Traila de Sousa | a85908@alunos.uminho.pt | ent_G21 | 1 | 3
-Rui Jorge de Oliveira Faria | a87957@alunos.uminho.pt | ent_G01 | 1 | 1
-Rui Miguel Pimenta e Cunha | a85877@alunos.uminho.pt | ent_G05 | 1 | 2
-Tomás Barros Carneiro | a82552@alunos.uminho.pt | ent_G06 | 2 | 3
-Tomás Salazar Valente | a85172@alunos.uminho.pt | ent_G00 | 1 | 1
+Isaac Newton | a117293940@alunos.ufic.pt | ent_G12 | 1 | 0
+Confúcio | a257394827@alunos.ufic.pt | ent_G09 | 1 | 0
+Cristovão Colombo | a467392412@alunos.ufic.pt | ent_G12 | 1 | 0
+J. R. R. Tolkien | a635485767@alunos.ufic.pt | ent_G05 | 1 | 2
+Albert Einstein | a946596172@alunos.ufic.pt | ent_G14 | 1 | 1
+Louis Pasteur | a327596378@alunos.ufic.pt | ent_G01 | 1 | 0
+Galileu Galilei | a706203648@alunos.ufic.pt | ent_G18 | 1 | 0
+Euclides de Alexandria | a954271239@alunos.ufic.pt | ent_G07 | 1 | 2
+Charles Darwin | a227493822@alunos.ufic.pt | ent_G15 | 1 | 0
+Nicolau Copérnico | a654642048@alunos.ufic.pt | ent_G02 | 1 | 0
+Antoine Lavoisier | a804944252@alunos.ufic.pt | ent_G05 | 1 | 1
+Michael Faraday | a375341811@alunos.ufic.pt | ent_G17 | 1 | 0
+James Clerk Maxwell | a127394553@alunos.ufic.pt | ent_G08 | 1 | 1
+Karl Marx | a677394914@alunos.ufic.pt | ent_G08 | 1 | 2
+William Shakespeare | a9155647520@alunos.ufic.pt | ent_G02 | 1 | 0
+Napoleão Bonaparte | a510264723@alunos.ufic.pt | ent_G19 | 2 | 1
+Nikola Tesla | a477497937@alunos.ufic.pt | ent_G03 | 1 | 1
+Platão de Atenas | a617293652@alunos.ufic.pt | ent_G04 | 1 | 1
+Ludwig van Beethoven | a937597685@alunos.ufic.pt | ent_G16 | 1 | 1
+Werner Heisenberg | a237691605@alunos.ufic.pt | ent_G00 | 1 | 0
+Max Planck | a657792848@alunos.ufic.pt | ent_G04 | 1 | 0
+Júlio César | a525495438@alunos.ufic.pt | ent_G13 | 1 | 1
+Sigmund Freud | a922507686@alunos.ufic.pt | ent_G13 | 1 | 3
+Voltaire  | a114503726@alunos.ufic.pt | ent_G19 | 2 | 1
+Johannes Kepler | a529416472@alunos.ufic.pt | ent_G06 | 2 | 1
+Nicolau Maquiavel | a375513115@alunos.ufic.pt | ent_G07 | 1 | 1
+Vasco da Gama | a867395521@alunos.ufic.pt | ent_G14 | 1 | 2
+Homero | a724466884@alunos.ufic.pt | ent_G17 | 1 | 1
+Sidarta Gautama | a417093369@alunos.ufic.pt | ent_G20 | 1 | 0
+Luís Vaz de Camões | a402207424@alunos.ufic.pt | ent_G20 | 1 | 0
+Tony Hoare | a924364751@alunos.ufic.pt | ent_G21 | 1 | 1
+Edsger Dijkstra | a821467613@alunos.ufic.pt | ent_G13 | 1 | 0
+Marie Curie | a816385193@alunos.ufic.pt | ent_G10 | 1 | 3
+Madre Teresa de Calcutá | a153257485@alunos.ufic.pt | ent_G00 | 1 | 1
+Wolfgang Amadeus Mozart | a237292435@alunos.ufic.pt | ent_G03 | 1 | 1
+René Descartes | a387294424@alunos.ufic.pt | ent_G03 | 1 | 0
+Socrates | a705853823@alunos.ufic.pt | ent_G19 | 2 | 1
+Arquimedes de Siracusa | a604152532@alunos.ufic.pt | ent_G11 | 1 | 0
+Pierre de Fermat | a807293749@alunos.ufic.pt | ent_G01 | 1 | 2
+Pitágoras de Samos  | a224612850@alunos.ufic.pt | ent_G10 | 1 | 1
+Gottfried Wilhelm Leibniz | a887193477@alunos.ufic.pt | ent_G04 | 1 | 1
+Carl Friedrich Gauss | a927394962@alunos.ufic.pt | ent_G11 | 1 | 0
+Leonhard Euler | a721472365@alunos.ufic.pt | ent_G15 | 1 | 1
+Joseph-Louis Lagrange | a657294866@alunos.ufic.pt | ent_G09 | 1 | 1
+Augustin-Louis Cauchy | a390264536@alunos.ufic.pt | ent_G18 | 1 | 1
+Daniel Bernoulli | a317395579@alunos.ufic.pt | ent_G16 | 1 | 1
+Georg Cantor | a707293654@alunos.ufic.pt | ent_G16 | 1 | 1
+Mahatma Gandhi | a826371829@alunos.ufic.pt | ent_G02 | 1 | 0
+Nelson Mandela | a735598028@alunos.ufic.pt | ent_G21 | 1 | 3
+Fyodor Dostoevsky | a127496527@alunos.ufic.pt | ent_G01 | 1 | 1
+Liev Tolstói | a582250522@alunos.ufic.pt | ent_G06 | 2 | 3
+Henry David Thoreau | a805315792@alunos.ufic.pt | ent_G00 | 1 | 1
 \end{verbatim}
 
 
 \subsection{Execução e menu.}
 \begin{small}
 \begin{verbatim}
->> python3 main.py plc2021.txt
+>> python3 main.py classroom.txt
 
 *** Selecione Opção ***
 
@@ -1249,58 +1309,58 @@ Tomás Salazar Valente | a85172@alunos.uminho.pt | ent_G00 | 1 | 1
 
 *** Utilizador : Entidade(s) ***
 
-Anabela Pereira : ent_G12
-André Filipe Oliveira Araújo : ent_G09
-André Gonçalves : ent_G12
-André Oliveira Boechat Morandi : ent_G14
-André Ribeiro Fernandes : ent_G01
-Aureo Bendito : ent_G18
-Bruna Alvarães : ent_G07
-Bruna Dias Carvalho : ent_G15
-Bruna Gonçalves Araújo : ent_G02
-Bruno Alexandre Dias Novais de Sousa : ent_G05
-Bruno Miguel Pinheiro Alves : ent_G17
-Carlos Henrique Senra Ferreira : ent_G08
-Daniel André Rocha Ribeiro : ent_G08
-Daniel Martins Carvalho Ferreira : ent_G02
-David Ferreira : ent_G19
-David Silvestre Ölund Matos : ent_G03
-Diogo Costa Fernandes : ent_G04
-Diogo Sambento : ent_G16
-Eduardo Luis Vieira Pereira : ent_G00
-Fernando Augusto Marques Lobo : ent_G04
-Filipe Matias Antas Viana : ent_G13
-Francisco Domingos Martins Oliveira : ent_G13
-Gil Miguel da Mota Marques : ent_G19
-Gilberto Rui Nogueira Cunha : ent_G06
-Guilherme Santos : ent_G07
-Hélder Cristiano Lopes : ent_G14
-João Carlos Viana Pereira Marques : ent_G17
-João Diogo Torres Cardosa da Silva : ent_G20
-João Domingos Pereira Barbosa : ent_G20
-João Guilherme Reis : ent_G21
-João Manuel Silva Antunes : ent_G13
-João Pedro Antunes : ent_G10
-João Pedro Duarte Coutinho : ent_G00
-João Pedro Oliveira Correia : ent_G03
-Jorge André Vieira Freitas : ent_G03
-José Luís Antunes Martins : ent_G19
-José Luís Cerqueira Pires : ent_G11
-José Manuel Neves C.L. Machado : ent_G01
-Luís Almeida : ent_G10
-Luís Miguel Rodrigues Guimarães : ent_G04
-Márcia Filipa da Cruz Cerqueira : ent_G11
-Márlon Daniel Duarte Ferreira : ent_G15
-Paulo Ricardo Dias da Costa : ent_G09
-Pedro Beir : ent_G18
-Pedro Henrique Costa : ent_G16
-Pedro Miguel Martins : ent_G16
-Ricardo Nuno de Castro Cruz : ent_G02
-Rui Filipe Traila de Sousa : ent_G21
-Rui Jorge de Oliveira Faria : ent_G01
-Rui Miguel Pimenta e Cunha : ent_G05
-Tomás Barros Carneiro : ent_G06
-Tomás Salazar Valente : ent_G00
+Albert Einstein : ent_G14
+Antoine Lavoisier : ent_G05
+Arquimedes de Siracusa : ent_G11
+Augustin-Louis Cauchy : ent_G18
+Carl Friedrich Gauss : ent_G11
+Charles Darwin : ent_G15
+Confúcio : ent_G09
+Cristovão Colombo : ent_G12
+Daniel Bernoulli : ent_G16
+Edsger Dijkstra : ent_G13
+Euclides de Alexandria : ent_G07
+Fyodor Dostoevsky : ent_G01
+Galileu Galilei : ent_G18
+Georg Cantor : ent_G16
+Gottfried Wilhelm Leibniz : ent_G04
+Henry David Thoreau : ent_G00
+Homero : ent_G17
+Isaac Newton : ent_G12
+J. R. R. Tolkien : ent_G05
+James Clerk Maxwell : ent_G08
+Johannes Kepler : ent_G06
+Joseph-Louis Lagrange : ent_G09
+Júlio César : ent_G13
+Karl Marx : ent_G08
+Leonhard Euler : ent_G15
+Liev Tolstói : ent_G06
+Louis Pasteur : ent_G01
+Ludwig van Beethoven : ent_G16
+Luís Vaz de Camões : ent_G20
+Madre Teresa de Calcutá : ent_G00
+Mahatma Gandhi : ent_G02
+Marie Curie : ent_G10
+Max Planck : ent_G04
+Michael Faraday : ent_G17
+Napoleão Bonaparte : ent_G19
+Nelson Mandela : ent_G21
+Nicolau Copérnico : ent_G02
+Nicolau Maquiavel : ent_G07
+Nikola Tesla : ent_G03
+Pierre de Fermat : ent_G01
+Pitágoras de Samos : ent_G10
+Platão de Atenas : ent_G04
+René Descartes : ent_G03
+Sidarta Gautama : ent_G20
+Sigmund Freud : ent_G13
+Socrates : ent_G19
+Tony Hoare : ent_G21
+Vasco da Gama : ent_G14
+Voltaire : ent_G19
+Werner Heisenberg : ent_G00
+William Shakespeare : ent_G02
+Wolfgang Amadeus Mozart : ent_G03
 
 Pressione Enter!
 >> 
@@ -1351,60 +1411,60 @@ Pressione Enter!
 *** Nível de Acesso : Distribuição ***
 
 Nível 1 : 90%
-* Anabela Pereira
-* André Filipe Oliveira Araújo
-* André Gonçalves
-* André Oliveira Boechat Morandi
-* André Ribeiro Fernandes
-* Aureo Bendito
-* Bruna Alvarães
-* Bruna Dias Carvalho
-* Bruna Gonçalves Araújo
-* Bruno Alexandre Dias Novais de Sousa
-* Bruno Miguel Pinheiro Alves
-* Carlos Henrique Senra Ferreira
-* Daniel André Rocha Ribeiro
-* Daniel Martins Carvalho Ferreira
-* David Silvestre Ölund Matos
-* Diogo Costa Fernandes
-* Diogo Sambento
-* Eduardo Luis Vieira Pereira
-* Fernando Augusto Marques Lobo
-* Filipe Matias Antas Viana
-* Francisco Domingos Martins Oliveira
-* Guilherme Santos
-* Hélder Cristiano Lopes
-* João Carlos Viana Pereira Marques
-* João Diogo Torres Cardosa da Silva
-* João Domingos Pereira Barbosa
-* João Guilherme Reis
-* João Manuel Silva Antunes
-* João Pedro Antunes
-* João Pedro Duarte Coutinho
-* João Pedro Oliveira Correia
-* Jorge André Vieira Freitas
-* José Luís Cerqueira Pires
-* José Manuel Neves C.L. Machado
-* Luís Almeida
-* Luís Miguel Rodrigues Guimarães
-* Márcia Filipa da Cruz Cerqueira
-* Márlon Daniel Duarte Ferreira
-* Paulo Ricardo Dias da Costa
-* Pedro Beir
-* Pedro Henrique Costa
-* Pedro Miguel Martins
-* Ricardo Nuno de Castro Cruz
-* Rui Filipe Traila de Sousa
-* Rui Jorge de Oliveira Faria
-* Rui Miguel Pimenta e Cunha
-* Tomás Salazar Valente
+* Albert Einstein
+* Antoine Lavoisier
+* Arquimedes de Siracusa
+* Augustin-Louis Cauchy
+* Carl Friedrich Gauss
+* Charles Darwin
+* Confúcio
+* Cristovão Colombo
+* Daniel Bernoulli
+* Edsger Dijkstra
+* Euclides de Alexandria
+* Fyodor Dostoevsky
+* Galileu Galilei
+* Georg Cantor
+* Gottfried Wilhelm Leibniz
+* Henry David Thoreau
+* Homero
+* Isaac Newton
+* J. R. R. Tolkien
+* James Clerk Maxwell
+* Joseph-Louis Lagrange
+* Júlio César
+* Karl Marx
+* Leonhard Euler
+* Louis Pasteur
+* Ludwig van Beethoven
+* Luís Vaz de Camões
+* Madre Teresa de Calcutá
+* Mahatma Gandhi
+* Marie Curie
+* Max Planck
+* Michael Faraday
+* Nelson Mandela
+* Nicolau Copérnico
+* Nicolau Maquiavel
+* Nikola Tesla
+* Pierre de Fermat
+* Pitágoras de Samos
+* Platão de Atenas
+* René Descartes
+* Sidarta Gautama
+* Sigmund Freud
+* Tony Hoare
+* Vasco da Gama
+* Werner Heisenberg
+* William Shakespeare
+* Wolfgang Amadeus Mozart
 
 Nível 2 : 10%
-* David Ferreira
-* Gil Miguel da Mota Marques
-* Gilberto Rui Nogueira Cunha
-* José Luís Antunes Martins
-* Tomás Barros Carneiro
+* Johannes Kepler
+* Liev Tolstói
+* Napoleão Bonaparte
+* Socrates
+* Voltaire
 
 Pressione Enter!
 >>  
@@ -1419,100 +1479,100 @@ Pressione Enter!
 *** Utilizadores agrupados por entidade ***
 
 ent_G00:
-* Eduardo Luis Vieira Pereira
-* João Pedro Duarte Coutinho
-* Tomás Salazar Valente
+* Henry David Thoreau
+* Madre Teresa de Calcutá
+* Werner Heisenberg
 
 ent_G01:
-* André Ribeiro Fernandes
-* José Manuel Neves C.L. Machado
-* Rui Jorge de Oliveira Faria
+* Fyodor Dostoevsky
+* Louis Pasteur
+* Pierre de Fermat
 
 ent_G02:
-* Bruna Gonçalves Araújo
-* Daniel Martins Carvalho Ferreira
-* Ricardo Nuno de Castro Cruz
+* Mahatma Gandhi
+* Nicolau Copérnico
+* William Shakespeare
 
 ent_G03:
-* David Silvestre Ölund Matos
-* João Pedro Oliveira Correia
-* Jorge André Vieira Freitas
+* Nikola Tesla
+* René Descartes
+* Wolfgang Amadeus Mozart
 
 ent_G04:
-* Diogo Costa Fernandes
-* Fernando Augusto Marques Lobo
-* Luís Miguel Rodrigues Guimarães
+* Gottfried Wilhelm Leibniz
+* Max Planck
+* Platão de Atenas
 
 ent_G05:
-* Bruno Alexandre Dias Novais de Sousa
-* Rui Miguel Pimenta e Cunha
+* Antoine Lavoisier
+* J. R. R. Tolkien
 
 ent_G06:
-* Gilberto Rui Nogueira Cunha
-* Tomás Barros Carneiro
+* Johannes Kepler
+* Liev Tolstói
 
 ent_G07:
-* Bruna Alvarães
-* Guilherme Santos
+* Euclides de Alexandria
+* Nicolau Maquiavel
 
 ent_G08:
-* Carlos Henrique Senra Ferreira
-* Daniel André Rocha Ribeiro
+* James Clerk Maxwell
+* Karl Marx
 
 ent_G09:
-* André Filipe Oliveira Araújo
-* Paulo Ricardo Dias da Costa
+* Confúcio
+* Joseph-Louis Lagrange
 
 ent_G10:
-* João Pedro Antunes
-* Luís Almeida
+* Marie Curie
+* Pitágoras de Samos
 
 ent_G11:
-* José Luís Cerqueira Pires
-* Márcia Filipa da Cruz Cerqueira
+* Arquimedes de Siracusa
+* Carl Friedrich Gauss
 
 ent_G12:
-* Anabela Pereira
-* André Gonçalves
+* Cristovão Colombo
+* Isaac Newton
 
 ent_G13:
-* Filipe Matias Antas Viana
-* Francisco Domingos Martins Oliveira
-* João Manuel Silva Antunes
+* Edsger Dijkstra
+* Júlio César
+* Sigmund Freud
 
 ent_G14:
-* André Oliveira Boechat Morandi
-* Hélder Cristiano Lopes
+* Albert Einstein
+* Vasco da Gama
 
 ent_G15:
-* Bruna Dias Carvalho
-* Márlon Daniel Duarte Ferreira
+* Charles Darwin
+* Leonhard Euler
 
 ent_G16:
-* Diogo Sambento
-* Pedro Henrique Costa
-* Pedro Miguel Martins
+* Daniel Bernoulli
+* Georg Cantor
+* Ludwig van Beethoven
 
 ent_G17:
-* Bruno Miguel Pinheiro Alves
-* João Carlos Viana Pereira Marques
+* Homero
+* Michael Faraday
 
 ent_G18:
-* Aureo Bendito
-* Pedro Beir
+* Augustin-Louis Cauchy
+* Galileu Galilei
 
 ent_G19:
-* David Ferreira
-* Gil Miguel da Mota Marques
-* José Luís Antunes Martins
+* Napoleão Bonaparte
+* Socrates
+* Voltaire
 
 ent_G20:
-* João Diogo Torres Cardosa da Silva
-* João Domingos Pereira Barbosa
+* Luís Vaz de Camões
+* Sidarta Gautama
 
 ent_G21:
-* João Guilherme Reis
-* Rui Filipe Traila de Sousa
+* Nelson Mandela
+* Tony Hoare
 
 
 Pressione Enter!
@@ -1586,142 +1646,142 @@ Pressione Enter!
 {
   "registos":[
     {
-       "utilizador":"Anabela Pereira",
-       "email":"a87990@alunos.uminho.pt",
+       "utilizador":"Isaac Newton",
+       "email":"a117293940@alunos.ufic.pt",
        "entidade":"ent_G12",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"André Filipe Oliveira Araújo",
-       "email":"a87987@alunos.uminho.pt",
+       "utilizador":"Confúcio",
+       "email":"a257394827@alunos.ufic.pt",
        "entidade":"ent_G09",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"André Gonçalves",
-       "email":"a87942@alunos.uminho.pt",
+       "utilizador":"Cristovão Colombo",
+       "email":"a467392412@alunos.ufic.pt",
        "entidade":"ent_G12",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"André Oliveira Boechat Morandi",
-       "email":"a86912@alunos.uminho.pt",
+       "utilizador":"J. R. R. Tolkien",
+       "email":"a635485767@alunos.ufic.pt",
+       "entidade":"ent_G05",
+       "nível de acesso":"1",
+       "número de chamadas ao backend":"2"
+    },
+    {
+       "utilizador":"Albert Einstein",
+       "email":"a946596172@alunos.ufic.pt",
        "entidade":"ent_G14",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"André Ribeiro Fernandes",
-       "email":"a87938@alunos.uminho.pt",
+       "utilizador":"Louis Pasteur",
+       "email":"a327596378@alunos.ufic.pt",
        "entidade":"ent_G01",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"Aureo Bendito",
-       "email":"a76068@alunos.uminho.pt",
+       "utilizador":"Galileu Galilei",
+       "email":"a706203648@alunos.ufic.pt",
        "entidade":"ent_G18",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"Bruna Alvarães",
-       "email":"a84729@alunos.uminho.pt",
+       "utilizador":"Euclides de Alexandria",
+       "email":"a954271239@alunos.ufic.pt",
        "entidade":"ent_G07",
        "nível de acesso":"1",
        "número de chamadas ao backend":"2"
     },
     {
-       "utilizador":"Bruna Dias Carvalho",
-       "email":"a87982@alunos.uminho.pt",
+       "utilizador":"Charles Darwin",
+       "email":"a227493822@alunos.ufic.pt",
        "entidade":"ent_G15",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"Bruna Gonçalves Araújo",
-       "email":"a84408@alunos.uminho.pt",
+       "utilizador":"Nicolau Copérnico",
+       "email":"a654642048@alunos.ufic.pt",
        "entidade":"ent_G02",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"Bruno Alexandre Dias Novais de Sousa",
-       "email":"a84945@alunos.uminho.pt",
+       "utilizador":"Antoine Lavoisier",
+       "email":"a804944252@alunos.ufic.pt",
        "entidade":"ent_G05",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"Bruno Miguel Pinheiro Alves",
-       "email":"a85481@alunos.uminho.pt",
+       "utilizador":"Michael Faraday",
+       "email":"a375341811@alunos.ufic.pt",
        "entidade":"ent_G17",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"Carlos Henrique Senra Ferreira",
-       "email":"a87953@alunos.uminho.pt",
+       "utilizador":"James Clerk Maxwell",
+       "email":"a127394553@alunos.ufic.pt",
        "entidade":"ent_G08",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"Daniel André Rocha Ribeiro",
-       "email":"a87994@alunos.uminho.pt",
+       "utilizador":"Karl Marx",
+       "email":"a677394914@alunos.ufic.pt",
        "entidade":"ent_G08",
        "nível de acesso":"1",
        "número de chamadas ao backend":"2"
     },
     {
-       "utilizador":"Daniel Martins Carvalho Ferreira",
-       "email":"a85670@alunos.uminho.pt",
+       "utilizador":"William Shakespeare",
+       "email":"a9155647520@alunos.ufic.pt",
        "entidade":"ent_G02",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     },
     {
-       "utilizador":"David Ferreira",
-       "email":"a80673@alunos.uminho.pt",
+       "utilizador":"Napoleão Bonaparte",
+       "email":"a510264723@alunos.ufic.pt",
        "entidade":"ent_G19",
        "nível de acesso":"2",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"David Silvestre Ölund Matos",
-       "email":"a87997@alunos.uminho.pt",
+       "utilizador":"Nikola Tesla",
+       "email":"a477497937@alunos.ufic.pt",
        "entidade":"ent_G03",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"Diogo Costa Fernandes",
-       "email":"a87968@alunos.uminho.pt",
+       "utilizador":"Platão de Atenas",
+       "email":"a617293652@alunos.ufic.pt",
        "entidade":"ent_G04",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"Diogo Sambento",
-       "email":"a87965@alunos.uminho.pt",
+       "utilizador":"Ludwig van Beethoven",
+       "email":"a937597685@alunos.ufic.pt",
        "entidade":"ent_G16",
        "nível de acesso":"1",
        "número de chamadas ao backend":"1"
     },
     {
-       "utilizador":"Eduardo Luis Vieira Pereira",
-       "email":"a87965@alunos.uminho.pt",
+       "utilizador":"Werner Heisenberg",
+       "email":"a237691605@alunos.ufic.pt",
        "entidade":"ent_G00",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Fernando Augusto Marques Lobo",
-       "email":"a87988@alunos.uminho.pt",
-       "entidade":"ent_G04",
        "nível de acesso":"1",
        "número de chamadas ao backend":"0"
     }
@@ -1732,17 +1792,15 @@ Pressione Enter!
 
 
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo5%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Conclusão} \label{concl}
-Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos e que o nosso programa respeite os princípios da disciplina.
-Numa primeira aborgagem tentanto fazer a captura dos nomes de utilizador com a função \verb findAll , no entanto não esta a ser muito facil obter resultados por causa do inicio de linha, pelo que optamos por em todos os exercios iterar linha a linha.
-No problema que nos foi proposto, em cada uma das alineas é nos pedido que façamos um programa, no entanto achamos que a utilização do menu, na qual podemos escolher qual a funcionaliadade, torna a experiencia do utilizador mais simples e agradavel.
-Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e com recuso à biblioteca 're', facilitou bastante a sua implementação.
+Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos e que o nosso programa respeite os princípios ensinados na disciplina.
+Numa primeira abordagem tentamos fazer a captura dos nomes de utilizador com a função \verb findall , no entanto não estava a ser muito fácil obter resultados na captura dos nomes de utilizador,por causa do inicio de linha, pelo que optamos por em todos os exercios iterar linha a linha. \\ \\
+No problema que nos foi proposto, em cada uma das alineas é nos pedido que façamos um programa, no entanto achamos que a utilização do menu, na qual podemos escolher qual a funcionaliadade, torna a experiencia do utilizador mais simples e agrádavel. \\ \\
+Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e com recurso à biblioteca 're', facilitou bastante a sua implementação.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo6%%%%%%%%

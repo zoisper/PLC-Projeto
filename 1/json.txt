@@ -1,0 +1,144 @@
+{
+	"registos":[
+		{
+			 "utilizador":"registado777",
+			 "email":"registado777@gmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"2",
+			 "número de chamadas ao backend":"1"
+		},
+		{
+			 "utilizador":"Dolores",
+			 "email":"mae_coragem@yahoo.com",
+			 "entidade":"ent_V",
+			 "nível de acesso":"2",
+			 "número de chamadas ao backend":"7"
+		},
+		{
+			 "utilizador":"Prof. Marcelo",
+			 "email":"marselfie@hotmail.com",
+			 "entidade":"ent_P",
+			 "nível de acesso":"1",
+			 "número de chamadas ao backend":"2"
+		},
+		{
+			 "utilizador":"CR7",
+			 "email":"siiiiiim@hotmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"7",
+			 "número de chamadas ao backend":"7"
+		},
+		{
+			 "utilizador":"Eng. F. Santos",
+			 "email":"mete_mais_um_trinco@protonmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"3",
+			 "número de chamadas ao backend":"10"
+		},
+		{
+			 "utilizador":"Xico Esperto",
+			 "email":"o.xico.esperto@protonmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"4",
+			 "número de chamadas ao backend":"7"
+		},
+		{
+			 "utilizador":"Dr. Salgado",
+			 "email":"ddt@protonmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"2",
+			 "número de chamadas ao backend":"30"
+		},
+		{
+			 "utilizador":"Sr. Doutor",
+			 "email":"sedutor@gmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"5",
+			 "número de chamadas ao backend":"1"
+		},
+		{
+			 "utilizador":"Passos Dias Aguiar Mota",
+			 "email":"pdamota@gmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"8",
+			 "número de chamadas ao backend":"2"
+		},
+		{
+			 "utilizador":"JJ",
+			 "email":"peaners@hotmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"3",
+			 "número de chamadas ao backend":"88"
+		},
+		{
+			 "utilizador":"Zé Povinho",
+			 "email":"zezinho@gmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"2",
+			 "número de chamadas ao backend":"0"
+		},
+		{
+			 "utilizador":"Socrates",
+			 "email":"animal_feroz@yahoo.pt",
+			 "entidade":"ent_P",
+			 "nível de acesso":"3",
+			 "número de chamadas ao backend":"2"
+		},
+		{
+			 "utilizador":"Inacio",
+			 "email":"naosejasinacio@hotmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"4",
+			 "número de chamadas ao backend":"2"
+		},
+		{
+			 "utilizador":"Geremias",
+			 "email":"geremeias666@yahoo.pt",
+			 "entidade":"ent_C",
+			 "nível de acesso":"4",
+			 "número de chamadas ao backend":"3"
+		},
+		{
+			 "utilizador":"ativista",
+			 "email":"a.t.i.v.i.s.t.a@hotmail.com",
+			 "entidade":"ent_C",
+			 "nível de acesso":"2",
+			 "número de chamadas ao backend":"3"
+		},
+		{
+			 "utilizador":"Baltasar Sete-Sóis",
+			 "email":"b72@hotmail.com",
+			 "entidade":"ent_V",
+			 "nível de acesso":"6",
+			 "número de chamadas ao backend":"1"
+		},
+		{
+			 "utilizador":"geringonça",
+			 "email":"passarola@outlook.pt",
+			 "entidade":"ent_P",
+			 "nível de acesso":"4",
+			 "número de chamadas ao backend":"9"
+		},
+		{
+			 "utilizador":"abelha maia",
+			 "email":"maia_a_abelha@yahoo.com",
+			 "entidade":"ent_V",
+			 "nível de acesso":"3",
+			 "número de chamadas ao backend":"4"
+		},
+		{
+			 "utilizador":"Blimunda Sete-Luas",
+			 "email":"b_7_l@gmail.com",
+			 "entidade":"ent_V",
+			 "nível de acesso":"8",
+			 "número de chamadas ao backend":"1"
+		},
+		{
+			 "utilizador":"mister_vitinho",
+			 "email":"i_speak_with-the-true@gmail.com",
+			 "entidade":"ent_D",
+			 "nível de acesso":"4",
+			 "número de chamadas ao backend":"8"
+		}
+	]
+}
