@@ -4,7 +4,8 @@ import sys
 
 
 states = (('comment','inclusive'),)
-tokens = ('LCURLY','RCURLY','LBRACE','RBRACE','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','COMA','SEMICOLON','MAIN','WHILE','IF','STRING','CON','COFF','COM')
+tokens = ('LCURLY','RCURLY','LBRACE','RBRACE','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','COMA','SEMICOLON','MAIN','WHILE','IF','STRING','CON','COFF','COM',
+	'EQUAL','PLUS','MINUS','MUL','DIV','EQEQ','DIFF','GREATER','LESSER','GREAEQ','LESSEQ')
 
 
 
@@ -25,11 +26,11 @@ def t_RCURLY(t):
 	return t
 
 
-def t_LPAREN(t):
+def t_LBRACE(t):
 	r'\('
 	return t
 
-def t_RPAREN(t):
+def t_RBRACE(t):
 	r'\)'
 	return t
 
@@ -91,6 +92,50 @@ def t_REAL(t):
 def t_NUM(t):
 	r'\d+'
 	t.value = int(t.value)
+	return t
+
+def t_EQEQ(t):
+	r'(\=\=)'
+	return t
+
+def t_DIFF(t):
+	r'\!\='
+	return t
+
+def t_GREAEQ(t):
+	r'\>\='
+	return t
+
+def t_LESSEQ(t):
+	r'\<\='
+	return t
+
+def t_GREATER(t):
+	r'\>'
+	return t
+
+def t_LESSER(t):
+	r'\<'
+	return t
+
+def t_EQUAL(t):
+	r'\='
+	return t
+
+def t_PLUS(t):
+	r'\+'
+	return t
+
+def t_MINUS(t):
+	r'\-'
+	return t
+
+def t_MUL(t):
+	r'\*'
+	return t
+
+def t_DIV(t):
+	r'\\'
 	return t
 
 def t_VAR(t):
