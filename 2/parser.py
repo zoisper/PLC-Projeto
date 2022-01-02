@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 import sys
-
+import os.path
 from lexer import tokens
 
 
@@ -11,8 +11,7 @@ def p_program(p):
 	"""
 
 def p_body(p):
-	"""
-	body : 
+	""" 
 	body : declarations instructions
 	"""
 
@@ -35,10 +34,24 @@ def p_delcare(p):
 	"""
 
 
-def p_type(p):
+def p_type_int(p):
+	"""
+	type : INT
+	"""
+
+def p_type_array_int(p):
+	"""
+	type : INT LBRACKET NUM RBRACKET
+	"""
+
+def p_type_bool(p):
 	"""
 	type : BOOL
-	type : INT
+	"""
+
+def p_type_array_bool(p):
+	"""
+	type : BOOL LBRACKET NUM RBRACKET
 	"""
 
 def p_instructions(p):
@@ -116,15 +129,35 @@ parser = yacc.yacc()
 parser.success = True
 
 
+if len(sys.argv)==2:
+    text_source = sys.argv[1]
+else:
+    print('Número de argumentos invalido!')
+    sys.exit(0)
+
+if not os.path.exists(text_source):
+    print(f"Ficheiro \"{text_source}\" não encontrado!")
+    sys.exit(0)
+
+#source = ""
 
 
-source = ""
+fp = open(text_source, 'r')
+text = fp.readlines()
+fp.close()
 
-for line in sys.stdin:
-	source += line
-print(source)
+#for line in text:
+#	source += line
+#print(source)
 
-parser.parse(source)
+
+fp = open("a.out","w")
+
+parser.parse("".join(text))
+
 
 if parser.success:
 	print("Parsing successfully completed!")
+
+fp.close()
+

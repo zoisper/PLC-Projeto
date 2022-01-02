@@ -4,7 +4,7 @@ import sys
 
 
 states = (('comment','inclusive'),)
-tokens = ('LCURLY','RCURLY','LBRACE','RBRACE','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','COMA','SEMICOLON','MAIN','WHILE','IF','STRING','CON','COFF','COM',
+tokens = ('LCURLY','RCURLY','LBRACE','RBRACE','LBRACKET','RBRACKET','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','COMA','SEMICOLON','MAIN','WHILE','IF','STRING','CON','COFF','COM',
 	'EQUAL','PLUS','MINUS','MUL','DIV','EQEQ','DIFF','GREATER','LESSER','GREAEQ','LESSEQ')
 
 
@@ -25,13 +25,21 @@ def t_RCURLY(t):
 	r'\}'
 	return t
 
-
 def t_LBRACE(t):
 	r'\('
 	return t
 
 def t_RBRACE(t):
 	r'\)'
+	return t
+
+
+def t_LBRACKET(t):
+	r'\['
+	return t
+
+def t_RBRACKET(t):
+	r'\]'
 	return t
 
 
