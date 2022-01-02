@@ -2,16 +2,11 @@ import ply.lex as lex
 import sys
 
 
-
-states = (('comment','inclusive'),)
-tokens = ('LCURLY','RCURLY','LBRACE','RBRACE','LBRACKET','RBRACKET','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','COMA','SEMICOLON','MAIN','WHILE','IF','STRING','CON','COFF','COM',
-	'EQUAL','PLUS','MINUS','MUL','DIV','EQEQ','DIFF','GREATER','LESSER','GREAEQ','LESSEQ')
+tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL','VAR','TRUE','FALSE','BOOL','INT','SEMICOLON','MAIN','WHILE','IF','STRING',
+	'EQUAL','PLUS','MINUS','MUL','DIV','EQEQ','DIFF','GREATER','LESSER','GREATEQ','LESSEQ','INPUT','PRINT')
 
 
 
-def t_COMA(t):
-	r','
-	return t
 
 def t_SEMICOLON(t):
 	r';'
@@ -25,11 +20,11 @@ def t_RCURLY(t):
 	r'\}'
 	return t
 
-def t_LBRACE(t):
+def t_LPAREN(t):
 	r'\('
 	return t
 
-def t_RBRACE(t):
+def t_RPAREN(t):
 	r'\)'
 	return t
 
@@ -72,19 +67,13 @@ def t_IF(t):
 	r'if'
 	return t
 
-def t_CON(t):
-	r'\/\*'
-	t.lexer.begin('comment')
+def t_PRINT(t):
+	r'print'
 	return t
 
-def t_comment_COFF(t):
-	r'\*/'
-	t.lexer.begin('INITIAL')
+def t_INPUT(t):
+	r'input'
 	return t
-
-
-def t_comment_COM(t):
-	r'.|\n'
 
 
 def t_STRING(t):
@@ -143,7 +132,7 @@ def t_MUL(t):
 	return t
 
 def t_DIV(t):
-	r'\\'
+	r'\/'
 	return t
 
 def t_VAR(t):

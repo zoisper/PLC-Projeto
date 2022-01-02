@@ -22,37 +22,35 @@ def p_declarations(p):
 	declarations : declaration  declarations
 	"""
 
-def p_declaration(p):
+def p_declaration_int(p):
 	"""
-	declaration : type declare SEMICOLON 
-	"""
-
-def p_delcare(p):
-	"""
-	declare : VAR 
-	declare : VAR COMA declare
+	declaration : INT VAR SEMICOLON 
 	"""
 
 
-def p_type_int(p):
+def p_declaration_bool(p):
 	"""
-	type : INT
-	"""
-
-def p_type_array_int(p):
-	"""
-	type : INT LBRACKET NUM RBRACKET
+	declaration : BOOL VAR SEMICOLON 
 	"""
 
-def p_type_bool(p):
+def p_declaration_array_int(p):
 	"""
-	type : BOOL
+	declaration : INT LBRACKET NUM RBRACKET VAR SEMICOLON 
+
 	"""
 
-def p_type_array_bool(p):
+def p_declaration_biarray_int(p):
 	"""
-	type : BOOL LBRACKET NUM RBRACKET
+	declaration : INT LBRACKET NUM RBRACKET LBRACKET NUM RBRACKET VAR SEMICOLON 
+
 	"""
+
+
+def p_declaration_array_bool(p):
+	"""
+	declaration : BOOL LBRACKET NUM RBRACKET VAR SEMICOLON 
+	"""
+
 
 def p_instructions(p):
 	"""
@@ -60,60 +58,162 @@ def p_instructions(p):
 	instructions : instruction  instructions
 	"""
 
-def p_instruction(p):
+def p_instruction_atribution_true(p):
 	"""
-	instruction : cicle
-	instruction : conditional
-	instruction : atribution 
-	"""
-def p_cicle(p):
-	"""
-	cicle : WHILE LBRACE condition RBRACE LCURLY instructions RCURLY
+	instruction : VAR EQUAL TRUE SEMICOLON 
 	"""
 
-def p_conditional(p):
+def p_instruction_atribution_false(p):
 	"""
-	conditional : IF LBRACE condition RBRACE LCURLY instructions RCURLY
-	"""
-
-def p_atribution(p):
-	"""
-	atribution : VAR EQUAL TRUE SEMICOLON
-	atribution : VAR EQUAL FALSE SEMICOLON
-	atribution : VAR EQUAL expression SEMICOLON
+	instruction : VAR EQUAL FALSE SEMICOLON 
 	"""
 
 
-def p_condition(p):
+def p_instruction_atribution_expression(p):
 	"""
-	condition : expression EQEQ expression
-	condition : VAR EQEQ expression
-	condition : VAR DIFF expression
-	condition : VAR EQEQ TRUE
-	condition : VAR EQEQ FALSE
-	condition : VAR DIFF TRUE
-	condition : VAR DIFF FALSE
-	condition : expression GREATER expression
-	condition : expression LESSER expression
-	condition : expression GREAEQ expression
-	condition : expression LESSEQ expression
-	condition : expression DIFF expression
-	condition : TRUE
-	condition : FALSE
+	instruction : VAR EQUAL expression SEMICOLON
 	"""
-def p_expression(p):
+
+def p_expression_var(p):
 	"""
 	expression : VAR
-	expression : REAL
+	"""
+
+def p_expression_num(p):
+	"""
 	expression : NUM
-	expression : LBRACE expression RBRACE
+	"""
+
+def p_expression_REAL(p):
+	"""
+	expression : REAL
+	"""
+
+
+def p_expression_between_parenthesis(p):
+	"""
+	expression : LPAREN expression RPAREN
+	"""
+
+def p_expression_plus_expression(p):
+	"""
 	expression : expression PLUS expression
+	"""
+
+def p_expression_minus_expression(p):
+	"""
 	expression : expression MINUS expression
+	"""
+
+def p_expression_mul_expression(p):
+	"""
 	expression : expression MUL expression
+	"""
+
+def p_expression_div_expression(p):
+	"""
 	expression : expression DIV expression
 	"""
 
 
+def p_instruction_cicle(p):
+	"""
+	instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
+	"""
+
+def p_instruction_conditional(p):
+	"""
+	instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY
+	"""
+
+
+def p_condition_expression_eq_expression(p):
+	"""
+	condition : expression EQEQ expression
+	"""
+
+def p_condition_expression_diff_expression(p):
+	"""
+	condition : expression DIFF expression
+	"""
+
+def p_condition_expression_greater_expression(p):
+	"""
+	condition : expression GREATER expression
+	"""
+
+def p_condition_expression_lesser_expression(p):
+	"""
+	condition : expression LESSER expression
+	"""
+
+def p_condition_expression_greateq_expression(p):
+	"""
+	condition : expression GREATEQ expression
+	"""
+
+def p_condition_expression_lesseq_expression(p):
+	"""
+	condition : expression LESSEQ expression
+	"""
+
+
+def p_condition_var_eqeq_expression(p):
+	"""
+	condition : VAR EQEQ expression
+	"""
+
+def p_condition_var_diff_expression(p):
+	"""
+	condition : VAR DIFF expression
+	"""
+
+
+def p_condition_var_eqeq_true(p):
+	"""
+	condition : VAR EQEQ TRUE
+	"""
+
+def p_condition_var_eqeq_false(p):
+	"""
+	condition : VAR EQEQ FALSE
+	"""
+
+def p_condition_var_diff_true(p):
+	"""
+	condition : VAR DIFF TRUE
+	"""
+def p_condition_var_diff_false(p):
+	"""
+	condition : VAR DIFF FALSE
+	"""
+
+
+def p_condition_true(p):
+	"""
+	condition : TRUE
+	"""
+
+def p_condition_false(p):
+	"""
+	condition : FALSE
+	"""
+
+def p_instruction_input(p):
+	"""
+	instruction : INPUT LPAREN VAR RPAREN SEMICOLON
+	"""
+
+
+def p_instruction_print_var(p):
+	"""
+	instruction : PRINT LPAREN VAR RPAREN SEMICOLON
+	"""
+
+def p_instruction_print_string(p):
+	"""
+	instruction : PRINT LPAREN STRING RPAREN SEMICOLON
+	"""
 
 
 
@@ -130,30 +230,24 @@ parser.success = True
 
 
 if len(sys.argv)==2:
-    text_source = sys.argv[1]
+    file = sys.argv[1]
 else:
     print('Número de argumentos invalido!')
     sys.exit(0)
 
-if not os.path.exists(text_source):
-    print(f"Ficheiro \"{text_source}\" não encontrado!")
+if not os.path.exists(file):
+    print(f"Ficheiro \"{file}\" não encontrado!")
     sys.exit(0)
 
-#source = ""
 
-
-fp = open(text_source, 'r')
-text = fp.readlines()
+fp = open(file, 'r')
+source = fp.readlines()
 fp.close()
-
-#for line in text:
-#	source += line
-#print(source)
 
 
 fp = open("a.out","w")
 
-parser.parse("".join(text))
+parser.parse("".join(source))
 
 
 if parser.success:
