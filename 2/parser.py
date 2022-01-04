@@ -244,7 +244,7 @@ def p_condition_expression_eqeq_expression(p):
 	"""
 	condition : expression EQEQ expression
 	"""
-	p[0] = p[1] + p[3] + 'SUB\nNOT\nJZ '
+	p[0] = p[1] + p[3] + 'EQUAL\nJZ '
 
 
 def p_condition_expression_diff_expression(p):
