@@ -79,12 +79,12 @@ def t_STRING(t):
 
 
 def t_REAL(t):
-    r'([1-9][0-9]*\.[0-9]+|0\.[0-9]+)'
+    r'-?([1-9][0-9]*\.[0-9]+|0\.[0-9]+)'
     return t
 
 
 def t_NUM(t):
-	r'\d+'
+	r'-?\d+'
 	t.value = int(t.value)
 	return t
 

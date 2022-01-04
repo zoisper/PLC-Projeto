@@ -1,10 +1,13 @@
 main{
 	int a;
 	int[4] b;
-	int[3][2] c;
-	float x;
+	
+	
 	b[1] = 10;
-	a = b[1];
+	b[0] = -1;
+	a = b[0];
+	
+	b[3] = a>0;	
 	
 
 	if (a == 1){

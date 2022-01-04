@@ -100,7 +100,7 @@ def p_declaration_single(p):
 
 	status = var_new((p[2],1,1,p[1]))
 	if status == -1:
-		p[0] = f'ERR \"declaração da variavel {p[2]}\"\n'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
 	else:
 		p[0] = 'PUSHI 0\n'
 	
@@ -117,7 +117,7 @@ def p_declaration_array(p):
 	"""
 	status = var_new((p[5],p[3],1,p[1]))
 	if status == -1:
-		p[0] = f'ERR \"declaração da variavel {p[2]}\"\n'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
 	else:
 		p[0] = f'PUSHN {var_size(p[5])}\n'
 
@@ -131,7 +131,7 @@ def p_declaration_biarray(p):
 	"""
 	status = var_new((p[8],p[6],p[3],p[1]))
 	if status == -1:
-		p[0] = f'ERR \"declaração da variavel {p[2]}\"\n'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHN {var_size(p[8])}\n'
 
@@ -196,7 +196,7 @@ def p_instruction_atribution_expression(p):
 	instruction : variable EQUAL expression SEMICOLON
 	"""
 	if p[1][1] == -1:
-		p[0] = f'ERR \"variavel {p[1][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = p[3] + f'STOREG {p[1][1]}\n'
 
@@ -206,7 +206,7 @@ def p_instruction_atribution_condition(p):
 	instruction : variable EQUAL condition SEMICOLON
 	"""
 	if p[1][1] == -1:
-		p[0] = f'ERR \"variavel {p[1][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = p[3] + f'STOREG {p[1][1]}\n'
 
@@ -218,7 +218,7 @@ def p_expression_var(p):
 	expression : variable
 	"""
 	if p[1][1] == -1:
-		p[0] = f'ERR \"variavel {p[1][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[1][1]}\n'
 
@@ -348,7 +348,7 @@ def p_condition_var(p):
 	"""
 
 	if p[1][1] == -1:
-		p[0] = f'ERR \"variavel {p[1][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[1][1]}\nJZ '
 
@@ -360,7 +360,7 @@ def p_instruction_input(p):
 	instruction : INPUT LPAREN variable RPAREN SEMICOLON
 	"""
 	if p[3][1] == -1:
-		p[0] = f'ERR \"variavel {p[3][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = 'READ\n'
 		if p[3][2] == 'int':
@@ -376,7 +376,7 @@ def p_instruction_print_var(p):
 	instruction : PRINT LPAREN variable RPAREN SEMICOLON
 	"""
 	if p[3][1] == -1:
-		p[0] = f'ERR \"variavel {p[3][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[3][1]}\n'
 		if p[3][2] == 'int':
@@ -390,7 +390,7 @@ def p_instruction_println_var(p):
 	instruction : PRINTLN LPAREN variable RPAREN SEMICOLON
 	"""
 	if p[3][1] == -1:
-		p[0] = f'ERR \"variavel {p[3][0]}\" não existe \n'
+		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[3][1]}\n'
 		if p[3][2] == 'int':
