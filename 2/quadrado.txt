@@ -1,0 +1,31 @@
+main{
+	int a;
+	int b;
+	int c;
+	int d;
+	
+	print("Digite o lado a: ");
+	input(a);
+	
+	print("Digite o lado b: ");
+	input(b);
+	
+	print("Digite o lado c: ");
+	input(c);
+	
+	print("Digite o lado a: ");
+	input(d);
+	
+	a = a + b;
+	a = a + c;
+	a = a + d;
+	d = d * 4;
+	
+	if(a==d){
+		println("Podem ser os lados de um quadrado!");
+	}
+	
+	if(a!=d){
+		println("Não podem ser os lados de um quadrado!");
+	}
+}

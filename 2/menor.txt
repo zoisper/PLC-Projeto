@@ -1,0 +1,32 @@
+main{
+	
+	int menor;
+	int N;
+	int i;
+	int aux;
+	
+	i = 0;
+	
+	print("Digite número: ");
+	input(menor);
+	
+
+	print("Digite quantos números quer ler: ");
+	input(N);
+
+
+	while(i<N){
+		print("Digite número: ");
+		input(aux);
+
+		if(aux < menor){
+			menor = aux;
+		}
+		i = i +1;
+	}
+	print("O menor número é: ");
+	println(menor);
+
+
+
+}

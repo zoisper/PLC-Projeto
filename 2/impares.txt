@@ -1,0 +1,20 @@
+main{
+	
+	int count;
+	int aux;
+	count = 0;
+	aux = 1;
+	println("Digite 0 para parar!");
+	while(aux !=0){
+		print("Digite número: ");
+		input(aux);
+		if(aux %2 == 1){
+			println(aux);
+			count = count +1;
+		}
+	}
+	print("Foram lidos ");
+	print(count);
+	println(" números impares!");
+
+}

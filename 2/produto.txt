@@ -1,0 +1,35 @@
+main{
+	
+	int N;
+	int r;
+	int[5] a;
+	
+	
+	N = 5;
+	r = 1;
+
+	print("Digite um número: ");
+	input(a[0]);
+	print("Digite um número: ");
+	input(a[1]);
+	print("Digite um número: ");
+	input(a[2]);
+	print("Digite um número: ");
+	input(a[3]);
+	print("Digite um número: ");
+	input(a[4]);
+
+	print(a[0]);
+	print(" x ");
+	print(a[1]);
+	print(" x ");
+	print(a[2]);
+	print(" x ");
+	print(a[3]);
+	print(" x ");
+	print(a[4]);
+	r = a[0] * a[1] * a[2] * a[3] * a[4];
+	print(" = ");
+	println(r);
+
+}
