@@ -231,7 +231,7 @@ def p_instruction_atribution_condition(p):
 	if p[1][1] == None:
 		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	else:
-		p[0] = p[1][0] + p[3] + 'STOREN\n'
+		p[0] = p[1][0] + p[3] + 'STOREN\n'\
 
 
 
@@ -357,7 +357,18 @@ def p_expression_mod_expression(p):
 	"""
 	expression : expression MOD expression
 	"""
-	p[0] = (p[1][0] + p[3][0] + 'MOD\n','int')
+	if p[1][1] == 'int' and p[3][1] == 'int':
+		p[0] = (p[1][0] + p[3][0] + 'MOD\n','int')
+
+	elif p[1][1] == 'float' and p[3][1] == 'float':
+		p[0] = (p[1][0] + 'FTOI\n' + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+
+	
+	elif p[1][1] == 'int' and p[3][1] == 'float':
+		p[0] = (p[1][0] + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+	
+	else:
+		p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
 
 
 def p_instruction_cicle(p):
@@ -424,13 +435,13 @@ def p_condition_expression_greater_expression(p):
 	"""
 
 	if p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = p[1][0] + p[3][0] + 'FSUP\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUP\n' + 'FTOI\n'
+		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
 	
 	elif p[1][1] == 'float' and p[3][1] == 'int':
-		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUP\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	else:
 		p[0] = p[1][0] + p[3][0] + 'SUP\n'
@@ -441,13 +452,13 @@ def p_condition_expression_lesser_expression(p):
 	condition : expression LESSER expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = p[1][0] + p[3][0] + 'FINF\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINF\n' + 'FTOI\n'
+		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
 	
 	elif p[1][1] == 'float' and p[3][1] == 'int':
-		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINF\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	else:
 		p[0] = p[1][0] + p[3][0] + 'INF\n'
@@ -457,13 +468,13 @@ def p_condition_expression_greateq_expression(p):
 	condition : expression GREATEQ expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = p[1][0] + p[3][0] + 'FSUPEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUPEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 	
 	elif p[1][1] == 'float' and p[3][1] == 'int':
-		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUPEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	else:
 		p[0] = p[1][0] + p[3][0] + 'SUPEQ\n'
@@ -473,13 +484,13 @@ def p_condition_expression_lesseq_expression(p):
 	condition : expression LESSEQ expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = p[1][0] + p[3][0] + 'FINFEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINFEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 	
 	elif p[1][1] == 'float' and p[3][1] == 'int':
-		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINFEQ\n' + 'FTOI\n'
+		p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
 
 	else:
 		p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
@@ -492,6 +503,15 @@ def p_condition_num(p):
 	"""
 	p[0] = f'PUSHI {p[1]}\n'
 
+
+def p_condition_real(p):
+	"""
+	condition : REAL
+	"""
+
+	p[0] = f'PUSHF {p[1]}\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+
+
 def p_condition_var(p):
 	"""
 	condition : variable
@@ -501,9 +521,9 @@ def p_condition_var(p):
 		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	elif p[1][1] == 'float':
 		
-		p[0] = p[1][0] + 'LOADN\nFTOI\nPUSHI 0\nEQUAL\nNOT\n'
+		p[0] = p[1][0] + 'LOADN\nFTOI\nPUSHI 0\nSUP\n'
 	else:
-		p[0] = p[1][0] + 'LOADN\nPUSHI 0\nEQUAL\nNOT\n'
+		p[0] = p[1][0] + 'LOADN\n'
 
 
 
