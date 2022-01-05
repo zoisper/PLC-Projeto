@@ -1,9 +1,0 @@
-main{
-	int[3] a;
-	int[2] b;
-	int i;
-	i = 1;
-	scan(a[i]);
-	println(a[1]);
-
-}
