@@ -9,7 +9,8 @@ main{
 		print("Digite número: ");
 		scan(aux);
 		if(aux %2 == 1){
-			println(aux);
+			print(aux);
+			println(" é impar!");
 			count = count +1;
 		}
 	}

@@ -169,7 +169,7 @@ def p_variable_index_expression(p):
 	"""
 	#p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
 
-	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
 	
 
 
@@ -179,7 +179,7 @@ def p_variable_index_expression_expression(p):
 	"""
 	#p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
 
-	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3] + 'MUL\n' + 'ADD\n' + p[6] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
 
 
 
@@ -369,12 +369,20 @@ def p_instruction_cicle(p):
 
 
 
-def p_instruction_conditional(p):
+def p_instruction_conditional_if(p):
 	"""
 	instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY
 	"""
 	p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'E{parser.labels}:\n' 
 	parser.labels +=1
+
+def p_instruction_conditional_if_else(p):
+	"""
+	instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY instructions RCURLY
+	"""
+	p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'JUMP F{parser.labels}\n'  + f'E{parser.labels}:\n' + p[10] + f'F{parser.labels}:\n' 
+	parser.labels +=1
+
 	
 
 
