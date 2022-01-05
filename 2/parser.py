@@ -46,14 +46,14 @@ def var_size(v):
 	if v in parser.tab_id:
 		return parser.tab_id[v][1] * parser.tab_id[v][2]
 	else:
-		return -1
+		return 0
 
 
 def var_type(v):
 	if v in parser.tab_id:
 		return parser.tab_id[v][3]
 	else:
-		return -1
+		return None
 
 
 def var_adress_exists(name,colum,line):
@@ -157,25 +157,11 @@ def p_variable_single(p):
 	"""
 	variable : VAR
 	"""
-	p[0] = (p[1],var_address_base(p[1]),var_type(p[1]))
+	#p[0] = (p[1],var_address_base(p[1]),var_type(p[1]))
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]),var_size(p[1]))  
 	
 
-def p_variable_index_num(p):
-	"""
-	variable : VAR LBRACKET NUM RBRACKET
-	"""
-	p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
 
-
-def p_variable_index_index_num(p):
-	"""
-	variable : VAR LBRACKET NUM RBRACKET LBRACKET NUM RBRACKET
-	"""
-	p[0] = (p[1],var_address_colum_line(p[1],p[6],p[3]),var_type(p[1]))
-
-
-
-##########################
 
 def p_variable_index_expression(p):
 	"""
@@ -183,8 +169,18 @@ def p_variable_index_expression(p):
 	"""
 	#p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
 
-	p[0] = 'PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3] + 'ADD\n' 
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
 	
+
+
+def p_variable_index_expression_expression(p):
+	"""
+	variable : VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
+	"""
+	#p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
+
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3] + 'MUL\n' + 'ADD\n' + p[6] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+
 
 
 
@@ -208,17 +204,14 @@ def p_instruction_atribution_expression(p):
 	"""
 	instruction : variable EQUAL expression SEMICOLON
 	"""
-	if isinstance(p[1],str):
-		p[0] = p[1] + p[3] + 'STOREN\n'
-
-	elif p[1][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
+	
+	if p[1][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	else:
-		p[0] = p[3] + f'STOREG {p[1][1]}\n'
+		p[0] = p[1][0] + p[3] +  'STOREN\n'
 
 
 
-##############################
 
 
 
@@ -227,13 +220,14 @@ def p_instruction_atribution_condition(p):
 	"""
 	instruction : variable EQUAL condition SEMICOLON
 	"""
-	if isinstance(p[1],str):
-		p[0] = p[1] + p[3] + 'STOREN\n'
-
-	elif p[1][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
+	
+	if p[1][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	else:
-		p[0] = p[3] + f'STOREG {p[1][1]}\n'
+		p[0] = p[1][0] + p[3] + 'STOREN\n'
+
+
+
 
 	
 
@@ -242,13 +236,14 @@ def p_expression_var(p):
 	"""
 	expression : variable
 	"""
-	if isinstance(p[1],str):
-		p[0] = p[1] + 'LOADN\n'
-
-	elif p[1][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
+	
+	if p[1][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	else:
-		p[0] = f'PUSHG {p[1][1]}\n'
+		p[0] = p[1][0] + 'LOADN\n'
+
+
+
 
 
 
@@ -375,10 +370,10 @@ def p_condition_var(p):
 	condition : variable
 	"""
 
-	if p[1][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
+	if p[1][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	else:
-		p[0] = f'PUSHG {p[1][1]}\n'
+		p[0] = p[1][0] + 'LOADN\n'
 
 
 
@@ -387,38 +382,30 @@ def p_instruction_scan(p):
 	"""
 	instruction : SCAN LPAREN variable RPAREN SEMICOLON
 	"""
-	
-	if isinstance(p[3],str):
-		p[0] = p[3] + 'READ\nATOI\nSTOREN\n'
 
-	elif p[3][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
+	if p[3][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+	elif p[3][1] == 'int':
+		p[0] = p[3][0]  + 'READ\nATOI\nSTOREN\n'
 	else:
-		p[0] = 'READ\n'
-		if p[3][2] == 'int':
-			p[0] += 'ATOI\n'
-		else:
-			p[0] += 'ATOF\n'
+		p[0] = p[3][0]  + 'READ\nATOF\nSTOREN\n'
+	
 
-		p[0] += f'STOREG {p[3][1]}\n' 
 
 
 def p_instruction_print_var(p):
 	"""
 	instruction : PRINT LPAREN variable RPAREN SEMICOLON
 	"""
-
-	if isinstance(p[3],str):
-		p[0] = p[3] + 'LOADN\nWRITEI\n'
-
-	elif p[3][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
+	if p[3][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+	elif p[3][1] == 'int':
+		p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
 	else:
-		p[0] = f'PUSHG {p[3][1]}\n'
-		if p[3][2] == 'int':
-			p[0] += 'WRITEI\n'
-		else:
-			p[0] += 'WRITEF\n'
+		p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
+
+
+
 
 
 
@@ -428,21 +415,17 @@ def p_instruction_println_var(p):
 	"""
 	instruction : PRINTLN LPAREN variable RPAREN SEMICOLON
 	"""
-	
-	if isinstance(p[3],str):
-		p[0] = p[3] + 'LOADN\nWRITEI\n'
+	if p[3][1] == None:
+		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+	elif p[3][1] == 'int':
+		p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
 		p[0] += 'PUSHS\"\\n\"\nWRITES\n'
-
-	elif p[3][1] == -1:
-		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
-		p[0] = f'PUSHG {p[3][1]}\n'
-		if p[3][2] == 'int':
-			p[0] += 'WRITEI\n'
-		else:
-			p[0] += 'WRITEF\n'
-
+		p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
 		p[0] += 'PUSHS\"\\n\"\nWRITES\n'
+
+	
+
 
 
 

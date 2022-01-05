@@ -1,0 +1,8 @@
+main{
+	int a;
+
+	a = 2.0 *2;
+
+	println(a);
+
+}
