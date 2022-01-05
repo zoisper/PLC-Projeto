@@ -132,6 +132,8 @@ def t_DIV(t):
 	r'\/'
 	return t
 
+
+
 def t_MOD(t):
 	r'\%'
 	return t
@@ -149,13 +151,13 @@ t_ignore = ' \r\n\t'
 
 lexer = lex.lex()
 
-#fp = open("test.txt","r")
-#
-#source = fp.readlines()
-#fp.close()
-#
-#for line in source:
-#	lexer.input(line) 
-#	for tok in lexer:
-#		print(tok)
-#		pass
+fp = open("test.txt","r")
+
+source = fp.readlines()
+fp.close()
+
+for line in source:
+	lexer.input(line) 
+	for tok in lexer:
+		print(tok)
+		pass

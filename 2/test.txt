@@ -1,8 +1,9 @@
 main{
-	int a;
+	int c; 
+	
+	c = 4 / 3;
+	println(c);
 
-	a = 2.0 *2;
 
-	println(a);
 
 }
