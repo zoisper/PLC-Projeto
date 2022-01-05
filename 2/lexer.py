@@ -3,7 +3,7 @@ import sys
 
 
 tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL','VAR','FLOAT','INT','SEMICOLON','MAIN','WHILE','IF','STRING',
-	'EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER','LESSER','GREATEQ','LESSEQ','INPUT','PRINT','PRINTLN')
+	'EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER','LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
 
 
 
@@ -68,8 +68,8 @@ def t_PRINT(t):
 	r'print'
 	return t
 
-def t_INPUT(t):
-	r'input'
+def t_SCAN(t):
+	r'scan'
 	return t
 
 
@@ -96,7 +96,7 @@ def t_DIFF(t):
 	r'\!\='
 	return t
 
-def t_GREAEQ(t):
+def t_GREATEQ(t):
 	r'\>\='
 	return t
 

@@ -175,6 +175,19 @@ def p_variable_index_index_num(p):
 
 
 
+##########################
+
+def p_variable_index_expression(p):
+	"""
+	variable : VAR LBRACKET expression RBRACKET
+	"""
+	#p[0] = (p[1],var_address_colum_line(p[1],p[3],0),var_type(p[1]))
+
+	p[0] = 'PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3] + 'ADD\n' 
+	
+
+
+
 def p_instructions_empty(p):
 	"""
 	instructions :
@@ -189,23 +202,35 @@ def p_instructions(p):
 	p[0] = p[1] + p[2]
 
 
-
+########################aqui
 
 def p_instruction_atribution_expression(p):
 	"""
 	instruction : variable EQUAL expression SEMICOLON
 	"""
-	if p[1][1] == -1:
+	if isinstance(p[1],str):
+		p[0] = p[1] + p[3] + 'STOREN\n'
+
+	elif p[1][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = p[3] + f'STOREG {p[1][1]}\n'
+
+
+
+##############################
+
+
 
 
 def p_instruction_atribution_condition(p):
 	"""
 	instruction : variable EQUAL condition SEMICOLON
 	"""
-	if p[1][1] == -1:
+	if isinstance(p[1],str):
+		p[0] = p[1] + p[3] + 'STOREN\n'
+
+	elif p[1][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = p[3] + f'STOREG {p[1][1]}\n'
@@ -217,7 +242,10 @@ def p_expression_var(p):
 	"""
 	expression : variable
 	"""
-	if p[1][1] == -1:
+	if isinstance(p[1],str):
+		p[0] = p[1] + 'LOADN\n'
+
+	elif p[1][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[1][1]}\n'
@@ -340,7 +368,7 @@ def p_condition_num(p):
 	"""
 	condition : NUM
 	"""
-	p[0] = f'PUSHI {p[1]}\nJZ '
+	p[0] = f'PUSHI {p[1]}\n'
 
 def p_condition_var(p):
 	"""
@@ -350,16 +378,20 @@ def p_condition_var(p):
 	if p[1][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[1][0]}\\n\"\nSTOP\n'
 	else:
-		p[0] = f'PUSHG {p[1][1]}\nJZ '
+		p[0] = f'PUSHG {p[1][1]}\n'
 
 
 
 
-def p_instruction_input(p):
+def p_instruction_scan(p):
 	"""
-	instruction : INPUT LPAREN variable RPAREN SEMICOLON
+	instruction : SCAN LPAREN variable RPAREN SEMICOLON
 	"""
-	if p[3][1] == -1:
+	
+	if isinstance(p[3],str):
+		p[0] = p[3] + 'READ\nATOI\nSTOREN\n'
+
+	elif p[3][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = 'READ\n'
@@ -368,14 +400,18 @@ def p_instruction_input(p):
 		else:
 			p[0] += 'ATOF\n'
 
-	p[0] += f'STOREG {p[3][1]}\n' 
+		p[0] += f'STOREG {p[3][1]}\n' 
 
 
 def p_instruction_print_var(p):
 	"""
 	instruction : PRINT LPAREN variable RPAREN SEMICOLON
 	"""
-	if p[3][1] == -1:
+
+	if isinstance(p[3],str):
+		p[0] = p[3] + 'LOADN\nWRITEI\n'
+
+	elif p[3][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[3][1]}\n'
@@ -385,11 +421,19 @@ def p_instruction_print_var(p):
 			p[0] += 'WRITEF\n'
 
 
+
+
+
 def p_instruction_println_var(p):
 	"""
 	instruction : PRINTLN LPAREN variable RPAREN SEMICOLON
 	"""
-	if p[3][1] == -1:
+	
+	if isinstance(p[3],str):
+		p[0] = p[3] + 'LOADN\nWRITEI\n'
+		p[0] += 'PUSHS\"\\n\"\nWRITES\n'
+
+	elif p[3][1] == -1:
 		p[0] = f'ERR \"acesso indevido à variavel {p[3][0]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHG {p[3][1]}\n'

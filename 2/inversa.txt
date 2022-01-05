@@ -1,0 +1,29 @@
+main{
+	int N;
+	int i;
+	int[10] a;
+	N = 5;
+	i = 0;
+
+	print("Neste programa vamos digitar ");
+	print(N);
+	println(" números e imprimi-los por ordem inversa");
+
+	while(i<N){
+		print("Digite número: ");
+		scan(a[i]);	
+		i = i +1;
+	}
+
+	i = N - 1;
+
+	while(i>=0){
+		print(a[i]);
+		print(" ");
+		i = i - 1;
+	}
+
+	println("");
+
+	
+}

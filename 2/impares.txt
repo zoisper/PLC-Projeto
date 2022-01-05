@@ -7,7 +7,7 @@ main{
 	println("Digite 0 para parar!");
 	while(aux !=0){
 		print("Digite número: ");
-		input(aux);
+		scan(aux);
 		if(aux %2 == 1){
 			println(aux);
 			count = count +1;

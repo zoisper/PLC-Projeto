@@ -8,16 +8,16 @@ main{
 	i = 0;
 	
 	print("Digite número: ");
-	input(menor);
+	scan(menor);
 	
 
 	print("Digite quantos números quer ler: ");
-	input(N);
+	scan(N);
 
 
 	while(i<N){
 		print("Digite número: ");
-		input(aux);
+		scan(aux);
 
 		if(aux < menor){
 			menor = aux;

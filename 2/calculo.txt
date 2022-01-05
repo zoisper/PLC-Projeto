@@ -1,0 +1,16 @@
+main{
+	int a;
+
+
+	a = 2 * 3 + 4 * 5 - 1;
+	
+	print("2 * 3 + 4 * 5 - 1 = ");
+	println(a);
+	
+
+	a = (1 + a) * a;
+	
+	print("(1 + a) * a = ");
+	println(a); 
+
+}
