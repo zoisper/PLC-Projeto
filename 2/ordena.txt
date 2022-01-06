@@ -1,0 +1,57 @@
+main{
+	int N;
+	int i;
+	int j;
+	int menor;
+	int aux;
+	int[5] a;
+	
+
+	N = 5;
+
+	print("Neste programa vamos digitar ");
+	print(N);
+	println(" números e imprimi-los por ordem númerica");
+
+	for(i=0;i<N;i=i+1){
+		print("Digite número: ");
+		scan(a[i]);	
+	}
+	
+
+	for(i=0;i<N;i=i+1)
+	{
+		menor = i;
+
+		for(j=i+1;j<N;j=j+1)
+		{
+			if(a[j]<a[menor])
+			{
+				menor = j;
+			}
+		}
+		
+		if(menor !=i)
+		{
+			aux = a[i];
+			a[i] = a[menor];
+			a[menor] = aux;
+
+		}
+
+
+
+	}	
+
+
+
+	for(i=0;i<N; i=i+1)
+	{
+		print(a[i]);
+		print(" ");
+	}
+
+	println("");
+
+	
+}

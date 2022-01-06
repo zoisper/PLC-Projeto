@@ -198,11 +198,34 @@ def p_instructions(p):
 	p[0] = p[1] + p[2]
 
 
+def p_instruction(p):
+	"""
+	instruction : atributions SEMICOLON
+	"""
+	p[0] = p[1]
+
+def p_atributions_empty(p):
+	"""
+	atributions :  
+	"""
+	p[0] = ""
+
+def p_atributions_single(p):
+	"""
+	atributions : atribution 
+	"""
+	p[0] = p[1]
+
+def p_atributions_multiple(p):
+	"""
+	atributions : atribution COMMA atributions 
+	"""
+	p[0] = p[1] + p[3]
 
 
 def p_instruction_atribution_expression(p):
 	"""
-	instruction : variable EQUAL expression SEMICOLON
+	atribution : variable EQUAL expression 
 	"""
 	
 	if p[1][1] == None:
@@ -225,7 +248,7 @@ def p_instruction_atribution_expression(p):
 
 def p_instruction_atribution_condition(p):
 	"""
-	instruction : variable EQUAL condition SEMICOLON
+	atribution : variable EQUAL condition 
 	"""
 	
 	if p[1][1] == None:
@@ -235,6 +258,7 @@ def p_instruction_atribution_condition(p):
 		p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
 	else:
 		p[0] = p[1][0] + p[3] + 'STOREN\n'\
+
 
 
 
@@ -374,7 +398,7 @@ def p_expression_mod_expression(p):
 		p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
 
 
-def p_instruction_cicle(p):
+def p_instruction_while(p):
 	"""
 	instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
 	"""
@@ -382,15 +406,23 @@ def p_instruction_cicle(p):
 	parser.labels +=1
 
 
+def p_instruction_for(p):
+	"""
+	instruction : FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY instructions RCURLY
+	"""
+	p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] + f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
+	parser.labels +=1
 
-def p_instruction_conditional_if(p):
+
+
+def p_instruction_if(p):
 	"""
 	instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY
 	"""
 	p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'E{parser.labels}:\n' 
 	parser.labels +=1
 
-def p_instruction_conditional_if_else(p):
+def p_instruction_if_else(p):
 	"""
 	instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY instructions RCURLY
 	"""

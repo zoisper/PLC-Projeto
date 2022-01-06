@@ -2,7 +2,7 @@ import ply.lex as lex
 import sys
 
 
-tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL','VAR','FLOAT','INT','SEMICOLON','MAIN','WHILE','IF','ELSE','STRING',
+tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL','VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE','STRING',
 	'EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER','LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
 
 
@@ -10,6 +10,10 @@ tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL'
 
 def t_SEMICOLON(t):
 	r';'
+	return t
+
+def t_COMMA(t):
+	r','
 	return t
 
 def t_LCURLY(t):
@@ -54,6 +58,10 @@ def t_MAIN(t):
 
 def t_WHILE(t):
 	r'while'
+	return t
+
+def t_FOR(t):
+	r'for'
 	return t
 
 def t_IF(t):
