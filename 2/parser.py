@@ -668,7 +668,7 @@ fp.close()
 if len(sys.argv)==3:
     file_output = sys.argv[2]
 else:
-	file_output = "a.out"
+	file_output = "a.vm"
 
 fp = open(file_output,"w")
 
