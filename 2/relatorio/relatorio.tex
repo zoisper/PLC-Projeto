@@ -117,8 +117,9 @@
 \chapter{Introdução} \label{chap:intro} %referência cruzada
 
 Este documento tem como objetivo explicar a solução que implementamos para a resolução do probelma proposto no âmbito da unidade curricular de Processsamento de Linguagens e Compiladores. \\ \\
-O problema consiste em analisar um ficheiro de texto 'calv-users.txt' e através da utilização da linguagem Python e da biblioteca de expressões regulares 're' extrair informação de forma a produzir alguns resultados. \\ \\ Para além do texto fornecido, na solução apresentada, utilizamos outros textos de input, nos quais  os dados a recolher possuem uma estrutura um pouco diferente da presente no texto 'calv-users.txt'. Essas diferenças vão se refletir nas expressões regulares que utilizamos, que vão ser mais genéricas.\\ \\
-No desenvolvimento do programa procuramos utilizar o conhecimento adquirido nas aulas, esperando por isso que o resultado final cumpra todos os requisitos.  
+O problema consiste em implementar uma linguagem de programação imperativa simples, com regras sintaticas definidas pelo grupo. \\ \\ Para o desenvolvimento da nosso linguagem tivemos que definir uma gramática independente de contexto \textbf{GIC} e desenvolver um compilador que gera \textbf{pseudo-código}, \verb Assembly \ para uma Máquina Virtual, VM, que nos foi fornecida. \\ \\
+No desenvolvimento do programa, para alem do conhecimento adquirido nas aulas, utilizamos os módulos 'Yacc/ Lex' do 'PLY/Python'. \\ \\ 
+Esperamos que o resultado final cumpra todos os requisitos.  
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -130,30 +131,44 @@ No desenvolvimento do programa procuramos utilizar o conhecimento adquirido nas 
 \chapter{Problema Proposto} \label{chap:ProbelemaProposto} %capitulo e referencia cruzada
 
 \section{Descrição} \label{sec:Descricao} %seccao e referencia cruzada
-Construa um ou vários programas
-para processar o texto ' clav-users.txt ' em que campos de informação
-têm a seguinte ordem: nome, email, entidade, nível, número de chamadas ao backend, com o intuito de calcular alguns
-resultados conforme solicitado a seguir:
+Pretende-se que comece por definir uma linguagem de programação imperativa simples, a seu gosto.
+Apenas deve ter em consideração que essa linguagem terá de permitir:
 \begin{itemize}
-\item Produzir uma listagem apenas com o nome e a entidade do utilizador, ordenada alfabeticamente por nome;
-\item Produzir uma lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados;
-\item Qual a distribuição de utilizadores por níveis de acesso?
-\item Produzir uma listagem dos utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome;
-\item Por fim, produzir os seguintes indicadores:
-\begin{enumerate}[1.]
-\item Quantos utilizadores?
-\item Quantas entidades?
-\item Qual a distribuição em número por entidade?
-\item Qual a distribuição em número por nível?
-\end{enumerate}
+
+\item \textit{declarar} variáveis atómicas do tipo \textit{inteiro}, com os quais se podem realizar as habituais operações aritméticas, relacionais e lógicas;
+
+\item \textit{efetuar} instruções algorı́tmicas básicas como a \textit{atribuição do valor de expressões numéricas a variáveis};
+
+\item \textit{ler} do \textit{standard input} e \textit{escrever} no \textit{standard output};
+
+\item \textit{efetuar} instruções \textit{condicionais} para controlo do fluxo de execução;
+
+\item \textit{efetuar} instruções cı́clicas para controlo do fluxo de execução, permitindo o seu aninhamento.\\
+\underline{Note} que deve implementar pelo menos o ciclo \textbf{while-do}, \textbf{repeat-until} ou \textbf{for-do}.
 \end{itemize}
-Para terminar, deve imprimir os 20 primeiros registos num novo ficheiro de output mas em formato Json .
+
+Adicionalmente deve ainda suportar, à sua escolha, uma das duas funcionalidades seguintes:
+\begin{itemize}
+\item \textit{declarar e manusear} variáveis estruturadas do tipo \textit{array (a 1 ou 2 dimensões)} de inteiros, em relação aos quais é apenas permitida a operação de indexação (ı́ndice inteiro);
+\item \textit{definir e invocar subprogramas} sem parâmetros mas que possam retornar um resultado do tipo inteiro.
+\end{itemize}
+
 
 \section{Requisitos} \label{sec:Requesitos}
 \begin{itemize}
   \item Utilização da linguagem Python.
-  \item Resolver o problema com uso de expressoes regulares.
-  \item Utilizar o modulo 're'.
+  \item Resolver o problema recurso aos módulos 'Yacc/ Lex' do 'PLY/Python'.
+  \item Gerar \textbf{pseudo-código}, \verb Assembly \ da Máquina Virtual VM fornecida.
+  \item Preparar um conjunto de testes de modo a ver
+o código Assembly gerado bem como o programa a correr na máquina virtual VM. Este conjunto terá de conter, no mı́nimo, os 4 primeiros exemplos abaixo e um dos 2 últimos conforme a escolha de funcionalidades da linguagem:
+\begin{itemize}
+\item ler 4 números e dizer se podem ser os lados de um quadrado;
+\item ler um inteiro N, depois ler N números e escrever o menor deles;
+\item ler N (constante do programa) números e calcular e imprimir o seu produtório;
+\item contar e imprimir os números impares de uma sequência de números naturais;
+\item ler e armazenar N números num array; imprimir os valores por ordem inversa;
+\item invocar e usar num programa seu uma função ’potencia()’, que começa por ler do input a base $B$ e o expoente $E$ e retorna o valor  $B^E$.
+\end{itemize}
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%
