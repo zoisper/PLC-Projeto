@@ -571,3 +571,6 @@ TSWLatexianTemp*
 
 # xwatermark package
 *.xwm
+
+parser.out
+parsetab.py
