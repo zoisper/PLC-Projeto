@@ -230,6 +230,9 @@ def p_instruction_atribution_condition(p):
 	
 	if p[1][1] == None:
 		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+	
+	elif p[1][1] == 'float':
+		p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
 	else:
 		p[0] = p[1][0] + p[3] + 'STOREN\n'\
 
@@ -245,7 +248,7 @@ def p_expression_var(p):
 	"""
 	
 	if p[1][1] == None:
-		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+		p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 	else:
 		p[0] = (p[1][0] + 'LOADN\n',p[1][1])
 
@@ -521,9 +524,9 @@ def p_condition_var(p):
 		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
 	elif p[1][1] == 'float':
 		
-		p[0] = p[1][0] + 'LOADN\nFTOI\nPUSHI 0\nSUP\n'
+		p[0] = p[1][0] + 'LOADN\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
 	else:
-		p[0] = p[1][0] + 'LOADN\n'
+		p[0] = p[1][0] + 'LOADN\nPUSHI 0\nSUP\n'
 
 
 
@@ -615,18 +618,18 @@ parser.labels = 0
 
 
 if len(sys.argv)!=2 and len(sys.argv)!=3:
-    print('Número de argumentos invalido!')
+    print('Invalid number of arguments!')
     sys.exit(0)
 else:
     file_input = sys.argv[1]
 
 if not os.path.exists(file_input):
-	print(f"Ficheiro \"{file_input}\" não encontrado!")
+	print(f"File \"{file_input}\" not found!")
 	sys.exit(0)
 
 
 fp = open(file_input, 'r')
-source = fp.readlines()
+source = fp.read()
 fp.close()
 
 
@@ -637,7 +640,7 @@ else:
 
 fp = open(file_output,"w")
 
-parser.parse("".join(source))
+parser.parse(source)
 
 
 

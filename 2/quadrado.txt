@@ -1,5 +1,5 @@
 main{
-	int[4] lados;
+	float[4] lados;
 	int[6] a;
 	int i;
 	i = 4;
@@ -17,22 +17,27 @@ main{
 	a[4] = lados[1] == lados[3];
 	a[5] = lados[2] == lados[3];
 	
+	
 	i = a[0]*a[1]*a[2]*a[3]*a[4]*a[5];
-
-	if(i){
+	
+	if(i)
+	{
 		
-		if(lados[0]){
+		if(lados[0])
+		{
 			println("Podem ser os lados de um quadrado!");
 
 		}
 
-		if(lados[0] == 0){
+		else
+		{
 			println("Não podem ser os lados de um quadrado!");
-
 		}
 	}
 
-	if(i == 0){
+	
+	else
+	{
 		println("Não podem ser os lados de um quadrado!");
 	}
 
