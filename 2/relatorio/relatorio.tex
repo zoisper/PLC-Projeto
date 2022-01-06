@@ -177,58 +177,117 @@ o código Assembly gerado bem como o programa a correr na máquina virtual VM. E
 
 \chapter{Concepção/desenho da Resolução}
 \section{Organização e estrutura}
-Por forma a tornar a resolução do trabalho mais simples, decidimos criar uma função especifica para resolver cada uma das alineas do problema. Assim sendo, a solução do problema vai ser composta por \textbf{6} funções mais uma que vai servir de menu para o utilizador poder escolher qual das funcionalidades do programa quer utilizar.\\
-Na execução do programa todas as linhas do ficheiro de input são lidas para uma variável global que depois será utlizada por cada uma da funções. Também as expressões regulares utilizadas foram armazenadas em variáveis globais de forma a que seja mais fácil, no futuro, melhorar o programa. No entanto, na descrição das implementações que faremos de seguida optamos por, em cada uma delas, escrever integralmente as expressões regulares utilizadas. 
+O nosso trabalho pode ser divido em \textbf{4} partes:
+\begin{itemize}
+\item Definição da \textbf{GIC} que define a estrura sintática da nosso liguaguem.
+\item Construção do analizador léxico \verb lexer .
+\item Construção do analizador sintático \verb parser .
+\item Conversão das instruçõees para código \verb Assembly \ da  VM.    
+\end{itemize}
+Todas as funções descritas neste capítulo podem ser encontradas no anexo A do documento.\\
+No nosso trabalho optamos por implementar a funcionalidade de textit{declarar e manusear} variáveis estruturadas do tipo \textit{array (a 1 ou 2 dimensões)} de inteiros, em relação aos quais é apenas permitida a operação de indexação (ı́ndice inteiro).\\
 
-\section{Funcionalidades}
-Todas as funções descritas neste capítulo podem ser encontradas no anexo A do documento.
-Na implementação das função decidimos diferenciar utilizadores cujo nome apenas difere no facto de as letras estarem em maiusculas ou minusculas. Por exemplo 'xxxx', 'XXXX' e 'Xxxx' são  utilizadores distintos.
-Também definimos que em cada linha do texto de input não pode haver mais do que um registo do mesmo utilizador com a mesma entidade. Pensamos que isso não faria muito sentido.\\
-Por uma questão de simplicidade, sempre que for necessário ordenar, a ordem utilizada é a ordem alfabética
-\subsection{Executar o programa.}
-Para executar o programa o utilizador terá que colocar na mesma diretoria os ficheiro 'main.py' e o ficheiro de input. De seguida basta abrir o terminal nessa diretoria e exceutar o comando:
+\section{GIC}
+A nossa linguagem é gerada pela seguinte grámatica independente de contexto:
+
 \begin{verbatim}
->> python3 main.py <ficheiro de input>
+program      : MAIN LCURLY body RCURLY
+
+body         : declarations instructions
+
+declarations : 
+             | declaration  declarations
+
+declaration  : type VAR SEMICOLON
+             | type LBRACKET NUM RBRACKET VAR SEMICOLON
+             | type LBRACKET NUM RBRACKET LBRACKET NUM RBRACKET VAR SEMICOLON
+
+type         : INT
+             | FLOAT
+
+instructions :
+             | instruction  instructions
+
+instruction  : atributions SEMICOLON
+             | WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
+             | FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY 
+               instructions RCURLY
+             | IF LPAREN condition RPAREN LCURLY instructions RCURLY
+             | IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY 
+               instructions RCURLY
+             | SCAN LPAREN variable RPAREN SEMICOLON
+             | PRINT LPAREN variable RPAREN SEMICOLON
+             | PRINTLN LPAREN variable RPAREN SEMICOLON
+             | PRINT LPAREN STRING RPAREN SEMICOLON
+             | PRINTLN LPAREN STRING RPAREN SEMICOLON
+
+atributions  : 
+             | atribution
+             | atribution COMMA atributions
+
+atribution   : variable EQUAL expression 
+             | variable EQUAL condition
+
+variable     : VAR
+             | VAR LBRACKET expression RBRACKET
+             | VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
+
+expression   : variable
+             | NUM
+             | REAL
+             | LPAREN expression RPAREN
+             | expression PLUS expression
+             | expression MINUS expression
+             | expression MUL expression
+             | expression DIV expression
+             | expression MOD expression
+
+condition    : expression EQEQ expression
+             | expression DIFF expression
+             | expression GREATER expression
+             | expression LESSER expression
+             | expression GREATEQ expression
+             | expression LESSEQ expression
+             | NUM
+             | REAL
+             | variable
 \end{verbatim}
-Caso o utilizador execute o comando:
-\begin{verbatim}
->> python3 main.py 
-\end{verbatim}
-o programa, por defeito, vai tentar abrir e ler o ficheiro 'clav-users.txt'
-\subsection{O menu.}
+
+
+\section{Lexer}
 O menu do programa é implementado pela função \verb menu() . \\
 Esta função cria um ciclo \verb while \ que mostra ao utilizador todas as opções de funcionalidades disponiveis. De seguida lê a opção escolhida pelo utilizador e caso a opção esteja entre 1 e 6 vai invocar a função que implementa a funcionalidade selecionada. Se a opção escolhida pelo utilizador for menor que 0 ou maior que 6 vai ser mostrada uma mensagem de erro  sendo solicitado ao  utilizador que escolha novamente. Caso a opção seja 0, o programa termina a sua execução.\\
 Para tornar a experiencia mais agradavel, entre a execução de cada funcionalidade, é feita uma limpeza do ecrã atravês da impressão de 50 paragrafos. 
 
-\subsection{Nome dos utilizadores ordenados e respetiva entidade.}
+\section{Nome dos utilizadores ordenados e respetiva entidade.}
 Esta funcionalidade é implementada pela função \verb name_entity_list() . \\
 Na sua implementação vamos iterar por cada linha do texto e em cada uma vamos procurar o nome de utilizador e a entidade correspondente. Para capturar o nome do utlizador vamos utilizar a função \verb re.match \ com a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e para capturar a entidade utilizamos a função \verb re.search \ com a expressão regular \verb 'ent_\w*' . De seguida armazenamos o resultado num dicionario em que a chave é o nome do utilizador e o valor é uma lista com as entidades desse utilizador. Caso o utilizador ainda nao exista no dicionario é criada uma nova entrada, caso contrário a entidade capturada é acrescentada na lista do utilizador. \\ 
 Por fim, transformamos o dicionario numa lista composta pelos pares (nome de utilizador, entidade(s)), ordenada por nome de utilizador, e fazemos a impresão de cada utilizador e respetiva(s) entidade(s).
 
-\subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
+\section{Entidades ordenadas e número de utilizadores registados em cada uma.}
 Esta funcionalidade é implementada pela função \verb entity_num_elements_list() . \\
 Na sua implementação vamos iterar por cada linha do texto e através da função \verb re.search \ com a expressão regular \verb 'ent_\w*'  \ vamos capturar a entidade presente nessa linha. A entidade capturada é armazenada num dicionario cuja chave é o nome da entidade e o valor é o número de utilizadores nessa entidade. Caso a entidade ainda não exista no dicionario  é criada uma nova entrada com o valor 1, caso contrário, o valor dessa entidade no dicionario é incrementado em 1. \\
 Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, nº de utilizadores), ordenada por entidade, e fazemos a impresão de cada entidade e respetivo nº de utilizadores. 
 
-\subsection{Distribuiçao dos utilizadores por nível de acesso.}
+\section{Distribuiçao dos utilizadores por nível de acesso.}
 Esta funcionalidade é implementada pela função \verb dist_users_level() . \\
 Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . O resultado de capturar o nível de acesso e nome de utilizador são armazenados num dicionário em que a chave  é o nível de acesso e o valor é um conjunto com os utilizadores com esse nível de acesso. Optamos por um conjunto para evitar repetições, uma vez que existem utilizadores com mais do que um nível de acesso. Caso o nível de acesso capturado nao exista no dicionario, é criada uma entrada cuja chave é o nível de acesso e cujo valor é um conjunto com o utilizador capturado, caso contrário o utilizador é acrescentado ao conjunto de utilizadores ja existente para aquela chave. Para ser mais fácil de contar o nº de utilizadores total utilizamos tambem um conjunto onde vamos colocando cada utilizador capturado.\\
 Por fim, transformamos o dicionario numa lista composta pelos pares (nível de acesso, utilizadores) ordenada por nível de acesso e fazemos uma impressão dos utilizadores presentes em cada nível de acesso assim como a percentagem de utilizadores por nível. 
 
 
-\subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
+\section{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
 Esta funcionalidade é implementada pela função \verb name_entity_group() . \\
 Na sua implementação vamos iterar por cada linha do texto e em cada uma vamos procurar o nome de utilizador e a entidade correspondente. Para capturar o nome do utlizador vamos utilizar a função \verb re.match \ com a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' \ e para capturar a entidade utilizamos a função \verb re.search \ com a expressão regular \verb 'ent_\w*' .
 De seguida armazenamos o resultado num dicionario em que a chave é a entidade e o valor é uma lista com os utilizadores dessa entidade. Caso a entidade ainda nao exista no dicionario é criada uma nova entrada, caso contrário, o utilizador capturado é acrescentado na lista da entidade correspondente. \\ 
 Por fim, transformamos o dicionario numa lista composta pelos pares (entidade, utilizador), ordenada por entidade, e fazemos a impressão de cada entidade e respetivos utilizadores ordenados por nome.
 
 
-\subsection{Mostrar alguns indicadores.}
+\section{Mostrar alguns indicadores.}
 Esta funcionalidade é implementada pela função \verb indicators() . \\
 Na sua implementação vamos iterar por cada linha do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' ,\\vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , e  vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' . Os nomes de utilizadores capturados anteriormente são armazenados num conjunto, para evitar repetiçoes, enquanto que as entidades e níveis de acesso capturados anteriormente são armazenados em dois dicionarios. Num dos dicionarios o par chave e valore são a entidade e respetivo número de utilizadores enquanto que no outro o par chave e valore são o nível de acesso e respetivo número de utilizadores. \\
 Por fim, fazemos um impressão do número total de utilizadores, o número total de entidades, o número de utilizadores por entidade e o número de utilizadores por nível de acesso. 
 
-\subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
+\section{Imprimir num ficheiro Json os 20 primeiros registos.}
 Esta funcionalidade é implementada pela função \verb json_20() . \\
 Na sua implementação vamos iterar por cada umas das 20 primeiras linhas do texto e partir cada uma destas pelo separador \verb '[:,|]+' \ com o uso da função \verb re.split . De seguida vamos capturar o nome de utilizador no primeiro elemento (index 0) da linha partida com a função \verb re.match \ e a expressão regular \verb '(\w+\.?\s*(-?\w+\.?\s*)*\b)' , vamos capturar o email de utilizador no segundo elemento (index 1) da linha partida com a função \verb re.search \ e a expressão regular \verb '(\w+|\.|@|_|-)+'  , vamos capturar a entidade no terceiro elemento da linha partida (index 2) com a função \verb re.search \ e a expressão regular \verb 'ent_\w*' , vamos capturar o nível de acesso no quarto elemento da linha partida (index 3) com a função \verb re.search \ e a expressão regular \verb '\d+\.?\d*' , e vamos capturar o número de chamadas ao backend no quinto elemento da linha partida (index 4) com a função \verb re.search \ e a expressão regular \verb '\d+' . O resultado de cada linha é armazenado numa lista de tuplos (node de utilizador, email, entidade, nível de acesso, número de chamadas ao backend).  \\
 Finalizadas as capturas pedimos ao utilizador para escolher qual o nome do ficheiro para o qual quer imprimir os dados recolhidos. Depois abrimos o fichero e procedemos à impressão de cada registo (tuplo armazenado na lista) num formato json. \\ \\
