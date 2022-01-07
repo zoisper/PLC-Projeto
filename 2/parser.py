@@ -240,7 +240,7 @@ def p_instruction_atribution_condition(p):
 	elif p[1][1] == 'float':
 		p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
 	else:
-		p[0] = p[1][0] + p[3] + 'STOREN\n'\
+		p[0] = p[1][0] + p[3] + 'STOREN\n'
 
 
 

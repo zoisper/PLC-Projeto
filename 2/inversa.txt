@@ -1,4 +1,5 @@
-main{
+main
+{
 	int N;
 	int i;
 	int[10] a;
@@ -7,7 +8,7 @@ main{
 
 	print("Neste programa vamos digitar ");
 	print(N);
-	println(" números e imprimi-los por ordem inversa");
+	println(" números e imprimi-los por ordem inversa.");
 
 	while(i<N){
 		print("Digite número: ");
@@ -25,5 +26,4 @@ main{
 
 	println("");
 
-	
 }

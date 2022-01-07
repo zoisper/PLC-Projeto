@@ -293,10 +293,12 @@ MUL       : '\*'
 DIV       : '\/'
 MOD       : '\%'
 VAR       : '\w+'
-\end{verbatim}   
+\end{verbatim}
+A implementação do analisador léxico ser encontrada no anexo A do documento.   
 
 \section{Parser e geração do codigo Assembly da VM}
-O analisador sintático, \verb parser, vai ser o responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, respeitas as regras gramaticais definidas. Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly da máquina virtual.
+O analisador sintático, \verb parser, vai ser o responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, respeitas as regras gramaticais definidas. Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sitático.
+A implementação do analisador sintático pode ser encontrada no anexo A do documento. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -304,1582 +306,1390 @@ O analisador sintático, \verb parser, vai ser o responsavel por verificar se o 
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Demonstração de Funcionamento}
-\section{Ficheiro: 'clav-users'}
-\subsection{Conteúdo do ficheiro.}
+\section{Gerarção e execução de código Assembly}
+Para utilizar a nossa linguagem, o utilizador tem que:
+\begin{itemize}
+\item Escrever e guardar as instruções num ficheiro de texto de acordo com as regras grámaticais da linguagem. 
+\item Colocar o ficheiro na mesma diretoria dos ficheiros \verb lexer.py, \verb parser/py \verb vms \ e \verb vmsGTKAux. 
+\item Executar um dos seguintes comandos: 
+\begin{verbatim} 
+>> python3 parser.py <ficheiro de input> 
+>> python3 parser.py <ficheiro de input> <ficheiro de output>
+\end{verbatim} 
+\underline{Nota:} Caso o utilizador opte pelo primeiro comando, vai ser criado um ficheiro denominado
+\verb a.vm  onde será colocado o código gerado.
+\item Executar o comando:
+\begin{verbatim} 
+>> ./vms <ficheiro gerado no comando anterior> 
+\end{verbatim} 
+\end{itemize}
+
+
+\section{Teste 1}
+Ler 4 números e dizer se podem ser os lados de um quadrado. \\
+\underline{Ficheiro de input:} 'quadrado.txt'. 
+
+\subsection{Conteúdo do ficheiro}
 
 \begin{verbatim}
-Élia Cristina Viegas Pedro :: epedro@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
-Formação DGLAB :: lurdes.almeida@dglab.gov.pt :: ent_DGLAB :: 3.5 :: 0
-Nuno Filipe Casas Novas :: nuno.novas@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
-Sónia Patrícia Pinheiro Reis :: sonia.reis@icnf.pt :: ent_ICNF :: 1 :: 0
-Sónia Isabel Ferreira Gonçalves Negrão :: sonia.negrao@cm-albufeira.pt :: ent_CMABF :: 1 :: 0
-Filipe Ferreira Cardoso Leitão :: arquivo@cm-spsul.pt :: ent_CMSPS :: 1 :: 0
-Ana Lúcia Cabrita Guerreiro :: alucia@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
-Alda do Carmo Namora Soares de Andrade :: aandrade@letras.ulisboa.pt :: ent_FLUL :: 1 :: 0
-Ricardo Almeida :: ricardo.almeida@dgeg.gov.pt :: ent_DGEG :: 1 :: 0
-Sandra Cristina Patrício da Silva :: spatricio@mun-sines.pt :: ent_CMSNS :: 1 :: 0
-Cátia João Matias Trindade :: catia.trindade@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-Ricardo Canela :: tyty@tyty.pt :: ent_BdP :: 3 :: 0
-Cátia Trindade :: matiasjcatia@gmail.com :: ent_DGLAB :: 4 :: 0
-Miguel Ferreira :: mferreira@keep.pt :: ent_KEEP :: 7 :: 0
-Fernando Manuel Antunes Marques da Silva :: fernando.marques.silva@marinha.pt :: ent_STI-M :: 1 :: 0
-Ana Maria Teixeira Gaspar :: ana.gaspar@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
-Maria Matos de Almeida Talhada Correia :: MariaMatos.Correia@icnf.pt :: ent_ICNF :: 1 :: 0
-Cármen Isabel Amador Francisco :: carmem@mun-sines.pt :: ent_CMSNS :: 1 :: 0
-Maria Leonor da Conceição Fresco Franco :: leonor.mina@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
-Maria Rita Gago :: m-rita.gago@dglab.gov.pt :: ent_DGLAB :: 6 :: 3
-José Carlos Leite Ramalho :: jcr@di.uminho.pt :: ent_A3ES :: 7 :: 3
-Regina Neves Lopes :: Regina.Lopes@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
-João Paulo de Melo Esteves Pereira :: joao.pereira@apambiente.pt :: ent_APA :: 1 :: 0
-António José Morim Brandão :: Antonio.brandao@metrodoporto.pt :: ent_MdP :: 1 :: 0
-Alexandra Lourenço :: alexandra.lourenco@dglab.gov.pt :: ent_DGLAB :: 7 :: 3
-Rui Araújo :: pg38425@alunos.uminho.pt :: ent_II :: 7 :: 9
-Filipa Carvalho :: filipa.carvalho@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-clara cristina rainho viegas :: clara.viegas@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-Madalena Ribeiro :: madalena.ribeiro@dglab.gov.pt :: ent_DGLAB :: 6 :: 0
-Zélia Gomes :: zelia.gomes@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-Frederico Pinto :: frederico21pinto@hotmail.com :: ent_ACSS :: 7 :: 0
-Pedro Penteado :: pedro.penteado@dglab.gov.pt :: ent_DGLAB :: 5 :: 1
-Madalena Ribeiro :: madalena.ribeiro07@gmail.com :: ent_DGLAB :: 4 :: 2
-Alexandre Teixeira :: a73547@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-octavio :: octaviojmaia@gmail.com :: ent_A3ES :: 2 :: 0
-José Carlos Martins :: a78821@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-Silvestre Lacerda :: silvestre.lacerda@dglab.gov.pt :: ent_DGLAB :: 5 :: 0
-Design-DGLAB :: a75536@alunos.uminho.pt :: ent_DGLAB :: 7 :: 0
-João Pimentel :: A80874@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-Maria Celeste Pereira :: m-celeste.pereira@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-CLAV-migrator :: a74036@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-Alexadre Teixeira :: alex@keep.pt :: ent_KEEP :: 7 :: 0
-Carlos Barbosa :: A82324@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-Rui Araújo Simples :: 0.rffa.0@gmail.com :: ent_LNEC :: 1 :: 0
-Manuel Monteiro :: a74036@alunos.uminhopt :: ent_A3ES :: 7 :: 0
-Rui Araújo Entidade :: ruifilipearaujo@hotmail.com :: ent_AAN :: 1 :: 0
-Duarte Freitas :: a63129@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
-Maria José Maciel Chaves :: m-jose.chaves@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
-jcm :: jcm@live.com :: ent_AAN :: 1 :: 0
-José Carlos Leite Ramalho :: jcr@dglab.pt :: ent_DGLAB :: 7 :: 0
-Alexandra Testes :: m-alexandra.lourenco@dglab.gov.pt :: ent_A3ES :: 1 :: 0
-Paulo Lima :: plima@keep.pt :: ent_KEEP :: 7 :: 0
-Alexandra Maria Alves Coutinho Rodrigues :: acoutinh@utad.pt :: ent_UTAD :: 1 :: 0
-Aluno de DAW2020 :: leo.ramalho99@gmail.com :: ent_A3ES :: 2 :: 0
-PRI2020-teste :: pri2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
-DAW2020-teste :: daw2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
-jcr-rep-entidade :: zzglider@gmail.com :: ent_A3ES :: 1 :: 0
-Carlos Matoso :: cmatoso@ambisig.com :: ent_IEFP :: 2 :: 0
-Joana Braga :: jbraga@ambisig.com :: ent_IEFP :: 2 :: 0
-David Ferreira :: david.ferreira@ambisig.com :: ent_IEFP :: 2 :: 0
-\end{verbatim}
-
-
-\subsection{Execução e menu.}
-\begin{scriptsize}
-\begin{verbatim}
->> python3 main.py clav-users.txt
-
-*** Selecione Opção ***
-
-1. Listagem com o nome e a entidade do utilizador, ordenada alfabeticamente por nome.
-2. Lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados.
-3. Distribuição de utilizadores por níveis de acesso.
-4. Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.
-5. Mostrar alguns indicadores.
-6. Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.
-0. Sair.
->> 
-\end{verbatim}
-\end{scriptsize}
-
-\subsection{Nome dos utilizadores ordenados e respetiva entidade.}
-
-\begin{verbatim}
->> 1
-
-*** Utilizador : Entidade(s) ***
-
-Alda do Carmo Namora Soares de Andrade : ent_FLUL
-Alexadre Teixeira : ent_KEEP
-Alexandra Lourenço : ent_DGLAB
-Alexandra Maria Alves Coutinho Rodrigues : ent_UTAD
-Alexandra Testes : ent_A3ES
-Alexandre Teixeira : ent_A3ES
-Aluno de DAW2020 : ent_A3ES
-Ana Lúcia Cabrita Guerreiro : ent_CCDR
-Ana Maria Teixeira Gaspar : ent_SGMF
-António José Morim Brandão : ent_MdP
-Carlos Barbosa : ent_A3ES
-Carlos Matoso : ent_IEFP
-Cármen Isabel Amador Francisco : ent_CMSNS
-Cátia João Matias Trindade : ent_DGLAB
-Cátia Trindade : ent_DGLAB
-clara cristina rainho viegas : ent_DGLAB
-CLAV-migrator : ent_A3ES
-David Ferreira : ent_IEFP
-DAW2020-teste : ent_A3ES
-Design-DGLAB : ent_DGLAB
-Duarte Freitas : ent_A3ES
-Élia Cristina Viegas Pedro : ent_CCDR
-Fernando Manuel Antunes Marques da Silva : ent_STI
-Filipa Carvalho : ent_DGLAB
-Filipe Ferreira Cardoso Leitão : ent_CMSPS
-Formação DGLAB : ent_DGLAB
-Frederico Pinto : ent_ACSS
-jcm : ent_AAN
-jcr-rep-entidade : ent_A3ES
-Joana Braga : ent_IEFP
-João Paulo de Melo Esteves Pereira : ent_APA
-João Pimentel : ent_A3ES
-José Carlos Leite Ramalho : ent_A3ES, ent_DGLAB
-José Carlos Martins : ent_A3ES
-Madalena Ribeiro : ent_DGLAB, ent_DGLAB
-Manuel Monteiro : ent_A3ES
-Maria Celeste Pereira : ent_DGLAB
-Maria José Maciel Chaves : ent_DGLAB
-Maria Leonor da Conceição Fresco Franco : ent_CCDR
-Maria Matos de Almeida Talhada Correia : ent_ICNF
-Maria Rita Gago : ent_DGLAB
-Miguel Ferreira : ent_KEEP
-Nuno Filipe Casas Novas : ent_CCDR
-octavio : ent_A3ES
-Paulo Lima : ent_KEEP
-Pedro Penteado : ent_DGLAB
-PRI2020-teste : ent_A3ES
-Regina Neves Lopes : ent_SGMF
-Ricardo Almeida : ent_DGEG
-Ricardo Canela : ent_BdP
-Rui Araújo : ent_II
-Rui Araújo Entidade : ent_AAN
-Rui Araújo Simples : ent_LNEC
-Sandra Cristina Patrício da Silva : ent_CMSNS
-Silvestre Lacerda : ent_DGLAB
-Sónia Isabel Ferreira Gonçalves Negrão : ent_CMABF
-Sónia Patrícia Pinheiro Reis : ent_ICNF
-Zélia Gomes : ent_DGLAB
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-\subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
-
-\begin{verbatim}
->> 2
-
-*** Entidade : Nº Utilizadores ***
-
-ent_A3ES : 14
-ent_AAN : 2
-ent_ACSS : 1
-ent_APA : 1
-ent_BdP : 1
-ent_CCDR : 4
-ent_CMABF : 1
-ent_CMSNS : 2
-ent_CMSPS : 1
-ent_DGEG : 1
-ent_DGLAB : 16
-ent_FLUL : 1
-ent_ICNF : 2
-ent_IEFP : 3
-ent_II : 1
-ent_KEEP : 3
-ent_LNEC : 1
-ent_MdP : 1
-ent_SGMF : 2
-ent_STI : 1
-ent_UTAD : 1
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Distribuiçao dos utilizadores por nível de acesso.}
-
-\begin{verbatim}
->> 3
-
-*** Nível de Acesso : Distribuição ***
-
-Nível 1 : 40%
-* Alda do Carmo Namora Soares de Andrade
-* Alexandra Maria Alves Coutinho Rodrigues
-* Alexandra Testes
-* Ana Lúcia Cabrita Guerreiro
-* Ana Maria Teixeira Gaspar
-* António José Morim Brandão
-* Cármen Isabel Amador Francisco
-* Élia Cristina Viegas Pedro
-* Fernando Manuel Antunes Marques da Silva
-* Filipe Ferreira Cardoso Leitão
-* jcm
-* jcr-rep-entidade
-* João Paulo de Melo Esteves Pereira
-* Maria Leonor da Conceição Fresco Franco
-* Maria Matos de Almeida Talhada Correia
-* Nuno Filipe Casas Novas
-* Regina Neves Lopes
-* Ricardo Almeida
-* Rui Araújo Entidade
-* Rui Araújo Simples
-* Sandra Cristina Patrício da Silva
-* Sónia Isabel Ferreira Gonçalves Negrão
-* Sónia Patrícia Pinheiro Reis
-
-Nível 2 : 12%
-* Aluno de DAW2020
-* Carlos Matoso
-* David Ferreira
-* DAW2020-teste
-* Joana Braga
-* octavio
-* PRI2020-teste
-
-Nível 3 : 2%
-* Ricardo Canela
-
-Nível 3.5 : 2%
-* Formação DGLAB
-
-Nível 4 : 14%
-* Cátia João Matias Trindade
-* Cátia Trindade
-* clara cristina rainho viegas
-* Filipa Carvalho
-* Madalena Ribeiro
-* Maria Celeste Pereira
-* Maria José Maciel Chaves
-* Zélia Gomes
-
-Nível 5 : 3%
-* Pedro Penteado
-* Silvestre Lacerda
-
-Nível 6 : 3%
-* Madalena Ribeiro
-* Maria Rita Gago
-
-Nível 7 : 26%
-* Alexadre Teixeira
-* Alexandra Lourenço
-* Alexandre Teixeira
-* Carlos Barbosa
-* CLAV-migrator
-* Design-DGLAB
-* Duarte Freitas
-* Frederico Pinto
-* João Pimentel
-* José Carlos Leite Ramalho
-* José Carlos Martins
-* Manuel Monteiro
-* Miguel Ferreira
-* Paulo Lima
-* Rui Araújo
-
-Pressione Enter!
->>  
-\end{verbatim}
-
-
-\subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
-
-\begin{verbatim}
->> 4
-
-*** Utilizadores agrupados por entidade ***
-
-ent_A3ES:
-* Alexandra Testes
-* Alexandre Teixeira
-* Aluno de DAW2020
-* Carlos Barbosa
-* CLAV-migrator
-* DAW2020-teste
-* Duarte Freitas
-* jcr-rep-entidade
-* João Pimentel
-* José Carlos Leite Ramalho
-* José Carlos Martins
-* Manuel Monteiro
-* octavio
-* PRI2020-teste
-
-ent_AAN:
-* jcm
-* Rui Araújo Entidade
-
-ent_ACSS:
-* Frederico Pinto
-
-ent_APA:
-* João Paulo de Melo Esteves Pereira
-
-ent_BdP:
-* Ricardo Canela
-
-ent_CCDR:
-* Ana Lúcia Cabrita Guerreiro
-* Élia Cristina Viegas Pedro
-* Maria Leonor da Conceição Fresco Franco
-* Nuno Filipe Casas Novas
-
-ent_CMABF:
-* Sónia Isabel Ferreira Gonçalves Negrão
-
-ent_CMSNS:
-* Cármen Isabel Amador Francisco
-* Sandra Cristina Patrício da Silva
-
-ent_CMSPS:
-* Filipe Ferreira Cardoso Leitão
-
-ent_DGEG:
-* Ricardo Almeida
-
-ent_DGLAB:
-* Alexandra Lourenço
-* Cátia João Matias Trindade
-* Cátia Trindade
-* clara cristina rainho viegas
-* Design-DGLAB
-* Filipa Carvalho
-* Formação DGLAB
-* José Carlos Leite Ramalho
-* Madalena Ribeiro
-* Madalena Ribeiro
-* Maria Celeste Pereira
-* Maria José Maciel Chaves
-* Maria Rita Gago
-* Pedro Penteado
-* Silvestre Lacerda
-* Zélia Gomes
-
-ent_FLUL:
-* Alda do Carmo Namora Soares de Andrade
-
-ent_ICNF:
-* Maria Matos de Almeida Talhada Correia
-* Sónia Patrícia Pinheiro Reis
-
-ent_IEFP:
-* Carlos Matoso
-* David Ferreira
-* Joana Braga
-
-ent_II:
-* Rui Araújo
-
-ent_KEEP:
-* Alexadre Teixeira
-* Miguel Ferreira
-* Paulo Lima
-
-ent_LNEC:
-* Rui Araújo Simples
-
-ent_MdP:
-* António José Morim Brandão
-
-ent_SGMF:
-* Ana Maria Teixeira Gaspar
-* Regina Neves Lopes
-
-ent_STI:
-* Fernando Manuel Antunes Marques da Silva
-
-ent_UTAD:
-* Alexandra Maria Alves Coutinho Rodrigues
-
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Mostrar alguns indicadores.}
-
-\begin{verbatim}
->> 5
-
-*** Indicadores ***
-
-Número de Utilizadores: 58
-
-Número de Entidades: 21
-
-Distribuição de utilizadores por entidade:
-* ent_A3ES : 14
-* ent_AAN : 2
-* ent_ACSS : 1
-* ent_APA : 1
-* ent_BdP : 1
-* ent_CCDR : 4
-* ent_CMABF : 1
-* ent_CMSNS : 2
-* ent_CMSPS : 1
-* ent_DGEG : 1
-* ent_DGLAB : 16
-* ent_FLUL : 1
-* ent_ICNF : 2
-* ent_IEFP : 3
-* ent_II : 1
-* ent_KEEP : 3
-* ent_LNEC : 1
-* ent_MdP : 1
-* ent_SGMF : 2
-* ent_STI : 1
-* ent_UTAD : 1
-
-Distribuição de utilizadores por nível:
-* Nível 1 : 23
-* Nível 2 : 7
-* Nível 3 : 1
-* Nível 3.5 : 1
-* Nível 4 : 8
-* Nível 5 : 2
-* Nível 6 : 2
-* Nível 7 : 16
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
-
-\begin{verbatim}
->> 6   
-
-Digite nome do ficheiro de output!
->> json.txt
-
-Ficheiro "json.txt" gerado com sucesso!
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-\textbf{Conteúdo do ficheiro json.txt}
-
-\begin{verbatim}
+main
 {
-  "registos":[
+  float[4] lados;
+  int[6] a;
+  int i;
+  i = 4;
+  
+  while(i){
+    print("Digite lado: ");
+    scan(lados[4 - i]);
+    i = i - 1;  
+  }
+  
+  a[0] = lados[0] == lados[1];
+  a[1] = lados[0] == lados[2];
+  a[2] = lados[0] == lados[3];
+  a[3] = lados[1] == lados[2];
+  a[4] = lados[1] == lados[3];
+  a[5] = lados[2] == lados[3];
+  
+  
+  i = a[0]*a[1]*a[2]*a[3]*a[4]*a[5];
+  
+  if(i)
+  {  
+    
+    if(lados[0])
     {
-       "utilizador":"Élia Cristina Viegas Pedro",
-       "email":"epedro@ccdr-alg.pt",
-       "entidade":"ent_CCDR",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Formação DGLAB",
-       "email":"lurdes.almeida@dglab.gov.pt",
-       "entidade":"ent_DGLAB",
-       "nível de acesso":"3.5",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Nuno Filipe Casas Novas",
-       "email":"nuno.novas@ccdr-lvt.pt",
-       "entidade":"ent_CCDR",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Sónia Patrícia Pinheiro Reis",
-       "email":"sonia.reis@icnf.pt",
-       "entidade":"ent_ICNF",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Sónia Isabel Ferreira Gonçalves Negrão",
-       "email":"sonia.negrao@cm-albufeira.pt",
-       "entidade":"ent_CMABF",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Filipe Ferreira Cardoso Leitão",
-       "email":"arquivo@cm-spsul.pt",
-       "entidade":"ent_CMSPS",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Ana Lúcia Cabrita Guerreiro",
-       "email":"alucia@ccdr-alg.pt",
-       "entidade":"ent_CCDR",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Alda do Carmo Namora Soares de Andrade",
-       "email":"aandrade@letras.ulisboa.pt",
-       "entidade":"ent_FLUL",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Ricardo Almeida",
-       "email":"ricardo.almeida@dgeg.gov.pt",
-       "entidade":"ent_DGEG",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Sandra Cristina Patrício da Silva",
-       "email":"spatricio@mun-sines.pt",
-       "entidade":"ent_CMSNS",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Cátia João Matias Trindade",
-       "email":"catia.trindade@dglab.gov.pt",
-       "entidade":"ent_DGLAB",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Ricardo Canela",
-       "email":"tyty@tyty.pt",
-       "entidade":"ent_BdP",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Cátia Trindade",
-       "email":"matiasjcatia@gmail.com",
-       "entidade":"ent_DGLAB",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Miguel Ferreira",
-       "email":"mferreira@keep.pt",
-       "entidade":"ent_KEEP",
-       "nível de acesso":"7",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Fernando Manuel Antunes Marques da Silva",
-       "email":"fernando.marques.silva@marinha.pt",
-       "entidade":"ent_STI",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Ana Maria Teixeira Gaspar",
-       "email":"ana.gaspar@sgmf.gov.pt",
-       "entidade":"ent_SGMF",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Maria Matos de Almeida Talhada Correia",
-       "email":"MariaMatos.Correia@icnf.pt",
-       "entidade":"ent_ICNF",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Cármen Isabel Amador Francisco",
-       "email":"carmem@mun-sines.pt",
-       "entidade":"ent_CMSNS",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Maria Leonor da Conceição Fresco Franco",
-       "email":"leonor.mina@ccdr-lvt.pt",
-       "entidade":"ent_CCDR",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Maria Rita Gago",
-       "email":"m-rita.gago@dglab.gov.pt",
-       "entidade":"ent_DGLAB",
-       "nível de acesso":"6",
-       "número de chamadas ao backend":"3"
+      println("Podem ser os lados de um quadrado!");
+
     }
-  ]
-}
 
-\end{verbatim}
-
-
-\section{Ficheiro: 'forum-online.txt'}
-\subsection{Conteúdo do ficheiro.}
-
-\begin{verbatim}
-registado777, registado777@gmail.com, ent_C, 2, 1
-Dolores , mae_coragem@yahoo.com, ent_V, 2, 7
-Prof. Marcelo, marselfie@hotmail.com, ent_P, 1, 2
-CR7, siiiiiim@hotmail.com, ent_D, 7, 7
-Eng. F. Santos, mete_mais_um_trinco@protonmail.com , ent_D, 3, 10
-Xico Esperto, o.xico.esperto@protonmail.com, ent_C, 4 ,  7
-Dr. Salgado, ddt@protonmail.com, ent_D, 2, 30
-Sr. Doutor, sedutor@gmail.com, ent_D, 5, 1
-Passos Dias Aguiar Mota, pdamota@gmail.com, ent_C, 8, 2
-JJ, peaners@hotmail.com, ent_D, 3, 88
-Zé Povinho, zezinho@gmail.com, ent_C, 2, 0
-Socrates , animal_feroz@yahoo.pt, ent_P, 3, 2
-Inacio, naosejasinacio@hotmail.com, ent_C, 4, 2
-Geremias, geremeias666@yahoo.pt, ent_C, 4, 3
-ativista, a.t.i.v.i.s.t.a@hotmail.com, ent_C, 2, 3
-Baltasar Sete-Sóis, b72@hotmail.com, ent_V, 6, 1
-geringonça, passarola@outlook.pt, ent_P, 4, 9
-abelha maia, maia_a_abelha@yahoo.com, ent_V, 3, 4
-Blimunda Sete-Luas, b_7_l@gmail.com, ent_V, 8, 1
-mister_vitinho, i_speak_with-the-true@gmail.com, ent_D, 4, 8
-o_faneca , faneca_xpto@yahoo.com, ent_C, 2, 7
-Peppa , peppa_pig@gmail.com, ent_V, 5, 1 
-\end{verbatim}
-
-
-\subsection{Execução e menu.}
-\begin{scriptsize}
-\begin{verbatim}
->> python3 main.py forum-online.txt
-
-*** Selecione Opção ***
-
-1. Listagem com o nome e a entidade do utilizador, ordenada alfabeticamente por nome.
-2. Lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados.
-3. Distribuição de utilizadores por níveis de acesso.
-4. Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.
-5. Mostrar alguns indicadores.
-6. Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.
-0. Sair.
->> 
-\end{verbatim}
-\end{scriptsize}
-
-\subsection{Nome dos utilizadores ordenados e respetiva entidade.}
-
-\begin{verbatim}
->> 1
-
-*** Utilizador : Entidade(s) ***
-
-abelha maia : ent_V
-ativista : ent_C
-Baltasar Sete-Sóis : ent_V
-Blimunda Sete-Luas : ent_V
-CR7 : ent_D
-Dolores : ent_V
-Dr. Salgado : ent_D
-Eng. F. Santos : ent_D
-Geremias : ent_C
-geringonça : ent_P
-Inacio : ent_C
-JJ : ent_D
-mister_vitinho : ent_D
-o_faneca : ent_C
-Passos Dias Aguiar Mota : ent_C
-Peppa : ent_V
-Prof. Marcelo : ent_P
-registado777 : ent_C
-Socrates : ent_P
-Sr. Doutor : ent_D
-Xico Esperto : ent_C
-Zé Povinho : ent_C
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-\subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
-
-\begin{verbatim}
->> 2
-
-*** Entidade : Nº Utilizadores ***
-
-ent_C : 8
-ent_D : 6
-ent_P : 3
-ent_V : 5
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Distribuiçao dos utilizadores por nível de acesso.}
-
-\begin{verbatim}
->> 3
-
-*** Nível de Acesso : Distribuição ***
-
-Nível 1 : 5%
-* Prof. Marcelo
-
-Nível 2 : 27%
-* ativista
-* Dolores
-* Dr. Salgado
-* o_faneca
-* registado777
-* Zé Povinho
-
-Nível 3 : 18%
-* abelha maia
-* Eng. F. Santos
-* JJ
-* Socrates
-
-Nível 4 : 23%
-* Geremias
-* geringonça
-* Inacio
-* mister_vitinho
-* Xico Esperto
-
-Nível 5 : 9%
-* Peppa
-* Sr. Doutor
-
-Nível 6 : 5%
-* Baltasar Sete-Sóis
-
-Nível 7 : 5%
-* CR7
-
-Nível 8 : 9%
-* Blimunda Sete-Luas
-* Passos Dias Aguiar Mota
-
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-\subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
-
-\begin{verbatim}
->> 4
-
-*** Utilizadores agrupados por entidade ***
-
-ent_C:
-* ativista
-* Geremias
-* Inacio
-* o_faneca
-* Passos Dias Aguiar Mota
-* registado777
-* Xico Esperto
-* Zé Povinho
-
-ent_D:
-* CR7
-* Dr. Salgado
-* Eng. F. Santos
-* JJ
-* mister_vitinho
-* Sr. Doutor
-
-ent_P:
-* geringonça
-* Prof. Marcelo
-* Socrates
-
-ent_V:
-* abelha maia
-* Baltasar Sete-Sóis
-* Blimunda Sete-Luas
-* Dolores
-* Peppa
-
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Mostrar alguns indicadores.}
-
-\begin{verbatim}
->> 5
-
-*** Indicadores ***
-
-Número de Utilizadores: 22
-
-Número de Entidades: 4
-
-Distribuição de utilizadores por entidade:
-* ent_C : 8
-* ent_D : 6
-* ent_P : 3
-* ent_V : 5
-
-Distribuição de utilizadores por nível:
-* Nível 1 : 1
-* Nível 2 : 6
-* Nível 3 : 4
-* Nível 4 : 5
-* Nível 5 : 2
-* Nível 6 : 1
-* Nível 7 : 1
-* Nível 8 : 2
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
-
-\begin{verbatim}
->> 6
-
-Digite nome do ficheiro de output!
->> json.txt
-
-Ficheiro "json.txt" gerado com sucesso!
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-\textbf{Conteúdo do ficheiro json.txt}
-
-\begin{verbatim}
-{
-  "registos":[
+    else
     {
-       "utilizador":"registado777",
-       "email":"registado777@gmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Dolores",
-       "email":"mae_coragem@yahoo.com",
-       "entidade":"ent_V",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"7"
-    },
-    {
-       "utilizador":"Prof. Marcelo",
-       "email":"marselfie@hotmail.com",
-       "entidade":"ent_P",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"CR7",
-       "email":"siiiiiim@hotmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"7",
-       "número de chamadas ao backend":"7"
-    },
-    {
-       "utilizador":"Eng. F. Santos",
-       "email":"mete_mais_um_trinco@protonmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"10"
-    },
-    {
-       "utilizador":"Xico Esperto",
-       "email":"o.xico.esperto@protonmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"7"
-    },
-    {
-       "utilizador":"Dr. Salgado",
-       "email":"ddt@protonmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"30"
-    },
-    {
-       "utilizador":"Sr. Doutor",
-       "email":"sedutor@gmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"5",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Passos Dias Aguiar Mota",
-       "email":"pdamota@gmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"8",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"JJ",
-       "email":"peaners@hotmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"88"
-    },
-    {
-       "utilizador":"Zé Povinho",
-       "email":"zezinho@gmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Socrates",
-       "email":"animal_feroz@yahoo.pt",
-       "entidade":"ent_P",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"Inacio",
-       "email":"naosejasinacio@hotmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"Geremias",
-       "email":"geremeias666@yahoo.pt",
-       "entidade":"ent_C",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"3"
-    },
-    {
-       "utilizador":"ativista",
-       "email":"a.t.i.v.i.s.t.a@hotmail.com",
-       "entidade":"ent_C",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"3"
-    },
-    {
-       "utilizador":"Baltasar Sete-Sóis",
-       "email":"b72@hotmail.com",
-       "entidade":"ent_V",
-       "nível de acesso":"6",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"geringonça",
-       "email":"passarola@outlook.pt",
-       "entidade":"ent_P",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"9"
-    },
-    {
-       "utilizador":"abelha maia",
-       "email":"maia_a_abelha@yahoo.com",
-       "entidade":"ent_V",
-       "nível de acesso":"3",
-       "número de chamadas ao backend":"4"
-    },
-    {
-       "utilizador":"Blimunda Sete-Luas",
-       "email":"b_7_l@gmail.com",
-       "entidade":"ent_V",
-       "nível de acesso":"8",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"mister_vitinho",
-       "email":"i_speak_with-the-true@gmail.com",
-       "entidade":"ent_D",
-       "nível de acesso":"4",
-       "número de chamadas ao backend":"8"
+      println("Não podem ser os lados de um quadrado!");
     }
-  ]
+  }
+
+  else
+  {
+    println("Não podem ser os lados de um quadrado!");
+  }
+
 }
 \end{verbatim}
 
-\section{Ficheiro: 'classroom.txt'}
-\subsection{Conteúdo do ficheiro.}
 
+\subsection{Código assembly gerado}
 \begin{verbatim}
-Isaac Newton | a117293940@alunos.ufic.pt | ent_G12 | 1 | 0
-Confúcio | a257394827@alunos.ufic.pt | ent_G09 | 1 | 0
-Cristovão Colombo | a467392412@alunos.ufic.pt | ent_G12 | 1 | 0
-J. R. R. Tolkien | a635485767@alunos.ufic.pt | ent_G05 | 1 | 2
-Albert Einstein | a946596172@alunos.ufic.pt | ent_G14 | 1 | 1
-Louis Pasteur | a327596378@alunos.ufic.pt | ent_G01 | 1 | 0
-Galileu Galilei | a706203648@alunos.ufic.pt | ent_G18 | 1 | 0
-Euclides de Alexandria | a954271239@alunos.ufic.pt | ent_G07 | 1 | 2
-Charles Darwin | a227493822@alunos.ufic.pt | ent_G15 | 1 | 0
-Nicolau Copérnico | a654642048@alunos.ufic.pt | ent_G02 | 1 | 0
-Antoine Lavoisier | a804944252@alunos.ufic.pt | ent_G05 | 1 | 1
-Michael Faraday | a375341811@alunos.ufic.pt | ent_G17 | 1 | 0
-James Clerk Maxwell | a127394553@alunos.ufic.pt | ent_G08 | 1 | 1
-Karl Marx | a677394914@alunos.ufic.pt | ent_G08 | 1 | 2
-William Shakespeare | a9155647520@alunos.ufic.pt | ent_G02 | 1 | 0
-Napoleão Bonaparte | a510264723@alunos.ufic.pt | ent_G19 | 2 | 1
-Nikola Tesla | a477497937@alunos.ufic.pt | ent_G03 | 1 | 1
-Platão de Atenas | a617293652@alunos.ufic.pt | ent_G04 | 1 | 1
-Ludwig van Beethoven | a937597685@alunos.ufic.pt | ent_G16 | 1 | 1
-Werner Heisenberg | a237691605@alunos.ufic.pt | ent_G00 | 1 | 0
-Max Planck | a657792848@alunos.ufic.pt | ent_G04 | 1 | 0
-Júlio César | a525495438@alunos.ufic.pt | ent_G13 | 1 | 1
-Sigmund Freud | a922507686@alunos.ufic.pt | ent_G13 | 1 | 3
-Voltaire  | a114503726@alunos.ufic.pt | ent_G19 | 2 | 1
-Johannes Kepler | a529416472@alunos.ufic.pt | ent_G06 | 2 | 1
-Nicolau Maquiavel | a375513115@alunos.ufic.pt | ent_G07 | 1 | 1
-Vasco da Gama | a867395521@alunos.ufic.pt | ent_G14 | 1 | 2
-Homero | a724466884@alunos.ufic.pt | ent_G17 | 1 | 1
-Sidarta Gautama | a417093369@alunos.ufic.pt | ent_G20 | 1 | 0
-Luís Vaz de Camões | a402207424@alunos.ufic.pt | ent_G20 | 1 | 0
-Tony Hoare | a924364751@alunos.ufic.pt | ent_G21 | 1 | 1
-Edsger Dijkstra | a821467613@alunos.ufic.pt | ent_G13 | 1 | 0
-Marie Curie | a816385193@alunos.ufic.pt | ent_G10 | 1 | 3
-Madre Teresa de Calcutá | a153257485@alunos.ufic.pt | ent_G00 | 1 | 1
-Wolfgang Amadeus Mozart | a237292435@alunos.ufic.pt | ent_G03 | 1 | 1
-René Descartes | a387294424@alunos.ufic.pt | ent_G03 | 1 | 0
-Socrates | a705853823@alunos.ufic.pt | ent_G19 | 2 | 1
-Arquimedes de Siracusa | a604152532@alunos.ufic.pt | ent_G11 | 1 | 0
-Pierre de Fermat | a807293749@alunos.ufic.pt | ent_G01 | 1 | 2
-Pitágoras de Samos  | a224612850@alunos.ufic.pt | ent_G10 | 1 | 1
-Gottfried Wilhelm Leibniz | a887193477@alunos.ufic.pt | ent_G04 | 1 | 1
-Carl Friedrich Gauss | a927394962@alunos.ufic.pt | ent_G11 | 1 | 0
-Leonhard Euler | a721472365@alunos.ufic.pt | ent_G15 | 1 | 1
-Joseph-Louis Lagrange | a657294866@alunos.ufic.pt | ent_G09 | 1 | 1
-Augustin-Louis Cauchy | a390264536@alunos.ufic.pt | ent_G18 | 1 | 1
-Daniel Bernoulli | a317395579@alunos.ufic.pt | ent_G16 | 1 | 1
-Georg Cantor | a707293654@alunos.ufic.pt | ent_G16 | 1 | 1
-Mahatma Gandhi | a826371829@alunos.ufic.pt | ent_G02 | 1 | 0
-Nelson Mandela | a735598028@alunos.ufic.pt | ent_G21 | 1 | 3
-Fyodor Dostoevsky | a127496527@alunos.ufic.pt | ent_G01 | 1 | 1
-Liev Tolstói | a582250522@alunos.ufic.pt | ent_G06 | 2 | 3
-Henry David Thoreau | a805315792@alunos.ufic.pt | ent_G00 | 1 | 1
+PUSHN 4
+PUSHN 6
+PUSHI 0
+START
+PUSHGP
+PUSHI 10
+PUSHI 4
+STOREN
+B0:
+PUSHGP
+PUSHI 10
+LOADN
+PUSHI 0
+SUP
+JZ E0
+PUSHS "Digite lado: "
+WRITES
+PUSHGP
+PUSHI 0
+PUSHI 4
+PUSHGP
+PUSHI 10
+LOADN
+SUB
+ADD
+READ
+ATOF
+STOREN
+PUSHGP
+PUSHI 10
+PUSHGP
+PUSHI 10
+LOADN
+PUSHI 1
+SUB
+STOREN
+JUMP B0
+E0:
+PUSHGP
+PUSHI 4
+PUSHI 0
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 0
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 1
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 4
+PUSHI 1
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 0
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 2
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 4
+PUSHI 2
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 0
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 3
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 4
+PUSHI 3
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 1
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 2
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 4
+PUSHI 4
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 1
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 3
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 4
+PUSHI 5
+ADD
+PUSHGP
+PUSHI 0
+PUSHI 2
+ADD
+LOADN
+PUSHGP
+PUSHI 0
+PUSHI 3
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 10
+PUSHGP
+PUSHI 4
+PUSHI 0
+ADD
+LOADN
+PUSHGP
+PUSHI 4
+PUSHI 1
+ADD
+LOADN
+MUL
+PUSHGP
+PUSHI 4
+PUSHI 2
+ADD
+LOADN
+MUL
+PUSHGP
+PUSHI 4
+PUSHI 3
+ADD
+LOADN
+MUL
+PUSHGP
+PUSHI 4
+PUSHI 4
+ADD
+LOADN
+MUL
+PUSHGP
+PUSHI 4
+PUSHI 5
+ADD
+LOADN
+MUL
+STOREN
+PUSHGP
+PUSHI 10
+LOADN
+PUSHI 0
+SUP
+JZ E2
+PUSHGP
+PUSHI 0
+PUSHI 0
+ADD
+LOADN
+PUSHF 0.0
+FSUP
+FTOI
+PUSHI 0
+SUP
+JZ E1
+PUSHS "Podem ser os lados de um quadrado!"
+WRITES
+PUSHS"\n"
+WRITES
+JUMP F1
+E1:
+PUSHS "Não podem ser os lados de um quadrado!"
+WRITES
+PUSHS"\n"
+WRITES
+F1:
+JUMP F2
+E2:
+PUSHS "Não podem ser os lados de um quadrado!"
+WRITES
+PUSHS"\n"
+WRITES
+F2:
+STOP
 \end{verbatim}
 
 
-\subsection{Execução e menu.}
-\begin{scriptsize}
-\begin{verbatim}
->> python3 main.py classroom.txt
-
-*** Selecione Opção ***
-
-1. Listagem com o nome e a entidade do utilizador, ordenada alfabeticamente por nome.
-2. Lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados.
-3. Distribuição de utilizadores por níveis de acesso.
-4. Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.
-5. Mostrar alguns indicadores.
-6. Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.
-0. Sair.
->> 
-\end{verbatim}
-\end{scriptsize}
-
-\subsection{Nome dos utilizadores ordenados e respetiva entidade.}
+\subsection{Execução do código gerado na VM}
 
 \begin{verbatim}
->> 1
-
-*** Utilizador : Entidade(s) ***
-
-Albert Einstein : ent_G14
-Antoine Lavoisier : ent_G05
-Arquimedes de Siracusa : ent_G11
-Augustin-Louis Cauchy : ent_G18
-Carl Friedrich Gauss : ent_G11
-Charles Darwin : ent_G15
-Confúcio : ent_G09
-Cristovão Colombo : ent_G12
-Daniel Bernoulli : ent_G16
-Edsger Dijkstra : ent_G13
-Euclides de Alexandria : ent_G07
-Fyodor Dostoevsky : ent_G01
-Galileu Galilei : ent_G18
-Georg Cantor : ent_G16
-Gottfried Wilhelm Leibniz : ent_G04
-Henry David Thoreau : ent_G00
-Homero : ent_G17
-Isaac Newton : ent_G12
-J. R. R. Tolkien : ent_G05
-James Clerk Maxwell : ent_G08
-Johannes Kepler : ent_G06
-Joseph-Louis Lagrange : ent_G09
-Júlio César : ent_G13
-Karl Marx : ent_G08
-Leonhard Euler : ent_G15
-Liev Tolstói : ent_G06
-Louis Pasteur : ent_G01
-Ludwig van Beethoven : ent_G16
-Luís Vaz de Camões : ent_G20
-Madre Teresa de Calcutá : ent_G00
-Mahatma Gandhi : ent_G02
-Marie Curie : ent_G10
-Max Planck : ent_G04
-Michael Faraday : ent_G17
-Napoleão Bonaparte : ent_G19
-Nelson Mandela : ent_G21
-Nicolau Copérnico : ent_G02
-Nicolau Maquiavel : ent_G07
-Nikola Tesla : ent_G03
-Pierre de Fermat : ent_G01
-Pitágoras de Samos : ent_G10
-Platão de Atenas : ent_G04
-René Descartes : ent_G03
-Sidarta Gautama : ent_G20
-Sigmund Freud : ent_G13
-Socrates : ent_G19
-Tony Hoare : ent_G21
-Vasco da Gama : ent_G14
-Voltaire : ent_G19
-Werner Heisenberg : ent_G00
-William Shakespeare : ent_G02
-Wolfgang Amadeus Mozart : ent_G03
-
-Pressione Enter!
->> 
+>> ./vms a.vm
+Digite lado: 1
+Digite lado: 1
+Digite lado: 1
+Digite lado: 1
+Podem ser os lados de um quadrado!
+>>
 \end{verbatim}
 
-
-\subsection{Entidades ordenadas e número de utilizadores registados em cada uma.}
-
 \begin{verbatim}
->> 2
-
-*** Entidade : Nº Utilizadores ***
-
-ent_G00 : 3
-ent_G01 : 3
-ent_G02 : 3
-ent_G03 : 3
-ent_G04 : 3
-ent_G05 : 2
-ent_G06 : 2
-ent_G07 : 2
-ent_G08 : 2
-ent_G09 : 2
-ent_G10 : 2
-ent_G11 : 2
-ent_G12 : 2
-ent_G13 : 3
-ent_G14 : 2
-ent_G15 : 2
-ent_G16 : 3
-ent_G17 : 2
-ent_G18 : 2
-ent_G19 : 3
-ent_G20 : 2
-ent_G21 : 2
-
-Pressione Enter!
->> 
+>> ./vms a.vm
+Digite lado: 0
+Digite lado: 0
+Digite lado: 0
+Digite lado: 0
+Não podem ser os lados de um quadrado!
+>>
 \end{verbatim}
 
-
-
-\subsection{Distribuiçao dos utilizadores por nível de acesso.}
-
 \begin{verbatim}
->> 3
-
-*** Nível de Acesso : Distribuição ***
-
-Nível 1 : 90%
-* Albert Einstein
-* Antoine Lavoisier
-* Arquimedes de Siracusa
-* Augustin-Louis Cauchy
-* Carl Friedrich Gauss
-* Charles Darwin
-* Confúcio
-* Cristovão Colombo
-* Daniel Bernoulli
-* Edsger Dijkstra
-* Euclides de Alexandria
-* Fyodor Dostoevsky
-* Galileu Galilei
-* Georg Cantor
-* Gottfried Wilhelm Leibniz
-* Henry David Thoreau
-* Homero
-* Isaac Newton
-* J. R. R. Tolkien
-* James Clerk Maxwell
-* Joseph-Louis Lagrange
-* Júlio César
-* Karl Marx
-* Leonhard Euler
-* Louis Pasteur
-* Ludwig van Beethoven
-* Luís Vaz de Camões
-* Madre Teresa de Calcutá
-* Mahatma Gandhi
-* Marie Curie
-* Max Planck
-* Michael Faraday
-* Nelson Mandela
-* Nicolau Copérnico
-* Nicolau Maquiavel
-* Nikola Tesla
-* Pierre de Fermat
-* Pitágoras de Samos
-* Platão de Atenas
-* René Descartes
-* Sidarta Gautama
-* Sigmund Freud
-* Tony Hoare
-* Vasco da Gama
-* Werner Heisenberg
-* William Shakespeare
-* Wolfgang Amadeus Mozart
-
-Nível 2 : 10%
-* Johannes Kepler
-* Liev Tolstói
-* Napoleão Bonaparte
-* Socrates
-* Voltaire
-
-Pressione Enter!
->>  
+>> ./vms a.vm
+Digite lado: 0.1
+Digite lado: 0.1
+Digite lado: 0.1
+Digite lado: 0.1
+Podem ser os lados de um quadrado!
 \end{verbatim}
 
-
-\subsection{Utilizadores agrupados por entidade, ordenados por nome e entidade.}
-
 \begin{verbatim}
->> 4
-
-*** Utilizadores agrupados por entidade ***
-
-ent_G00:
-* Henry David Thoreau
-* Madre Teresa de Calcutá
-* Werner Heisenberg
-
-ent_G01:
-* Fyodor Dostoevsky
-* Louis Pasteur
-* Pierre de Fermat
-
-ent_G02:
-* Mahatma Gandhi
-* Nicolau Copérnico
-* William Shakespeare
-
-ent_G03:
-* Nikola Tesla
-* René Descartes
-* Wolfgang Amadeus Mozart
-
-ent_G04:
-* Gottfried Wilhelm Leibniz
-* Max Planck
-* Platão de Atenas
-
-ent_G05:
-* Antoine Lavoisier
-* J. R. R. Tolkien
-
-ent_G06:
-* Johannes Kepler
-* Liev Tolstói
-
-ent_G07:
-* Euclides de Alexandria
-* Nicolau Maquiavel
-
-ent_G08:
-* James Clerk Maxwell
-* Karl Marx
-
-ent_G09:
-* Confúcio
-* Joseph-Louis Lagrange
-
-ent_G10:
-* Marie Curie
-* Pitágoras de Samos
-
-ent_G11:
-* Arquimedes de Siracusa
-* Carl Friedrich Gauss
-
-ent_G12:
-* Cristovão Colombo
-* Isaac Newton
-
-ent_G13:
-* Edsger Dijkstra
-* Júlio César
-* Sigmund Freud
-
-ent_G14:
-* Albert Einstein
-* Vasco da Gama
-
-ent_G15:
-* Charles Darwin
-* Leonhard Euler
-
-ent_G16:
-* Daniel Bernoulli
-* Georg Cantor
-* Ludwig van Beethoven
-
-ent_G17:
-* Homero
-* Michael Faraday
-
-ent_G18:
-* Augustin-Louis Cauchy
-* Galileu Galilei
-
-ent_G19:
-* Napoleão Bonaparte
-* Socrates
-* Voltaire
-
-ent_G20:
-* Luís Vaz de Camões
-* Sidarta Gautama
-
-ent_G21:
-* Nelson Mandela
-* Tony Hoare
-
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-
-
-\subsection{Mostrar alguns indicadores.}
-
-\begin{verbatim}
->> 5
-
-*** Indicadores ***
-
-Número de Utilizadores: 52
-
-Número de Entidades: 22
-
-Distribuição de utilizadores por entidade:
-* ent_G00 : 3
-* ent_G01 : 3
-* ent_G02 : 3
-* ent_G03 : 3
-* ent_G04 : 3
-* ent_G05 : 2
-* ent_G06 : 2
-* ent_G07 : 2
-* ent_G08 : 2
-* ent_G09 : 2
-* ent_G10 : 2
-* ent_G11 : 2
-* ent_G12 : 2
-* ent_G13 : 3
-* ent_G14 : 2
-* ent_G15 : 2
-* ent_G16 : 3
-* ent_G17 : 2
-* ent_G18 : 2
-* ent_G19 : 3
-* ent_G20 : 2
-* ent_G21 : 2
-
-Distribuição de utilizadores por nível:
-* Nível 1 : 47
-* Nível 2 : 5
-
-Pressione Enter!
+>> ./vms a.vm
+Digite lado: 4
+Digite lado: 4
+Digite lado: 6
+Digite lado: 4
+Não podem ser os lados de um quadrado!
 >>
 \end{verbatim}
 
 
+\section{Teste 2}
+Ler um inteiro N, depois ler N números e escrever o menor deles. \\
+\underline{Ficheiro de input:} 'menor.txt'.
 
-\subsection{Imprimir num ficheiro Json os 20 primeiros registos.}
-
-\begin{verbatim}
->> 6   
-
-Digite nome do ficheiro de output!
->> json.txt
-
-Ficheiro "json.txt" gerado com sucesso!
-
-Pressione Enter!
->> 
-\end{verbatim}
-
-\textbf{Conteúdo do ficheiro json.txt}
+\subsection{Conteúdo do ficheiro}
 
 \begin{verbatim}
+main
 {
-  "registos":[
-    {
-       "utilizador":"Isaac Newton",
-       "email":"a117293940@alunos.ufic.pt",
-       "entidade":"ent_G12",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Confúcio",
-       "email":"a257394827@alunos.ufic.pt",
-       "entidade":"ent_G09",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Cristovão Colombo",
-       "email":"a467392412@alunos.ufic.pt",
-       "entidade":"ent_G12",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"J. R. R. Tolkien",
-       "email":"a635485767@alunos.ufic.pt",
-       "entidade":"ent_G05",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"Albert Einstein",
-       "email":"a946596172@alunos.ufic.pt",
-       "entidade":"ent_G14",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Louis Pasteur",
-       "email":"a327596378@alunos.ufic.pt",
-       "entidade":"ent_G01",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Galileu Galilei",
-       "email":"a706203648@alunos.ufic.pt",
-       "entidade":"ent_G18",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Euclides de Alexandria",
-       "email":"a954271239@alunos.ufic.pt",
-       "entidade":"ent_G07",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"Charles Darwin",
-       "email":"a227493822@alunos.ufic.pt",
-       "entidade":"ent_G15",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Nicolau Copérnico",
-       "email":"a654642048@alunos.ufic.pt",
-       "entidade":"ent_G02",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Antoine Lavoisier",
-       "email":"a804944252@alunos.ufic.pt",
-       "entidade":"ent_G05",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Michael Faraday",
-       "email":"a375341811@alunos.ufic.pt",
-       "entidade":"ent_G17",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"James Clerk Maxwell",
-       "email":"a127394553@alunos.ufic.pt",
-       "entidade":"ent_G08",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Karl Marx",
-       "email":"a677394914@alunos.ufic.pt",
-       "entidade":"ent_G08",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"2"
-    },
-    {
-       "utilizador":"William Shakespeare",
-       "email":"a9155647520@alunos.ufic.pt",
-       "entidade":"ent_G02",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
-    },
-    {
-       "utilizador":"Napoleão Bonaparte",
-       "email":"a510264723@alunos.ufic.pt",
-       "entidade":"ent_G19",
-       "nível de acesso":"2",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Nikola Tesla",
-       "email":"a477497937@alunos.ufic.pt",
-       "entidade":"ent_G03",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Platão de Atenas",
-       "email":"a617293652@alunos.ufic.pt",
-       "entidade":"ent_G04",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Ludwig van Beethoven",
-       "email":"a937597685@alunos.ufic.pt",
-       "entidade":"ent_G16",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"1"
-    },
-    {
-       "utilizador":"Werner Heisenberg",
-       "email":"a237691605@alunos.ufic.pt",
-       "entidade":"ent_G00",
-       "nível de acesso":"1",
-       "número de chamadas ao backend":"0"
+  
+  int menor;
+  int N;
+  int i;
+  int aux;
+  
+  i = 0;
+  
+  print("Digite número: ");
+  scan(menor);
+  
+
+  print("Digite quantos números quer ler: ");
+  scan(N);
+
+
+  while(i<N){
+    print("Digite número: ");
+    scan(aux);
+
+    if(aux < menor){
+      menor = aux;
     }
-  ]
+    i = i +1;
+  }
+  print("O menor número é: ");
+  println(menor);
+
 }
 \end{verbatim}
 
 
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+PUSHI 0
+PUSHI 0
+PUSHI 0
+START
+PUSHGP
+PUSHI 2
+PUSHI 0
+STOREN
+PUSHS "Digite número: "
+WRITES
+PUSHGP
+PUSHI 0
+READ
+ATOI
+STOREN
+PUSHS "Digite quantos números quer ler: "
+WRITES
+PUSHGP
+PUSHI 1
+READ
+ATOI
+STOREN
+B1:
+PUSHGP
+PUSHI 2
+LOADN
+PUSHGP
+PUSHI 1
+LOADN
+INF
+JZ E1
+PUSHS "Digite número: "
+WRITES
+PUSHGP
+PUSHI 3
+READ
+ATOI
+STOREN
+PUSHGP
+PUSHI 3
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E0
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 3
+LOADN
+STOREN
+E0:
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 2
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B1
+E1:
+PUSHS "O menor número é: "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
 
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite número: 5
+Digite quantos números quer ler: 3
+Digite número: -1
+Digite número: 4
+Digite número: 0
+O menor número é: -1
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite número: 2
+Digite quantos números quer ler: 0
+O menor número é: 2
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite número: 1
+Digite quantos números quer ler: 5
+Digite número: 2
+Digite número: 3
+Digite número: 4
+Digite número: 5
+Digite número: 0
+O menor número é: 0
+\end{verbatim}
+
+\section{Teste 3}
+Ler N (constante do programa) números e calcular e imprimir o seu produtório. \\
+\underline{Ficheiro de input:} 'produto.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  
+  int N;
+  int r;
+  int[5] a;
+  int i;
+
+  i = 0;
+  N = 5;
+  r = 1;
+  
+  while(i<N){
+    print("Digite um número: ");
+    scan(a[i]);
+    i = i + 1;
+
+  }
+  i = 0;
+
+  while(i<N){
+    print(a[i]);
+    print(" x ");
+    r = r * a[i];
+    i = i + 1;
+  }
+  
+  print(" = ");
+  println(r);
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+PUSHI 0
+PUSHN 5
+PUSHI 0
+START
+PUSHGP
+PUSHI 7
+PUSHI 0
+STOREN
+PUSHGP
+PUSHI 0
+PUSHI 5
+STOREN
+PUSHGP
+PUSHI 1
+PUSHI 1
+STOREN
+B0:
+PUSHGP
+PUSHI 7
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E0
+PUSHS "Digite um número: "
+WRITES
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 7
+LOADN
+ADD
+READ
+ATOI
+STOREN
+PUSHGP
+PUSHI 7
+PUSHGP
+PUSHI 7
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B0
+E0:
+PUSHGP
+PUSHI 7
+PUSHI 0
+STOREN
+B1:
+PUSHGP
+PUSHI 7
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E1
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 7
+LOADN
+ADD
+LOADN
+WRITEI
+PUSHS " x "
+WRITES
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 7
+LOADN
+ADD
+LOADN
+MUL
+STOREN
+PUSHGP
+PUSHI 7
+PUSHGP
+PUSHI 7
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B1
+E1:
+PUSHS " = "
+WRITES
+PUSHGP
+PUSHI 1
+LOADN
+WRITEI
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
+
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite um número: 1
+Digite um número: 2
+Digite um número: 3
+Digite um número: 4
+Digite um número: 5
+1 x 2 x 3 x 4 x 5 x  = 120
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite um número: 0
+Digite um número: 1
+Digite um número: 2
+Digite um número: 3
+Digite um número: 4
+0 x 1 x 2 x 3 x 4 x  = 0
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite um número: 1.5
+Digite um número: 1.5
+Digite um número: 1
+Digite um número: 2
+Digite um número: 3
+1 x 1 x 1 x 2 x 3 x  = 6
+>>
+\end{verbatim}
+
+\section{Teste 4}
+Contar e imprimir os números impares de uma sequência de números naturais. \\
+\underline{Ficheiro de input:} 'impares.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  
+  int count;
+  int aux;
+  count = 0;
+  aux = 1;
+  println("Digite 0 para parar!");
+  while(aux !=0){
+    print("Digite número: ");
+    scan(aux);
+    if(aux %2 == 1){
+      print(aux);
+      println(" é impar!");
+      count = count +1;
+    }
+  }
+  print("Foram lidos ");
+  print(count);
+  println(" números impares!");
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+PUSHI 0
+START
+PUSHGP
+PUSHI 0
+PUSHI 0
+STOREN
+PUSHGP
+PUSHI 1
+PUSHI 1
+STOREN
+PUSHS "Digite 0 para parar!"
+WRITES
+PUSHS"\n"
+WRITES
+B1:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 0
+EQUAL
+NOT
+JZ E1
+PUSHS "Digite número: "
+WRITES
+PUSHGP
+PUSHI 1
+READ
+ATOI
+STOREN
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 2
+MOD
+PUSHI 1
+EQUAL
+JZ E0
+PUSHGP
+PUSHI 1
+LOADN
+WRITEI
+PUSHS " é impar!"
+WRITES
+PUSHS"\n"
+WRITES
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 0
+LOADN
+PUSHI 1
+ADD
+STOREN
+E0:
+JUMP B1
+E1:
+PUSHS "Foram lidos "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS " números impares!"
+WRITES
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
+
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite 0 para parar!
+Digite número: 1
+1 é impar!
+Digite número: 2
+Digite número: 3
+3 é impar!
+Digite número: 4
+Digite número: 5
+5 é impar!
+Digite número: 6
+Digite número: 0
+Foram lidos 3 números impares!
+>>
+\end{verbatim}
+
+\section{Teste 5}
+Ler e armazenar N números num array. Imprimir os valores por ordem inversa. \\
+\underline{Ficheiro de input:} 'inversa.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  int N;
+  int i;
+  int[10] a;
+  N = 5;
+  i = 0;
+
+  print("Neste programa vamos digitar ");
+  print(N);
+  println(" números e imprimi-los por ordem inversa.");
+
+  while(i<N){
+    print("Digite número: ");
+    scan(a[i]); 
+    i = i +1;
+  }
+
+  i = N - 1;
+
+  while(i>=0){
+    print(a[i]);
+    print(" ");
+    i = i - 1;
+  }
+
+  println("");
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+PUSHI 0
+PUSHN 10
+START
+PUSHGP
+PUSHI 0
+PUSHI 5
+STOREN
+PUSHGP
+PUSHI 1
+PUSHI 0
+STOREN
+PUSHS "Neste programa vamos digitar "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS " números e imprimi-los por ordem inversa."
+WRITES
+PUSHS"\n"
+WRITES
+B0:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E0
+PUSHS "Digite número: "
+WRITES
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+READ
+ATOI
+STOREN
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B0
+E0:
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 0
+LOADN
+PUSHI 1
+SUB
+STOREN
+B1:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 0
+SUPEQ
+JZ E1
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+LOADN
+WRITEI
+PUSHS " "
+WRITES
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+SUB
+STOREN
+JUMP B1
+E1:
+PUSHS ""
+WRITES
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
+
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+Neste programa vamos digitar 5 números e imprimi-los por ordem inversa.
+Digite número: 1
+Digite número: 2
+Digite número: 3
+Digite número: 4
+Digite número: 5
+5 4 3 2 1
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Neste programa vamos digitar 5 números e imprimi-los por ordem inversa.
+Digite número: 3
+Digite número: 4
+Digite número: 1
+Digite número: 7
+Digite número: 6
+6 7 1 4 3
+>>
+\end{verbatim}
+
+\section{Teste 6}
+Execução de operações aritméticas. \\
+\underline{Ficheiro de input:} 'calculo.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  int a;
+
+
+  a = 2 * 3 + 4 * 5 - 1;
+  
+  print("a = 2 * 3 + 4 * 5 - 1 = ");
+  println(a);
+  
+
+  a = (1 + a) * a;
+  
+  print("(1 + a) * a = ");
+  println(a); 
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+START
+PUSHGP
+PUSHI 0
+PUSHI 2
+PUSHI 3
+MUL
+PUSHI 4
+PUSHI 5
+MUL
+ADD
+PUSHI 1
+SUB
+STOREN
+PUSHS "a = 2 * 3 + 4 * 5 - 1 = "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS"\n"
+WRITES
+PUSHGP
+PUSHI 0
+PUSHI 1
+PUSHGP
+PUSHI 0
+LOADN
+ADD
+PUSHGP
+PUSHI 0
+LOADN
+MUL
+STOREN
+PUSHS "(1 + a) * a = "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
+
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+a = 2 * 3 + 4 * 5 - 1 = 25
+(1 + a) * a = 650
+>>
+\end{verbatim}
+
+\section{Teste 7}
+Ordenação de um array. \\
+\underline{Ficheiro de input:} 'ordena.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  int N;
+  int i;
+  int j;
+  int menor;
+  int aux;
+  int[5] a;
+  
+
+  N = 5;
+
+  print("Neste programa vamos digitar ");
+  print(N);
+  println(" números e imprimi-los por ordem crescente.");
+
+  for(i=0;i<N;i=i+1){
+    print("Digite número: ");
+    scan(a[i]); 
+  }
+  
+
+  for(i=0;i<N;i=i+1)
+  {
+    menor = i;
+
+    for(j=i+1;j<N;j=j+1)
+    {
+      if(a[j]<a[menor])
+      {
+        menor = j;
+      }
+    }
+    
+    if(menor !=i)
+    {
+      aux = a[i];
+      a[i] = a[menor];
+      a[menor] = aux;
+
+    }
+
+
+
+  } 
+
+
+
+  for(i=0;i<N; i=i+1)
+  {
+    print(a[i]);
+    print(" ");
+  }
+
+  println("");
+  
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+PUSHI 0
+PUSHI 0
+PUSHI 0
+PUSHI 0
+PUSHN 5
+START
+PUSHGP
+PUSHI 0
+PUSHI 5
+STOREN
+PUSHS "Neste programa vamos digitar "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS " números e imprimi-los por ordem crescente."
+WRITES
+PUSHS"\n"
+WRITES
+PUSHGP
+PUSHI 1
+PUSHI 0
+STOREN
+B0:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E0
+PUSHS "Digite número: "
+WRITES
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+READ
+ATOI
+STOREN
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B0
+E0:
+PUSHGP
+PUSHI 1
+PUSHI 0
+STOREN
+B4:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E4
+PUSHGP
+PUSHI 3
+PUSHGP
+PUSHI 1
+LOADN
+STOREN
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+ADD
+STOREN
+B2:
+PUSHGP
+PUSHI 2
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E2
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 2
+LOADN
+ADD
+LOADN
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 3
+LOADN
+ADD
+LOADN
+INF
+JZ E1
+PUSHGP
+PUSHI 3
+PUSHGP
+PUSHI 2
+LOADN
+STOREN
+E1:
+PUSHGP
+PUSHI 2
+PUSHGP
+PUSHI 2
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B2
+E2:
+PUSHGP
+PUSHI 3
+LOADN
+PUSHGP
+PUSHI 1
+LOADN
+EQUAL
+NOT
+JZ E3
+PUSHGP
+PUSHI 4
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+LOADN
+STOREN
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 3
+LOADN
+ADD
+LOADN
+STOREN
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 3
+LOADN
+ADD
+PUSHGP
+PUSHI 4
+LOADN
+STOREN
+E3:
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B4
+E4:
+PUSHGP
+PUSHI 1
+PUSHI 0
+STOREN
+B5:
+PUSHGP
+PUSHI 1
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+INF
+JZ E5
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 1
+LOADN
+ADD
+LOADN
+WRITEI
+PUSHS " "
+WRITES
+PUSHGP
+PUSHI 1
+PUSHGP
+PUSHI 1
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B5
+E5:
+PUSHS ""
+WRITES
+PUSHS"\n"
+WRITES
+STOP
+\end{verbatim}
+
+
+\subsection{Execução do código gerado na VM}
+
+\begin{verbatim}
+>> ./vms a.vm
+Neste programa vamos digitar 5 números e imprimi-los por ordem crescente.
+Digite número: 1
+Digite número: 2
+Digite número: 3
+Digite número: 4
+Digite número: 5
+1 2 3 4 5 
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Neste programa vamos digitar 5 números e imprimi-los por ordem crescente.
+Digite número: 5
+Digite número: 4
+Digite número: 3
+Digite número: 2
+Digite número: 1
+1 2 3 4 5
+>>
+\end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Neste programa vamos digitar 5 números e imprimi-los por ordem crescente.
+Digite número: -1
+Digite número: -5
+Digite número: 3
+Digite número: 0
+Digite número: 3
+-5 -1 0 3 3 
+>>
+\end{verbatim}  
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo5%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Conclusão} \label{concl}
-Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos e que o nosso programa respeite os princípios ensinados na disciplina.
-Numa primeira abordagem tentamos fazer a captura dos nomes de utilizador com a função \verb findall , no entanto não estava a ser muito fácil obter resultados na captura dos nomes de utilizador,por causa do inicio de linha, pelo que optamos por em todos os exercios iterar linha a linha. \\ \\
-No problema que nos foi proposto, em cada uma das alineas é nos pedido que façamos um programa, no entanto achamos que a utilização do menu, na qual podemos escolher qual a funcionaliadade, torna a experiencia do utilizador mais simples e agrádavel. \\ \\
-Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e com recurso à biblioteca 're', facilitou bastante a sua implementação.
+Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
+O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
+Achamos que há aspetos que poderiam ser melhorados, como por exemplo a implementação de funções com e sem argumentos. Também na parte de atribuição de valores as variaveis há uma pequena falha que permite ao utilizador por exemplo fazer:
+\begin{verbatim}
+a = 1,;
+\end{verbatim}
+No entanto se esta fosse removida, nao poderiamos por exemplo fazer a seguinte instrução:
+\begin{verbatim}
+a = 1,b = 2;
+\end{verbatim}
+E os ciclos \textit{for} teriam que ficar do genero:
+\begin{verbatim}
+for(i=0;i<N;i=i+i;){}
+\end{verbatim}
+Ou seja, a operação de incremento do \verb 'i' \ teria que ter um \verb ';' \ desnecessário.\\
+
+Contudo, como temos a liberdade de definir a sintaxe da linguagem, podemos dizer que isto nao é um erro mas sim uma opção.\\
+
+Por fim, tal como ja tinha sido mencionado no relatório do primeiro projeto, todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e, neste caso, com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python', facilitou bastante o seu desenvolvimento.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo6%%%%%%%%
@@ -1888,228 +1698,738 @@ Todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem '
 \appendix % apendice
 \chapter{Código do Programa}
 
-\textbf{Ficheiro main.py}
+\textbf{Ficheiro lexer.py}
 \begin{scriptsize}
 \begin{verbatim}
-import re
-import unidecode
+import ply.lex as lex
 import sys
-import os.path
 
+tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL',
+      'VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE',
+      'STRING','EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER',
+      'LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
 
-def name_entity_list():
-    result = {}
-    for line in text:
-        user =  re.match(user_er,line).group()
-        entity = re.search(entity_er,line).group()
-        if user not in result:
-            result[user] = [entity]
-        else:
-            result[user].append(', ')
-            result[user].append(entity)
-    result = list(result.items())
-    result.sort(key=lambda x: unidecode.unidecode(x[0].casefold()))
-    print("\n*** Utilizador : Entidade(s) ***\n")
-    for r in result:
-        print(r[0], ":", "".join(r[1]))
+def t_SEMICOLON(t):
+  r';'
+  return t
 
+def t_COMMA(t):
+  r','
+  return t
 
-def entity_num_elements_list():
-    entities = {}
-    for line in text:
-        entity = re.search(entity_er, line).group()
-        if entity not in entities:
-            entities[entity] = 1
-        else:
-            entities[entity] +=1
+def t_LCURLY(t):
+  r'\{'
+  return t
 
-    result = list(entities.items())
-    result.sort()
-    print("\n*** Entidade : Nº Utilizadores ***\n")
-    for r in result:
-        print(r[0], ":", r[1])
+def t_RCURLY(t):
+  r'\}'
+  return t
 
+def t_LPAREN(t):
+  r'\('
+  return t
 
-def dist_users_level():
-    levels = {}
-    users = set()
-    for line in text:
-        broken_line = re.split(separator_er, line)
-        user = re.match(user_er, broken_line[0]).group()
-        level = re.search(level_er,broken_line[3]).group()
-        if level not in levels:
-            levels[level] = set()
-            levels[level].add(user)
-        else:
-            levels[level].add(user)
-        users.add(user)
-    result = list(levels.items())
-    result.sort()
-    total_users = len(users)
-    print("\n*** Nível de Acesso : Distribuição ***\n")
-    for r in result:
-        print(f"Nível {r[0]} : {round((len(r[1])/total_users)*100)}%" )
-        for user in sorted(r[1], key=lambda x: unidecode.unidecode(x.casefold())):
-            print("*",user)
-        if(result.index(r) != len(result)-1):
-            print("")
+def t_RPAREN(t):
+  r'\)'
+  return t
 
+def t_LBRACKET(t):
+  r'\['
+  return t
 
-def name_entity_group():
-    result = {}
-    for line in text:
-        user = re.match(user_er, line).group()
-        entity = re.search(entity_er, line).group()
-        if entity not in result:
-            result[entity] = [user]
-        else:
-            result[entity].append(user)
+def t_RBRACKET(t):
+  r'\]'
+  return t
 
-    entities = list(result.keys())
-    entities.sort()
-    print("\n*** Utilizadores agrupados por entidade ***\n")
-    for entity in entities:
-        print(f"{entity}:")
-        result[entity].sort(key=lambda x: unidecode.unidecode(x.casefold()))
-        for user in result[entity]:
-            print("*",user)
-        print("")
+def t_FLOAT(t):
+  r'float'
+  return t
 
+def t_INT(t):
+  r'int'
+  return t
 
-def indicators():
-    users = set()
-    entities = {}
-    levels = {}
-    for line in text:
-        broken_line = re.split(r'[:,|]+', line)
-        users.add(re.match(user_er,broken_line[0]).group())
-        entity = re.search(entity_er, broken_line[2]).group()
-        level = re.search(level_er, broken_line[3]).group()
+def t_MAIN(t):
+  r'main'
+  return t
 
-        if entity not in entities:
-            entities[entity] = 1
-        else:
-            entities[entity] += 1
-        if level not in levels:
-            levels[level] = 1
-        else:
-            levels[level] += 1
+def t_WHILE(t):
+  r'while'
+  return t
 
-    print("\n*** Indicadores ***\n")
-    print("Número de Utilizadores:",len(users))
-    print("")
-    print("Número de Entidades:",len(entities.keys()))
-    print("")
-    print("Distribuição de utilizadores por entidade:")
-    for entity in sorted(entities.keys()):
-        print(f"* {entity} : {entities[entity]}")
-    print("")
-    print("Distribuição de utilizadores por nível:")
-    for level in sorted(levels.keys()):
-        print(f"* Nível {level} : {levels[level]}")
+def t_FOR(t):
+  r'for'
+  return t
 
+def t_IF(t):
+  r'if'
+  return t
 
-def json_20():
-    list = []
-    N = len(text)
-    if N >= 20:
-        N = 20
+def t_ELSE(t):
+  r'else'
+  return t
 
-    for i in range(N):
-        broken_line = re.split(separator_er, text[i])
-        user = re.match(user_er, broken_line[0]).group()
-        email = re.search(email_er, broken_line[1]).group()
-        entity = re.search(entity_er, broken_line[2]).group()
-        level = re.search(level_er, broken_line[3]).group()
-        calls = re.search(calls_er, broken_line[4]).group()
-        list.append((user,email,entity,level,calls))
+def t_PRINTLN(t):
+  r'println'
+  return t
 
-    file_name = input("\nDigite nome do ficheiro de output!\n>> ")
-    fp = open(file_name, 'w')
+def t_PRINT(t):
+  r'print'
+  return t
 
-    fp.write("{\n\t\"registos\":[\n")
-    for i in range(len(list)):
-        l = list[i]
-        fp.write("\t\t{\n")
-        fp.write(f"\t\t\t \"utilizador\":\"{l[0]}\",\n")
-        fp.write(f"\t\t\t \"email\":\"{l[1]}\",\n")
-        fp.write(f"\t\t\t \"entidade\":\"{l[2]}\",\n")
-        fp.write(f"\t\t\t \"nível de acesso\":\"{l[3]}\",\n")
-        fp.write(f"\t\t\t \"número de chamadas ao backend\":\"{l[4]}\"\n")
-        if i != 19:
-            fp.write("\t\t},\n")
-        else:
-            fp.write("\t\t}\n")
-    fp.write("\t]\n}\n")
-    fp.close()
-    print(f"\nFicheiro \"{file_name}\" gerado com sucesso!")
+def t_SCAN(t):
+  r'scan'
+  return t
 
+def t_STRING(t):
+  r'"([^"]|(\\n))*"'
+  return t
 
-def menu():
-    cls = lambda: print('\n' * 50)
-    inputfromuser = ""
-    options = []
-    options.append("Listagem com o nome e a entidade do utilizador, ordenada alfabeticamente por nome.")
-    options.append("Lista ordenada alfabeticamente das entidades referenciadas, indicando, para cada uma, quantos utilizadores estão registados.")
-    options.append("Distribuição de utilizadores por níveis de acesso.")
-    options.append("Utilizadores, agrupados por entidade, ordenada primeiro pela entidade e dentro desta pelo nome.")
-    options.append("Mostrar alguns indicadores.")
-    options.append("Imprimir os 20 primeiros registos num novo ficheiro de output mas em formato jason.")
-    cls()
-    while inputfromuser != '0':
-        print("*** Selecione Opção ***\n")
-        for i in range(len(options)):
-            print(f"{i+1}. {options[i]}")
-        print("0. Sair.")
+def t_REAL(t):
+    r'-?([1-9][0-9]*\.[0-9]+|0\.[0-9]+)'
+    return t
 
-        inputfromuser = input(">> ")
-        while not inputfromuser.isdigit() or int(inputfromuser) > len(options) or int(inputfromuser) < 0:
-            print("Opçao Invalida!")
-            inputfromuser = input(">> ")
+def t_NUM(t):
+  r'-?\d+'
+  t.value = int(t.value)
+  return t
 
-        if inputfromuser == '0':
-            continue
-        elif inputfromuser == '1':
-            name_entity_list()
-        elif inputfromuser == '2':
-            entity_num_elements_list()
-        elif inputfromuser == '3':
-            dist_users_level()
-        elif inputfromuser == '4':
-            name_entity_group()
-        elif inputfromuser == '5':
-            indicators()
-        else:
-            json_20()
+def t_EQEQ(t):
+  r'\=\='
+  return t
 
-        input("\nPressione Enter!\n>> ")
-        cls()
+def t_DIFF(t):
+  r'\!\='
+  return t
 
+def t_GREATEQ(t):
+  r'\>\='
+  return t
 
-if len(sys.argv)>1:
-    text_source = sys.argv[1]
-else:
-    text_source = 'clav-users.txt'
+def t_LESSEQ(t):
+  r'\<\='
+  return t
 
-if not os.path.exists(text_source):
-    print(f"Ficheiro \"{text_source}\" não encontrado!")
-    sys.exit(0)
+def t_GREATER(t):
+  r'\>'
+  return t
 
-fp = open(text_source, 'r')
-text = fp.readlines()
-fp.close()
+def t_LESSER(t):
+  r'\<'
+  return t
 
-calls_er = r'\d+'
-entity_er = r'ent_\w*'
-email_er = r'(\w+|\.|@|_|-)+'
-level_er = r'\d+\.?\d*'
-separator_er = r'[:,|]+'
-user_er = r'(\w+\.?\s*(-?\w+\.?\s*)*\b)'
+def t_EQUAL(t):
+  r'\='
+  return t
 
-menu()
+def t_PLUS(t):
+  r'\+'
+  return t
+
+def t_MINUS(t):
+  r'\-'
+  return t
+
+def t_MUL(t):
+  r'\*'
+  return t
+
+def t_DIV(t):
+  r'\/'
+  return t
+
+def t_MOD(t):
+  r'\%'
+  return t
+
+def t_VAR(t):
+  r'\w+'
+  return t
+
+def t_error(t):
+  print("Illegal Character:", t.value[0])
+  t.lexer.skip(1)
+
+t_ignore = ' \r\n\t'
+
+lexer = lex.lex()
+
 \end{verbatim}
 \end{scriptsize}
 
+\textbf{Ficheiro parser.py}
+\begin{scriptsize}
+\begin{verbatim}
+import ply.yacc as yacc
+import sys
+import os.path
+from lexer import tokens
+
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'MUL', 'DIV'),
+)
+
+
+def var_new(v):
+  if v[0] in parser.tab_id or v[1] == 0 or v[2] == 0:
+    return -1
+  else:
+    parser.tab_id[v[0]] = (parser.prox_address,v[1],v[2],v[3])
+    parser.prox_address += v[1]*v[2]
+    return 0
+
+
+def var_address_base(v):
+  if v in parser.tab_id:
+    return parser.tab_id[v][0]
+  else:
+    return -1
+
+
+def var_num_colums(v):
+  if v in parser.tab_id:
+    return parser.tab_id[v][1]
+  else:
+    return -1
+
+
+def var_num_lines(v):
+  if v in parser.tab_id:
+    return parser.tab_id[v][2]
+  else:
+    return -1
+
+
+def var_size(v):
+  if v in parser.tab_id:
+    return parser.tab_id[v][1] * parser.tab_id[v][2]
+  else:
+    return 0
+
+
+def var_type(v):
+  if v in parser.tab_id:
+    return parser.tab_id[v][3]
+  else:
+    return None
+
+
+def p_program(p):
+  """
+  program : MAIN LCURLY body RCURLY
+  """
+  fp.write(p[3])
+  print(p[3])
+
+
+def p_body(p):
+  """ 
+  body : declarations instructions
+  """
+  p[0] = p[1] + 'START\n' + p[2] + 'STOP'
+
+
+def p_declarations_empty(p):
+  """
+  declarations : 
+  """
+  p[0] = ""
+
+
+def p_declarations(p):
+  """
+  declarations : declaration  declarations
+  """
+  p[0] = p[1] + p[2]
+
+
+def p_declaration_single(p):
+  """
+  declaration : type VAR SEMICOLON 
+  """
+  status = var_new((p[2],1,1,p[1]))
+  if status == -1:
+    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+  else:
+    p[0] = 'PUSHI 0\n'
+ 
+
+def p_declaration_array(p):
+  """
+  declaration : type LBRACKET NUM RBRACKET VAR SEMICOLON 
+  """
+  status = var_new((p[5],p[3],1,p[1]))
+  if status == -1:
+    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+  else:
+    p[0] = f'PUSHN {var_size(p[5])}\n'
+
+
+def p_declaration_biarray(p):
+  """
+  declaration : type LBRACKET NUM RBRACKET LBRACKET NUM RBRACKET VAR SEMICOLON 
+
+  """
+  status = var_new((p[8],p[6],p[3],p[1]))
+  if status == -1:
+    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP\n'
+  else:
+    p[0] = f'PUSHN {var_size(p[8])}\n'
+
+
+def p_type_int(p):
+  """
+  type : INT
+  """
+  p[0] = f'{p[1]}'
+
+
+def p_type_float(p):
+  """
+  type : FLOAT
+  """
+  p[0] = f'{p[1]}'
+
+
+def p_variable_single(p):
+  """
+  variable : VAR
+  """
+  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]),var_size(p[1]))  
+
+
+def p_variable_index_expression(p):
+  """
+  variable : VAR LBRACKET expression RBRACKET
+  """
+  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 
+          'ADD\n',var_type(p[1]),var_size(p[1])) 
+
+
+def p_variable_index_expression_expression(p):
+  """
+  variable : VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
+  """
+  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' 
+          + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+
+
+def p_instructions_empty(p):
+  """
+  instructions :
+  """
+  p[0] = ""
+
+
+def p_instructions(p):
+  """
+  instructions : instruction  instructions
+  """
+  p[0] = p[1] + p[2]
+
+
+def p_instruction(p):
+  """
+  instruction : atributions SEMICOLON
+  """
+  p[0] = p[1]
+
+
+def p_atributions_empty(p):
+  """
+  atributions :  
+  """
+  p[0] = ""
+
+
+def p_atributions_single(p):
+  """
+  atributions : atribution 
+  """
+  p[0] = p[1]
+
+
+def p_atributions_multiple(p):
+  """
+  atributions : atribution COMMA atributions 
+  """
+  p[0] = p[1] + p[3]
+
+
+def p_instruction_atribution_expression(p):
+  """
+  atribution : variable EQUAL expression 
+  """
+  if p[1][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + p[3][0]+ 'FTOI\n' + 'STOREN\n'
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0]+ 'ITOF\n'  + 'STOREN\n'
+  else:
+    p[0] = p[1][0] + p[3][0] +  'STOREN\n'
+
+
+def p_instruction_atribution_condition(p):
+  """
+  atribution : variable EQUAL condition 
+  """
+  if p[1][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[1][1] == 'float':
+    p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
+  else:
+    p[0] = p[1][0] + p[3] + 'STOREN\n'\
+
+
+def p_expression_var(p):
+  """
+  expression : variable
+  """
+  if p[1][1] == None:
+    p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
+  else:
+    p[0] = (p[1][0] + 'LOADN\n',p[1][1])
+
+
+def p_expression_num(p):
+  """
+  expression : NUM
+  """
+  p[0] = (f'PUSHI {p[1]}\n','int')
+
+
+def p_expression_float(p):
+  """
+  expression : REAL
+  """
+  p[0] = (f'PUSHF {p[1]}\n','float')
+
+
+def p_expression_between_parenthesis(p):
+  """
+  expression : LPAREN expression RPAREN
+  """
+  p[0] = p[2]
+
+
+def p_expression_plus_expression(p):
+  """
+  expression : expression PLUS expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'ADD\n','int')
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FADD\n','float')
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FADD\n','float')
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FADD\n','float')
+
+
+def p_expression_minus_expression(p):
+  """
+  expression : expression MINUS expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'SUB\n','int')
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FSUB\n','float')
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FSUB\n','float')
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FSUB\n','float')
+
+
+def p_expression_mul_expression(p):
+  """
+  expression : expression MUL expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'MUL\n','int')
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FMUL\n','float')
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FMUL\n','float')
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FMUL\n','float')
+
+
+def p_expression_div_expression(p):
+  """
+  expression : expression DIV expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'DIV\n','int')
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FDIV\n','float')
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FDIV\n','float')
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FDIV\n','float')
+
+
+def p_expression_mod_expression(p):
+  """
+  expression : expression MOD expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'MOD\n','int')
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'FTOI\n' + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+  else:
+    p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
+
+
+def p_instruction_while(p):
+  """
+  instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
+  """
+  p[0] = f'B{parser.labels}:\n' + p[3] + 'JZ ' + f'E{parser.labels}\n' + p[6] + 
+  f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
+  parser.labels +=1
+
+
+def p_instruction_for(p):
+  """
+  instruction : FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY instructions RCURLY
+  """
+  p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] + 
+  f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
+  parser.labels +=1
+
+
+def p_instruction_if(p):
+  """
+  instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY
+  """
+  p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'E{parser.labels}:\n' 
+  parser.labels +=1
+
+
+def p_instruction_if_else(p):
+  """
+  instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY instructions RCURLY
+  """
+  p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'JUMP F{parser.labels}\n' +
+  f'E{parser.labels}:\n' + p[10] + f'F{parser.labels}:\n' 
+  parser.labels +=1
+
+  
+def p_condition_expression_eqeq_expression(p):
+  """
+  condition : expression EQEQ expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'EQUAL\n'
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'EQUAL\n'
+  else:
+    p[0] = p[1][0] + p[3][0] + 'EQUAL\n'
+  
+
+def p_condition_expression_diff_expression(p):
+  """
+  condition : expression DIFF expression
+  """
+  if p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'EQUAL\nNOT\n'
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'EQUAL\nNOT\n'
+  else:
+    p[0] = p[1][0] + p[3][0] + 'EQUAL\nNOT\n'
+
+
+def p_condition_expression_greater_expression(p):
+  """
+  condition : expression GREATER expression
+  """
+  if p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = p[1][0] + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  else:
+    p[0] = p[1][0] + p[3][0] + 'SUP\n'
+
+
+def p_condition_expression_lesser_expression(p):
+  """
+  condition : expression LESSER expression
+  """
+  if p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = p[1][0] + p[3][0] + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
+  else:
+    p[0] = p[1][0] + p[3][0] + 'INF\n'
+
+
+def p_condition_expression_greateq_expression(p):
+  """
+  condition : expression GREATEQ expression
+  """
+  if p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = p[1][0] + p[3][0] + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
+  else:
+    p[0] = p[1][0] + p[3][0] + 'SUPEQ\n'
+
+
+def p_condition_expression_lesseq_expression(p):
+  """
+  condition : expression LESSEQ expression
+  """
+  if p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = p[1][0] + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  elif p[1][1] == 'float' and p[3][1] == 'int':
+    p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  else:
+    p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
+
+
+def p_condition_num(p):
+  """
+  condition : NUM
+  """
+  p[0] = f'PUSHI {p[1]}\n'
+
+
+def p_condition_real(p):
+  """
+  condition : REAL
+  """
+  p[0] = f'PUSHF {p[1]}\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+
+
+def p_condition_var(p):
+  """
+  condition : variable
+  """
+  if p[1][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[1][1] == 'float':
+    
+    p[0] = p[1][0] + 'LOADN\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+  else:
+    p[0] = p[1][0] + 'LOADN\nPUSHI 0\nSUP\n'
+
+
+def p_instruction_scan(p):
+  """
+  instruction : SCAN LPAREN variable RPAREN SEMICOLON
+  """
+  if p[3][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[3][1] == 'int':
+    p[0] = p[3][0]  + 'READ\nATOI\nSTOREN\n'
+  else:
+    p[0] = p[3][0]  + 'READ\nATOF\nSTOREN\n'
+  
+
+def p_instruction_print_var(p):
+  """
+  instruction : PRINT LPAREN variable RPAREN SEMICOLON
+  """
+  if p[3][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[3][1] == 'int':
+    p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
+  else:
+    p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
+
+
+def p_instruction_println_var(p):
+  """
+  instruction : PRINTLN LPAREN variable RPAREN SEMICOLON
+  """
+  if p[3][1] == None:
+    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  elif p[3][1] == 'int':
+    p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
+    p[0] += 'PUSHS\"\\n\"\nWRITES\n'
+  else:
+    p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
+    p[0] += 'PUSHS\"\\n\"\nWRITES\n'
+
+  
+def p_instruction_print_string(p):
+  """
+  instruction : PRINT LPAREN STRING RPAREN SEMICOLON
+  """
+  p[0] = f'PUSHS {p[3]}\nWRITES\n'
+
+
+def p_instruction_println_string(p):
+  """
+  instruction : PRINTLN LPAREN STRING RPAREN SEMICOLON
+  """
+  p[0] = f'PUSHS {p[3]}\nWRITES\nPUSHS\"\\n\"\nWRITES\n'
+
+
+def p_error(p):
+  print("Syntax error!")
+  parser.success = False
+
+
+parser = yacc.yacc()
+parser.success = True
+
+parser.prox_address = 0
+parser.tab_id = {}
+parser.labels = 0
+
+
+if len(sys.argv)!=2 and len(sys.argv)!=3:
+    print('Invalid number of arguments!')
+    sys.exit(0)
+else:
+    file_input = sys.argv[1]
+
+if not os.path.exists(file_input):
+  print(f"File \"{file_input}\" not found!")
+  sys.exit(0)
+
+
+fp = open(file_input, 'r')
+source = fp.read()
+fp.close()
+
+
+if len(sys.argv)==3:
+    file_output = sys.argv[2]
+else:
+  file_output = "a.vm"
+
+
+fp = open(file_output,"w")
+
+parser.parse(source)
+
+
+if parser.success:
+  print("Parsing successfully completed!")
+
+fp.close()
+\end{verbatim}
+\end{scriptsize}
 
 
 

@@ -2,8 +2,10 @@ import ply.lex as lex
 import sys
 
 
-tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL','VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE','STRING',
-	'EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER','LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
+tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL',
+		  'VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE',
+		  'STRING','EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER',
+		  'LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
 
 
 
@@ -101,7 +103,7 @@ def t_NUM(t):
 	return t
 
 def t_EQEQ(t):
-	r'(\=\=)'
+	r'\=\='
 	return t
 
 def t_DIFF(t):
@@ -162,14 +164,3 @@ def t_error(t):
 t_ignore = ' \r\n\t'
 
 lexer = lex.lex()
-
-#fp = open("test.txt","r")
-#
-#source = fp.readlines()
-#fp.close()
-#
-#for line in source:
-#	lexer.input(line) 
-#	for tok in lexer:
-#		print(tok)
-#		pass
