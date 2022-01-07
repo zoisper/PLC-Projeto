@@ -92,7 +92,7 @@
 %\input{LPgeneralDefintions} %permite ler de um ficheiro de texto externo mais definições
 
 \title{Processamento de Linguaguens e Compiladores (3º ano LCC)\\
-       \textbf{Trabalho Prático 1}\\ Relatório de Desenvolvimento \\ \textbf{Grupo 17}\\ Problema 3
+       \textbf{Trabalho Prático 2}\\ (Gramáticas, Compiladores) \\ \textbf{Grupo 17}\\ Relatório de Desenvolvimento 
        } %Titulo do documento
 %\title{Um Exemplo de Artigo em \LaTeX}
 \author{José Pedro Gomes Ferreira\\ A91636 \\  \and Pedro Paulo Costa Pereira\\ A88062
@@ -117,8 +117,8 @@
 \chapter{Introdução} \label{chap:intro} %referência cruzada
 
 Este documento tem como objetivo explicar a solução que implementamos para a resolução do probelma proposto no âmbito da unidade curricular de Processsamento de Linguagens e Compiladores. \\ \\
-O problema consiste em implementar uma linguagem de programação imperativa simples, com regras sintaticas definidas pelo grupo. \\ \\ Para o desenvolvimento da nosso linguagem tivemos que definir uma gramática independente de contexto \textbf{GIC} e desenvolver um compilador que gera \textbf{pseudo-código}, \verb Assembly \ para uma Máquina Virtual, VM, que nos foi fornecida. \\ \\
-No desenvolvimento do programa, para alem do conhecimento adquirido nas aulas, utilizamos os módulos 'Yacc/ Lex' do 'PLY/Python'. \\ \\ 
+O problema consiste em implementar uma linguagem de programação imperativa simples, com regras sintáticas definidas pelo grupo. \\ \\ Para o desenvolvimento da nosso linguagem tivemos que definir uma gramática independente de contexto, \textbf{GIC}, e desenvolver um compilador que gera \textbf{pseudo-código} \verb Assembly \ para uma Máquina Virtual VM, que nos foi fornecida. \\ \\
+O trabalho foi desenvolvido com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python'. \\ \\ 
 Esperamos que o resultado final cumpra todos os requisitos.  
 
 
@@ -179,12 +179,12 @@ o código Assembly gerado bem como o programa a correr na máquina virtual VM. E
 \section{Organização e estrutura}
 O nosso trabalho pode ser divido em \textbf{4} partes:
 \begin{itemize}
-\item Definição da \textbf{GIC} que define a estrura sintática da nosso liguaguem.
-\item Construção do analizador léxico \verb lexer .
-\item Construção do analizador sintático \verb parser .
+\item Definição da \textbf{GIC} que define a estrura sintática da nossa liguaguem.
+\item Construção do analizador léxico, \verb lexer .
+\item Construção do analizador sintático, \verb parser .
 \item Conversão das instruções para código \verb Assembly \ da  VM.    
 \end{itemize}
-Todas as funcionalidades descritas neste capítulo podem ser encontradas no anexo A do documento.\\
+Todas as funcionalidades descritas neste capítulo podem ser encontradas no anexo A do documento.\\ \\
 No nosso trabalho optamos por implementar a funcionalidade de textit{declarar e manusear} variáveis estruturadas do tipo \textit{array (a 1 ou 2 dimensões)} de inteiros, em relação aos quais é apenas permitida a operação de indexação (ı́ndice inteiro).\\
 
 \section{GIC}
@@ -255,8 +255,8 @@ condition    : expression EQEQ expression
 
 
 \section{Lexer}
-O analisador léxico, \verb lexer, vai ser o responsavel por 'capturar' os simbolos terminais, \verb tokens, da nossa linguagem através de expressões regulares. Para a implementação do analisador léxico utilizamos o módulo 'Lex' do 'PLY/Python'.\\
-De seguida apresentamos os \verb tokens \ da nossa linguagem e respetivas expressão regular.
+O analisador léxico, \verb lexer, \ é o responsavel por 'capturar' os simbolos terminais, \verb tokens, da nossa linguagem através de expressões regulares. Para a implementação do analisador léxico utilizamos o módulo 'Lex' do 'PLY/Python'.\\ \\
+Os \verb tokens  \ e respetivas expressões regulares da nossa linguagem são os seguintes:
 \begin{verbatim}
 
 SEMICOLON : ';'
@@ -297,10 +297,8 @@ VAR       : '\w+'
 A implementação do analisador léxico pode ser encontrada no anexo A do documento.   
 
 \section{Parser e geração do codigo Assembly da VM}
-O analisador sintático, \verb parser, vai ser o responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, respeitas as regras gramaticais definidas. \\
-
-Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sitático. \\
-
+O analisador sintático, \verb parser, \ é responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, se respeita as regras gramaticais definidas. \\ \\
+Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sitático. \\ \\
 A implementação do analisador sintático pode ser encontrada no anexo A do documento. 
 
 
@@ -311,21 +309,21 @@ A implementação do analisador sintático pode ser encontrada no anexo A do doc
 \chapter{Demonstração de Funcionamento}
 \section{Geração e  execução de código Assembly}
 Para utilizar a nossa linguagem, o utilizador tem que:
-\begin{itemize}
+\begin{enumerate}
 \item Escrever e guardar as instruções num ficheiro de texto de acordo com as regras grámaticais da linguagem. 
-\item Colocar o ficheiro na mesma diretoria dos ficheiros \verb lexer.py, \verb parser/py \verb vms \ e \verb vmsGTKAux. 
+\item Colocar o ficheiro na mesma diretoria dos ficheiros \verb lexer.py, \ \verb parser.py, \verb vms \ e \verb vmsGTKAux. 
 \item Executar um dos seguintes comandos: 
 \begin{verbatim} 
 >> python3 parser.py <ficheiro de input> 
 >> python3 parser.py <ficheiro de input> <ficheiro de output>
 \end{verbatim} 
-\underline{Nota:} Caso o utilizador opte pelo primeiro comando, vai ser criado um ficheiro denominado
-\verb a.vm  onde será colocado o código gerado.
+\underline{Nota:} Caso o utilizador opte pelo primeiro comando é criado um ficheiro denominado
+\verb a.vm  onde será colocado o código \verb Assembly \ gerado.
 \item Executar o comando:
 \begin{verbatim} 
 >> ./vms <ficheiro gerado no comando anterior> 
 \end{verbatim} 
-\end{itemize}
+\end{enumerate}
 
 
 \section{Teste 1}
@@ -1667,6 +1665,76 @@ Digite número: 0
 Digite número: 3
 -5 -1 0 3 3 
 >>
+\end{verbatim} 
+
+\section{Teste 8}
+Execução de operações aritméticas. \\
+\underline{Ficheiro de input:} 'erro1.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  int a;
+  int a;
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+ERR "multipla declaração da variavel a\n"
+STOP
+START
+STOP
+\end{verbatim}
+
+
+\subsection{Execução da VM com o código gerado}
+
+\begin{verbatim}
+>> ./vms a.vm
+multipla declaração da variavel a
+>>
+\end{verbatim}
+
+\section{Teste 9}
+Execução de operações aritméticas. \\
+\underline{Ficheiro de input:} 'erro2.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+  int a;
+  a = b;  
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHI 0
+START
+PUSHGP
+PUSHI 0
+ERR "segmentation fault\n"
+STOP
+STOREN
+STOP
+\end{verbatim}
+
+
+\subsection{Execução da VM com o código gerado}
+
+\begin{verbatim}
+>> ./vms a.vm
+segmentation fault
+>>
 \end{verbatim}  
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -1953,7 +2021,7 @@ def p_declaration_single(p):
   """
   status = var_new((p[2],1,1,p[1]))
   if status == -1:
-    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = 'PUSHI 0\n'
  
@@ -1964,7 +2032,7 @@ def p_declaration_array(p):
   """
   status = var_new((p[5],p[3],1,p[1]))
   if status == -1:
-    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = f'PUSHN {var_size(p[5])}\n'
 
@@ -1976,7 +2044,7 @@ def p_declaration_biarray(p):
   """
   status = var_new((p[8],p[6],p[3],p[1]))
   if status == -1:
-    p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP\n'
+    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = f'PUSHN {var_size(p[8])}\n'
 

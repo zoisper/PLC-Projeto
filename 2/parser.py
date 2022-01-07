@@ -86,12 +86,10 @@ def p_declaration_single(p):
 
 	status = var_new((p[2],1,1,p[1]))
 	if status == -1:
-		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
 	else:
 		p[0] = 'PUSHI 0\n'
 	
-
-
 
 
 
@@ -103,7 +101,7 @@ def p_declaration_array(p):
 	"""
 	status = var_new((p[5],p[3],1,p[1]))
 	if status == -1:
-		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHN {var_size(p[5])}\n'
 
@@ -117,7 +115,7 @@ def p_declaration_biarray(p):
 	"""
 	status = var_new((p[8],p[6],p[3],p[1]))
 	if status == -1:
-		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\"\nSTOP\n'
+		p[0] = f'ERR \"multipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
 	else:
 		p[0] = f'PUSHN {var_size(p[8])}\n'
 
