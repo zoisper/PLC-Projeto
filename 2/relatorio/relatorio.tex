@@ -19,7 +19,6 @@
 
 \usepackage{multirow} %tabelas com multilinhas
 \usepackage{array} %formatação especial de tabelas em array
-
 \usepackage[pdftex]{hyperref} % transformar as referências internas do seu documento em hiper-ligações.
 
 %Exemplos de fontes -- nao e vulgar mudar o tipo de fonte
@@ -1744,15 +1743,20 @@ segmentation fault
 \chapter{Conclusão} \label{concl}
 Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
 O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
-Achamos que há aspetos que poderiam ser melhorados, como por exemplo a implementação de funções com e sem argumentos. Também na parte de atribuição de valores as variaveis há uma pequena falha que permite ao utilizador por exemplo fazer:
+Achamos que há aspetos que poderiam ser melhorados, como por exemplo a implementação de funções com e sem argumentos. Também na parte de atribuição de valores às variaveis há uma pequena 'falha' que permite ao utilizador por exemplo fazer:
 \begin{verbatim}
 a = 1,;
 \end{verbatim}
-No entanto se esta fosse removida, nao poderiamos por exemplo fazer a seguinte instrução:
+No entanto se esta 'falha' fosse corrigida, teriamos, por exemplo, que abdicar da seguinte instrução:
 \begin{verbatim}
 a = 1,b = 2;
 \end{verbatim}
-E os ciclos \textit{for} teriam que ficar do genero:
+Tendo a instrução que ficar obrigatoriamente do género:
+\begin{verbatim}
+a = 1;
+b = 2;
+\end{verbatim}
+Também os ciclos \textit{for} teriam que ser escirtos da seguinte forma:
 \begin{verbatim}
 for(i=0;i<N;i=i+i;){}
 \end{verbatim}
@@ -1765,7 +1769,6 @@ Por fim, tal como ja tinha sido mencionado no relatório do primeiro projeto, to
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo6%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
-
 \appendix % apendice
 \chapter{Código do Programa}
 
