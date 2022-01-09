@@ -1,0 +1,65 @@
+main
+{
+	
+	int[3][3] matriz;
+	int i;
+	int j;
+	int aux;
+
+	println("Neste programa vamos transpor uma matriz M 3x3.");
+	println("Digite valores a armazenar em M[linha][coluna]:");
+	for(i=0;i<3;i=i+1)
+	{
+		for(j=0;j<3;j=j+1)
+		{
+			print("[");
+			print(i);
+			print("][");
+			print(j);
+			print("] = ");
+
+			scan(matriz[i][j]);
+		}
+	}
+
+	println("\nMatriz M lida:");
+
+	for(i=0;i<3;i=i+1)
+	{
+		for(j=0;j<3;j=j+1)
+		{
+			print(matriz[i][j]);
+			print(" ");
+		}
+		println("");
+	}
+
+
+	for(i=0;i<3;i=i+1)
+	{
+		for(j=0;j<i;j=j+1)
+		{
+			aux = matriz[i][j];
+			matriz[i][j] = matriz[j][i];
+			matriz[j][i] = aux;
+		}
+	} 
+
+
+
+
+	println("\nMatriz M' transposta:");
+
+	for(i=0;i<3;i=i+1)
+	{
+		for(j=0;j<3;j=j+1)
+		{
+			print(matriz[i][j]);
+			print(" ");
+		}
+		println("");
+	} 
+
+
+
+}
