@@ -260,9 +260,6 @@ def p_expression_var(p):
 
 
 
-
-
-
 def p_expression_num(p):
 	"""
 	expression : NUM
@@ -413,6 +410,7 @@ def p_instruction_if_else(p):
 	
 
 
+
 def p_condition_expression_eqeq_expression(p):
 	"""
 	condition : expression EQEQ expression
@@ -513,33 +511,35 @@ def p_condition_expression_lesseq_expression(p):
 
 
 
-def p_condition_num(p):
-	"""
-	condition : NUM
-	"""
-	p[0] = f'PUSHI {p[1]}\n'
+#def p_condition_num(p):
+#	"""
+#	condition : NUM
+#	"""
+#	p[0] = f'PUSHI {p[1]}\n'
+#
+#
+#def p_condition_real(p):
+#	"""
+#	condition : REAL
+#	"""
+#
+#	p[0] = f'PUSHF {p[1]}\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+#
+#
+#def p_condition_var(p):
+#	"""
+#	condition : variable
+#	"""
+#
+#	if p[1][1] == None:
+#		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+#	elif p[1][1] == 'float':
+#		
+#		p[0] = p[1][0] + 'LOADN\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+#	else:
+#		p[0] = p[1][0] + 'LOADN\nPUSHI 0\nSUP\n'
 
 
-def p_condition_real(p):
-	"""
-	condition : REAL
-	"""
-
-	p[0] = f'PUSHF {p[1]}\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
-
-
-def p_condition_var(p):
-	"""
-	condition : variable
-	"""
-
-	if p[1][1] == None:
-		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
-	elif p[1][1] == 'float':
-		
-		p[0] = p[1][0] + 'LOADN\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
-	else:
-		p[0] = p[1][0] + 'LOADN\nPUSHI 0\nSUP\n'
 
 
 

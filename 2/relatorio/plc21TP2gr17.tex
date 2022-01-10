@@ -247,9 +247,6 @@ condition    : expression EQEQ expression
              | expression LESSER expression
              | expression GREATEQ expression
              | expression LESSEQ expression
-             | NUM
-             | REAL
-             | variable
 \end{verbatim}
 
 
@@ -332,14 +329,13 @@ Ler 4 números e dizer se podem ser os lados de um quadrado. \\
 \subsection{Conteúdo do ficheiro}
 
 \begin{verbatim}
-main
-{
+main{
   float[4] lados;
   int[6] a;
   int i;
   i = 4;
   
-  while(i){
+  while(i>0){
     print("Digite lado: ");
     scan(lados[4 - i]);
     i = i - 1;  
@@ -355,10 +351,10 @@ main
   
   i = a[0]*a[1]*a[2]*a[3]*a[4]*a[5];
   
-  if(i)
-  {  
+  if(i!=0)
+  {
     
-    if(lados[0])
+    if(lados[0]!=0)
     {
       println("Podem ser os lados de um quadrado!");
 
@@ -370,10 +366,12 @@ main
     }
   }
 
+  
   else
   {
     println("Não podem ser os lados de um quadrado!");
   }
+
 
 }
 \end{verbatim}
@@ -557,18 +555,18 @@ PUSHGP
 PUSHI 10
 LOADN
 PUSHI 0
-SUP
+EQUAL
+NOT
 JZ E2
 PUSHGP
 PUSHI 0
 PUSHI 0
 ADD
 LOADN
-PUSHF 0.0
-FSUP
-FTOI
 PUSHI 0
-SUP
+ITOF
+EQUAL
+NOT
 JZ E1
 PUSHS "Podem ser os lados de um quadrado!"
 WRITES
@@ -2805,33 +2803,6 @@ def p_condition_expression_lesseq_expression(p):
     p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
   else:
     p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
-
-
-def p_condition_num(p):
-  """
-  condition : NUM
-  """
-  p[0] = f'PUSHI {p[1]}\n'
-
-
-def p_condition_real(p):
-  """
-  condition : REAL
-  """
-  p[0] = f'PUSHF {p[1]}\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
-
-
-def p_condition_var(p):
-  """
-  condition : variable
-  """
-  if p[1][1] == None:
-    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
-  elif p[1][1] == 'float':
-    
-    p[0] = p[1][0] + 'LOADN\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
-  else:
-    p[0] = p[1][0] + 'LOADN\nPUSHI 0\nSUP\n'
 
 
 def p_instruction_scan(p):
