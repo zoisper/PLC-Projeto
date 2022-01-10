@@ -1,45 +1,43 @@
-main{
-	float[4] lados;
-	int[6] a;
-	int i;
-	i = 4;
-	
-	while(i>0){
-		print("Digite lado: ");
-		scan(lados[4 - i]);
-		i = i - 1;	
-	}
-	
-	a[0] = lados[0] == lados[1];
-	a[1] = lados[0] == lados[2];
-	a[2] = lados[0] == lados[3];
-	a[3] = lados[1] == lados[2];
-	a[4] = lados[1] == lados[3];
-	a[5] = lados[2] == lados[3];
-	
-	
-	i = a[0]*a[1]*a[2]*a[3]*a[4]*a[5];
-	
-	if(i!=0)
-	{
-		
-		if(lados[0]!=0)
-		{
-			println("Podem ser os lados de um quadrado!");
+main
+{
+  float[4] lados;
+  int i;
+  int j;
+  int r;
+  i = 4;
+  
+  while(i>0)
+  {
+    print("Digite lado: ");
+    scan(lados[4 - i]);
+    i = i - 1;  
+  }
+  
+  
+  if(lados[0] <= 0)
+  {
+    println("Não podem ser os lados de um quadrado!");
+  }
+  
+  else
+  {
 
-		}
+    for(i=0,r=1;i<4;i=i+1)
+    {
+      for(j=i+1;j<4;j=j+1)
+      {
+        r = r * lados[i] == lados[j];
+      }
+    }
 
-		else
-		{
-			println("Não podem ser os lados de um quadrado!");
-		}
-	}
-
-	
-	else
-	{
-		println("Não podem ser os lados de um quadrado!");
-	}
-
+    if(r==1)
+    {
+      println("Podem ser os lados de um quadrado!");
+    }
+    else
+    {
+      println("Não podem ser os lados de um quadrado!");
+    }
+  }
 
 }

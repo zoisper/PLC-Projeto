@@ -329,49 +329,47 @@ Ler 4 números e dizer se podem ser os lados de um quadrado. \\
 \subsection{Conteúdo do ficheiro}
 
 \begin{verbatim}
-main{
+main
+{
   float[4] lados;
-  int[6] a;
   int i;
+  int j;
+  int r;
   i = 4;
   
-  while(i>0){
+  while(i>0)
+  {
     print("Digite lado: ");
     scan(lados[4 - i]);
     i = i - 1;  
   }
   
-  a[0] = lados[0] == lados[1];
-  a[1] = lados[0] == lados[2];
-  a[2] = lados[0] == lados[3];
-  a[3] = lados[1] == lados[2];
-  a[4] = lados[1] == lados[3];
-  a[5] = lados[2] == lados[3];
   
-  
-  i = a[0]*a[1]*a[2]*a[3]*a[4]*a[5];
-  
-  if(i!=0)
+  if(lados[0] <= 0)
   {
-    
-    if(lados[0]!=0)
-    {
-      println("Podem ser os lados de um quadrado!");
+    println("Não podem ser os lados de um quadrado!");
+  }
+  
+  else
+  {
 
+    for(i=0,r=1;i<4;i=i+1)
+    {
+      for(j=i+1;j<4;j=j+1)
+      {
+        r = r * lados[i] == lados[j];
+      }
     }
 
+    if(r==1)
+    {
+      println("Podem ser os lados de um quadrado!");
+    }
     else
     {
       println("Não podem ser os lados de um quadrado!");
     }
   }
-
-  
-  else
-  {
-    println("Não podem ser os lados de um quadrado!");
-  }
-
 
 }
 \end{verbatim}
@@ -380,16 +378,17 @@ main{
 \subsection{Código assembly gerado}
 \begin{verbatim}
 PUSHN 4
-PUSHN 6
+PUSHI 0
+PUSHI 0
 PUSHI 0
 START
 PUSHGP
-PUSHI 10
+PUSHI 4
 PUSHI 4
 STOREN
 B0:
 PUSHGP
-PUSHI 10
+PUSHI 4
 LOADN
 PUSHI 0
 SUP
@@ -400,7 +399,7 @@ PUSHGP
 PUSHI 0
 PUSHI 4
 PUSHGP
-PUSHI 10
+PUSHI 4
 LOADN
 SUB
 ADD
@@ -408,9 +407,9 @@ READ
 ATOF
 STOREN
 PUSHGP
-PUSHI 10
+PUSHI 4
 PUSHGP
-PUSHI 10
+PUSHI 4
 LOADN
 PUSHI 1
 SUB
@@ -418,174 +417,114 @@ STOREN
 JUMP B0
 E0:
 PUSHGP
-PUSHI 4
-PUSHI 0
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 0
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 1
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 4
-PUSHI 1
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 0
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 2
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 4
-PUSHI 2
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 0
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 3
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 4
-PUSHI 3
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 1
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 2
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 4
-PUSHI 4
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 1
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 3
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 4
-PUSHI 5
-ADD
-PUSHGP
-PUSHI 0
-PUSHI 2
-ADD
-LOADN
-PUSHGP
-PUSHI 0
-PUSHI 3
-ADD
-LOADN
-EQUAL
-STOREN
-PUSHGP
-PUSHI 10
-PUSHGP
-PUSHI 4
-PUSHI 0
-ADD
-LOADN
-PUSHGP
-PUSHI 4
-PUSHI 1
-ADD
-LOADN
-MUL
-PUSHGP
-PUSHI 4
-PUSHI 2
-ADD
-LOADN
-MUL
-PUSHGP
-PUSHI 4
-PUSHI 3
-ADD
-LOADN
-MUL
-PUSHGP
-PUSHI 4
-PUSHI 4
-ADD
-LOADN
-MUL
-PUSHGP
-PUSHI 4
-PUSHI 5
-ADD
-LOADN
-MUL
-STOREN
-PUSHGP
-PUSHI 10
-LOADN
-PUSHI 0
-EQUAL
-NOT
-JZ E2
-PUSHGP
 PUSHI 0
 PUSHI 0
 ADD
 LOADN
 PUSHI 0
 ITOF
-EQUAL
-NOT
+FINFEQ
+FTOI
+PUSHI 0
+SUP
+JZ E4
+PUSHS "Não podem ser os lados de um quadrado!"
+WRITES
+PUSHS"\n"
+WRITES
+JUMP F4
+E4:
+PUSHGP
+PUSHI 4
+PUSHI 0
+STOREN
+PUSHGP
+PUSHI 6
+PUSHI 1
+STOREN
+B2:
+PUSHGP
+PUSHI 4
+LOADN
+PUSHI 4
+INF
+JZ E2
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 4
+LOADN
+PUSHI 1
+ADD
+STOREN
+B1:
+PUSHGP
+PUSHI 5
+LOADN
+PUSHI 4
+INF
 JZ E1
+PUSHGP
+PUSHI 6
+PUSHGP
+PUSHI 6
+LOADN
+ITOF
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 4
+LOADN
+ADD
+LOADN
+FMUL
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 5
+LOADN
+ADD
+LOADN
+EQUAL
+STOREN
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 5
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B1
+E1:
+PUSHGP
+PUSHI 4
+PUSHGP
+PUSHI 4
+LOADN
+PUSHI 1
+ADD
+STOREN
+JUMP B2
+E2:
+PUSHGP
+PUSHI 6
+LOADN
+PUSHI 1
+EQUAL
+JZ E3
 PUSHS "Podem ser os lados de um quadrado!"
 WRITES
 PUSHS"\n"
 WRITES
-JUMP F1
-E1:
+JUMP F3
+E3:
 PUSHS "Não podem ser os lados de um quadrado!"
 WRITES
 PUSHS"\n"
 WRITES
-F1:
-JUMP F2
-E2:
-PUSHS "Não podem ser os lados de um quadrado!"
-WRITES
-PUSHS"\n"
-WRITES
-F2:
+F3:
+F4:
 STOP
 \end{verbatim}
 
@@ -594,10 +533,10 @@ STOP
 
 \begin{verbatim}
 >> ./vms a.vm
-Digite lado: 1
-Digite lado: 1
-Digite lado: 1
-Digite lado: 1
+Digite lado: 2
+Digite lado: 2
+Digite lado: 2
+Digite lado: 2
 Podem ser os lados de um quadrado!
 >>
 \end{verbatim}
@@ -630,6 +569,19 @@ Digite lado: 4
 Não podem ser os lados de um quadrado!
 >>
 \end{verbatim}
+
+\begin{verbatim}
+>> ./vms a.vm
+Digite lado: 1
+Digite lado: 1.1
+Digite lado: 1
+Digite lado: 1
+Não podem ser os lados de um quadrado!
+>>
+\end{verbatim}
+
+
+
 
 
 \section{Teste 2}
