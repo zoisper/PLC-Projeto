@@ -22,15 +22,19 @@ main
   else
   {
 
-    for(i=0,r=1;i<4;i=i+1)
+    r= 1;
+    for(i=0;i<4;i=i+1)
     {
       for(j=i+1;j<4;j=j+1)
       {
-        r = r * lados[i] == lados[j];
+        if(lados[i] != lados[j])
+        {
+          r = 0;
+        }
       }
     }
 
-    if(r==1)
+    if(r)
     {
       println("Podem ser os lados de um quadrado!");
     }

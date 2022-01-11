@@ -3,11 +3,6 @@ import sys
 import os.path
 from lexer import tokens
 
-precedence = (
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'MUL', 'DIV'),
-)
-
 
 def var_new(v):
 	if v[0] in parser.tab_id or v[1] == 0 or v[2] == 0:
@@ -74,7 +69,7 @@ def p_declarations_empty(p):
 
 def p_declarations(p):
 	"""
-	declarations : declaration  declarations
+	declarations : declarations  declaration
 	"""
 	p[0] = p[1] + p[2]
 
@@ -174,34 +169,18 @@ def p_instructions_empty(p):
 
 def p_instructions(p):
 	"""
-	instructions : instruction  instructions
+	instructions : instructions  instruction
 	"""
 	p[0] = p[1] + p[2]
 
 
 def p_instruction(p):
 	"""
-	instruction : atributions SEMICOLON
+	instruction : atribution SEMICOLON
 	"""
 	p[0] = p[1]
 
-def p_atributions_empty(p):
-	"""
-	atributions :  
-	"""
-	p[0] = ""
 
-def p_atributions_single(p):
-	"""
-	atributions : atribution 
-	"""
-	p[0] = p[1]
-
-def p_atributions_multiple(p):
-	"""
-	atributions : atribution COMMA atributions 
-	"""
-	p[0] = p[1] + p[3]
 
 
 def p_instruction_atribution_expression(p):
@@ -224,68 +203,35 @@ def p_instruction_atribution_expression(p):
 
 
 
+#def p_instruction_atribution_condition(p):
+#	"""
+#	atribution : variable EQUAL condition 
+#	"""
+#	
+#	if p[1][1] == None:
+#		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+#	
+#	elif p[1][1] == 'float':
+#		p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
+#	else:
+#		p[0] = p[1][0] + p[3] + 'STOREN\n'
+#
 
 
 
-def p_instruction_atribution_condition(p):
+
+
+
+def p_expression_term(p):
 	"""
-	atribution : variable EQUAL condition 
+	expression : term
 	"""
-	
-	if p[1][1] == None:
-		p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
-	
-	elif p[1][1] == 'float':
-		p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
-	else:
-		p[0] = p[1][0] + p[3] + 'STOREN\n'
+	p[0] = p[1]
 
 
-
-
-
-	
-
-
-def p_expression_var(p):
+def p_expression_plus_term(p):
 	"""
-	expression : variable
-	"""
-	
-	if p[1][1] == None:
-		p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
-	else:
-		p[0] = (p[1][0] + 'LOADN\n',p[1][1])
-
-
-
-
-def p_expression_num(p):
-	"""
-	expression : NUM
-	"""
-	p[0] = (f'PUSHI {p[1]}\n','int')
-
-def p_expression_float(p):
-	"""
-	expression : REAL
-	"""
-	p[0] = (f'PUSHF {p[1]}\n','float')
-
-
-def p_expression_between_parenthesis(p):
-	"""
-	expression : LPAREN expression RPAREN
-	"""
-	p[0] = p[2]
-
-
-
-
-
-def p_expression_plus_expression(p):
-	"""
-	expression : expression PLUS expression
+	expression : expression PLUS term
 	"""
 	if p[1][1] == 'int' and p[3][1] == 'int':
 		p[0] = (p[1][0] + p[3][0] + 'ADD\n','int')
@@ -304,9 +250,9 @@ def p_expression_plus_expression(p):
 
 
 
-def p_expression_minus_expression(p):
+def p_expression_minus_term(p):
 	"""
-	expression : expression MINUS expression
+	expression : expression MINUS term
 	"""
 	if p[1][1] == 'int' and p[3][1] == 'int':
 		p[0] = (p[1][0] + p[3][0] + 'SUB\n','int')
@@ -322,9 +268,18 @@ def p_expression_minus_expression(p):
 		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FSUB\n','float')
 
 
-def p_expression_mul_expression(p):
+def p_term_factor(p):
 	"""
-	expression : expression MUL expression
+	term : factor
+	"""
+	p[0] = p[1]
+
+
+
+
+def p_term_mul_factor(p):
+	"""
+	term : term MUL factor
 	"""
 	if p[1][1] == 'int' and p[3][1] == 'int':
 		p[0] = (p[1][0] + p[3][0] + 'MUL\n','int')
@@ -340,9 +295,9 @@ def p_expression_mul_expression(p):
 		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FMUL\n','float')
 
 
-def p_expression_div_expression(p):
+def p_term_div_factor(p):
 	"""
-	expression : expression DIV expression
+	term : term DIV factor
 	"""
 	if p[1][1] == 'int' and p[3][1] == 'int':
 		p[0] = (p[1][0] + p[3][0] + 'DIV\n','int')
@@ -358,9 +313,9 @@ def p_expression_div_expression(p):
 		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FDIV\n','float')
 
 
-def p_expression_mod_expression(p):
+def p_ter_mod_factor(p):
 	"""
-	expression : expression MOD expression
+	term : term MOD factor
 	"""
 	if p[1][1] == 'int' and p[3][1] == 'int':
 		p[0] = (p[1][0] + p[3][0] + 'MOD\n','int')
@@ -376,6 +331,49 @@ def p_expression_mod_expression(p):
 		p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
 
 
+
+
+
+
+def p_factor_var(p):
+	"""
+	factor : variable
+	"""
+	
+	if p[1][1] == None:
+		p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
+	else:
+		p[0] = (p[1][0] + 'LOADN\n',p[1][1])
+
+
+def p_factor_num(p):
+	"""
+	factor : NUM
+	"""
+	p[0] = (f'PUSHI {p[1]}\n','int')
+
+def p_factor_float(p):
+	"""
+	factor : REAL
+	"""
+	p[0] = (f'PUSHF {p[1]}\n','float')
+
+
+def p_factor_between_parenthesis(p):
+	"""
+	factor : LPAREN expression RPAREN
+	"""
+	p[0] = p[2]
+
+
+
+
+
+
+
+
+
+
 def p_instruction_while(p):
 	"""
 	instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
@@ -386,7 +384,7 @@ def p_instruction_while(p):
 
 def p_instruction_for(p):
 	"""
-	instruction : FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY instructions RCURLY
+	instruction : FOR LPAREN atribution SEMICOLON condition SEMICOLON atribution RPAREN LCURLY instructions RCURLY
 	"""
 	p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] + f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
 	parser.labels +=1
@@ -509,6 +507,14 @@ def p_condition_expression_lesseq_expression(p):
 	else:
 		p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
 
+def p_condition_expression(p):
+	"""
+	condition : expression
+	"""
+	if p[1][1] == 'float':
+		p[0] = p[1][0] + '\nPUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+	else:
+		p[0] = p[1][0] + '\nPUSHI 0\nSUP\n'
 
 
 #def p_condition_num(p):
