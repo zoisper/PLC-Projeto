@@ -46,8 +46,6 @@ main
 	} 
 
 
-
-
 	println("\nMatriz M' transposta:");
 
 	for(i=0;i<3;i=i+1)
@@ -59,7 +57,5 @@ main
 		}
 		println("");
 	} 
-
-
 
 }

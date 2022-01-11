@@ -6,10 +6,11 @@ main
 	count = 0;
 	aux = 1;
 	println("Digite 0 para parar!");
-	while(aux !=0){
+	
+	while(aux != 0){
 		print("Digite número: ");
 		scan(aux);
-		if(aux %2 == 1){
+		if(aux % 2 == 1){
 			print(aux);
 			println(" é impar!");
 			count = count +1;

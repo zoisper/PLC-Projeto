@@ -3,19 +3,13 @@ import sys
 
 
 tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL',
-		  'VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE',
+		  'VAR','FLOAT','INT','SEMICOLON','MAIN','WHILE','FOR','IF','ELSE',
 		  'STRING','EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER',
-		  'LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
-
-
+		  'LESSER','GREATEQ','LESSEQ','OR','AND','SCAN','PRINT','PRINTLN')
 
 
 def t_SEMICOLON(t):
 	r';'
-	return t
-
-def t_COMMA(t):
-	r','
 	return t
 
 def t_LCURLY(t):
@@ -34,7 +28,6 @@ def t_RPAREN(t):
 	r'\)'
 	return t
 
-
 def t_LBRACKET(t):
 	r'\['
 	return t
@@ -43,16 +36,13 @@ def t_RBRACKET(t):
 	r'\]'
 	return t
 
-
 def t_FLOAT(t):
 	r'float'
 	return t
 
-
 def t_INT(t):
 	r'int'
 	return t
-
 
 def t_MAIN(t):
 	r'main'
@@ -86,16 +76,13 @@ def t_SCAN(t):
 	r'scan'
 	return t
 
-
 def t_STRING(t):
 	r'"([^"]|(\\n))*"'
 	return t
 
-
 def t_REAL(t):
     r'-?([1-9][0-9]*\.[0-9]+|0\.[0-9]+)'
     return t
-
 
 def t_NUM(t):
 	r'-?\d+'
@@ -126,6 +113,14 @@ def t_LESSER(t):
 	r'\<'
 	return t
 
+def t_OR(t):
+	r'or'
+	return t
+
+def t_AND(t):
+	r'and'
+	return t
+
 def t_EQUAL(t):
 	r'\='
 	return t
@@ -146,8 +141,6 @@ def t_DIV(t):
 	r'\/'
 	return t
 
-
-
 def t_MOD(t):
 	r'\%'
 	return t
@@ -155,7 +148,6 @@ def t_MOD(t):
 def t_VAR(t):
 	r'\w+'
 	return t
-
 
 def t_error(t):
 	print("Illegal Character:", t.value[0])

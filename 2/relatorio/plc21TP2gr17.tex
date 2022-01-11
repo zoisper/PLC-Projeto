@@ -195,7 +195,7 @@ program      : MAIN LCURLY body RCURLY
 body         : declarations instructions
 
 declarations : 
-             | declaration  declarations
+             | declarations  declaration
 
 declaration  : type VAR SEMICOLON
              | type LBRACKET NUM RBRACKET VAR SEMICOLON
@@ -205,9 +205,9 @@ type         : INT
              | FLOAT
 
 instructions :
-             | instruction  instructions
+             | instructions  instruction
 
-instruction  : atributions SEMICOLON
+instruction  : atribution SEMICOLON
              | WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
              | FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY 
                instructions RCURLY
@@ -220,28 +220,30 @@ instruction  : atributions SEMICOLON
              | PRINT LPAREN STRING RPAREN SEMICOLON
              | PRINTLN LPAREN STRING RPAREN SEMICOLON
 
-atributions  : 
-             | atribution
-             | atribution COMMA atributions
-
 atribution   : variable EQUAL expression 
-             | variable EQUAL condition
 
 variable     : VAR
              | VAR LBRACKET expression RBRACKET
              | VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
 
-expression   : variable
+expression   : term
+             | expression PLUS term
+             | expression MINUS term
+             | expression or term
+             
+term         : factor
+             | term MUL factor
+             | term DIV factor
+             | term MOD factor
+             | term AND factor
+
+factor       : variable
              | NUM
              | REAL
              | LPAREN expression RPAREN
-             | expression PLUS expression
-             | expression MINUS expression
-             | expression MUL expression
-             | expression DIV expression
-             | expression MOD expression
 
-condition    : expression EQEQ expression
+condition    : expression
+             | expression EQEQ expression
              | expression DIFF expression
              | expression GREATER expression
              | expression LESSER expression
@@ -256,7 +258,6 @@ Os \verb tokens  \ e respetivas expressões regulares da nossa linguagem são os
 \begin{verbatim}
 
 SEMICOLON : ';'
-COMMA     : ','
 LCURLY    : '\{'
 RCURLY    : '\}'
 LPAREN    : '\('
@@ -276,13 +277,15 @@ SCAN      : 'scan'
 STRING    : '"([^"]|(\\n))*"'
 REAL      : '-?([1-9][0-9]*\.[0-9]+|0\.[0-9]+)'
 NUM       : '-?\d+'
-EQUAL     : '\=\='
+EQEQ      : '\='
 DIFF      : '\!\='
 GREATEQ   : '\>\='
 LESSEQ    : '\<\='
 GREATER   : '\>'
 LESSER    : '\<'
-EQEQ      : '\='
+OR        : 'or'
+AND       : 'and'
+EQUAL     : '\=\='
 PLUS      : '\+'
 MINUS     : '\-'
 MUL       : '\*'
@@ -345,23 +348,20 @@ main
   }
   
   
-  if(lados[0] <= 0)
-  {
-    println("Não podem ser os lados de um quadrado!");
-  }
-  
-  else
-  {
 
-    for(i=0,r=1;i<4;i=i+1)
+    r= 1;
+    for(i=0;i<4;i=i+1)
     {
       for(j=i+1;j<4;j=j+1)
       {
-        r = r * lados[i] == lados[j];
+        if(lados[i] != lados[j])
+        {
+          r = 0;
+        }
       }
     }
 
-    if(r==1)
+    if(r and lados[0])
     {
       println("Podem ser os lados de um quadrado!");
     }
@@ -369,7 +369,6 @@ main
     {
       println("Não podem ser os lados de um quadrado!");
     }
-  }
 
 }
 \end{verbatim}
@@ -417,67 +416,42 @@ STOREN
 JUMP B0
 E0:
 PUSHGP
-PUSHI 0
-PUSHI 0
-ADD
-LOADN
-PUSHI 0
-ITOF
-FINFEQ
-FTOI
-PUSHI 0
-SUP
-JZ E4
-PUSHS "Não podem ser os lados de um quadrado!"
-WRITES
-PUSHS"\n"
-WRITES
-JUMP F4
-E4:
-PUSHGP
-PUSHI 4
-PUSHI 0
-STOREN
-PUSHGP
 PUSHI 6
 PUSHI 1
 STOREN
-B2:
 PUSHGP
 PUSHI 4
+PUSHI 0
+STOREN
+B3:
+PUSHGP
+PUSHI 4
+LOADN
+PUSHI 4
+INF
+JZ E3
+PUSHGP
+PUSHI 5
+PUSHGP
+PUSHI 4
+LOADN
+PUSHI 1
+ADD
+STOREN
+B2:
+PUSHGP
+PUSHI 5
 LOADN
 PUSHI 4
 INF
 JZ E2
 PUSHGP
-PUSHI 5
-PUSHGP
-PUSHI 4
-LOADN
-PUSHI 1
-ADD
-STOREN
-B1:
-PUSHGP
-PUSHI 5
-LOADN
-PUSHI 4
-INF
-JZ E1
-PUSHGP
-PUSHI 6
-PUSHGP
-PUSHI 6
-LOADN
-ITOF
-PUSHGP
 PUSHI 0
 PUSHGP
 PUSHI 4
 LOADN
 ADD
 LOADN
-FMUL
 PUSHGP
 PUSHI 0
 PUSHGP
@@ -486,21 +460,17 @@ LOADN
 ADD
 LOADN
 EQUAL
-STOREN
+NOT
+JZ E1
 PUSHGP
-PUSHI 5
-PUSHGP
-PUSHI 5
-LOADN
-PUSHI 1
-ADD
+PUSHI 6
+PUSHI 0
 STOREN
-JUMP B1
 E1:
 PUSHGP
-PUSHI 4
+PUSHI 5
 PUSHGP
-PUSHI 4
+PUSHI 5
 LOADN
 PUSHI 1
 ADD
@@ -508,22 +478,43 @@ STOREN
 JUMP B2
 E2:
 PUSHGP
-PUSHI 6
+PUSHI 4
+PUSHGP
+PUSHI 4
 LOADN
 PUSHI 1
-EQUAL
-JZ E3
+ADD
+STOREN
+JUMP B3
+E3:
+PUSHGP
+PUSHI 6
+LOADN
+ITOF
+PUSHGP
+PUSHI 0
+PUSHI 0
+ADD
+LOADN
+FMUL
+PUSHF 0.0
+FSUP
+PUSHF 0.0
+FSUP
+FTOI
+PUSHI 0
+SUP
+JZ E4
 PUSHS "Podem ser os lados de um quadrado!"
 WRITES
 PUSHS"\n"
 WRITES
-JUMP F3
-E3:
+JUMP F4
+E4:
 PUSHS "Não podem ser os lados de um quadrado!"
 WRITES
 PUSHS"\n"
 WRITES
-F3:
 F4:
 STOP
 \end{verbatim}
@@ -727,12 +718,10 @@ O menor número é: 2
 \begin{verbatim}
 >> ./vms a.vm
 Digite número: 1
-Digite quantos números quer ler: 5
+Digite quantos números quer ler: 3
 Digite número: 2
-Digite número: 3
-Digite número: 4
-Digite número: 5
 Digite número: 0
+Digite número: 3
 O menor número é: 0
 \end{verbatim}
 
@@ -935,10 +924,11 @@ main
   count = 0;
   aux = 1;
   println("Digite 0 para parar!");
-  while(aux !=0){
+  
+  while(aux != 0){
     print("Digite número: ");
     scan(aux);
-    if(aux %2 == 1){
+    if(aux % 2 == 1){
       print(aux);
       println(" é impar!");
       count = count +1;
@@ -1226,7 +1216,11 @@ main
 
   a = (1 + a) * a;
   
-  print("(1 + a) * a = ");
+  print("a = (1 + a) * a = ");
+  println(a);
+
+  a = a %(a - 1);
+  print("a = a % (a-1) = ");
   println(a); 
 
 }
@@ -1269,7 +1263,27 @@ PUSHI 0
 LOADN
 MUL
 STOREN
-PUSHS "(1 + a) * a = "
+PUSHS "a = (1 + a) * a = "
+WRITES
+PUSHGP
+PUSHI 0
+LOADN
+WRITEI
+PUSHS"\n"
+WRITES
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 0
+LOADN
+PUSHGP
+PUSHI 0
+LOADN
+PUSHI 1
+SUB
+MOD
+STOREN
+PUSHS "a = a % (a-1) = "
 WRITES
 PUSHGP
 PUSHI 0
@@ -1286,7 +1300,8 @@ STOP
 \begin{verbatim}
 >> ./vms a.vm
 a = 2 * 3 + 4 * 5 - 1 = 25
-(1 + a) * a = 650
+a = (1 + a) * a = 650
+a = a % (a-1) = 1
 >>
 \end{verbatim}
 
@@ -1339,11 +1354,7 @@ main
 
     }
 
-
-
   } 
-
-
 
   for(i=0;i<N; i=i+1)
   {
@@ -1671,8 +1682,6 @@ main
   } 
 
 
-
-
   println("\nMatriz M' transposta:");
 
   for(i=0;i<3;i=i+1)
@@ -1684,7 +1693,6 @@ main
     }
     println("");
   } 
-
 
 }
 \end{verbatim}
@@ -2121,27 +2129,7 @@ segmentation fault
 \chapter{Conclusão} \label{concl}
 Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
 O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
-Achamos que há aspetos que poderiam ser melhorados, como por exemplo a implementação de funções com e sem argumentos. Também na parte de atribuição de valores às variaveis há uma pequena 'falha' que permite ao utilizador por exemplo fazer:
-\begin{verbatim}
-a = 1,;
-\end{verbatim}
-No entanto se esta 'falha' fosse corrigida, teriamos, por exemplo, que abdicar da seguinte instrução:
-\begin{verbatim}
-a = 1,b = 2;
-\end{verbatim}
-Tendo a instrução que ficar obrigatoriamente do género:
-\begin{verbatim}
-a = 1;
-b = 2;
-\end{verbatim}
-Também os ciclos \textit{for} teriam que ser escirtos da seguinte forma:
-\begin{verbatim}
-for(i=0;i<N;i=i+i;){}
-\end{verbatim}
-Ou seja, a operação de incremento do \verb 'i' \ teria que ter um \verb ';' \ desnecessário.\\
-
-Contudo, como temos a liberdade de definir a sintaxe da linguagem, podemos dizer que isto nao é um erro mas sim uma opção.\\
-
+Achamos que há aspetos que poderiam ser melhorados. Por exemplp, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar erros no \verb parser \ com rejeição de produções. \\ \\
 Por fim, tal como ja tinha sido mencionado no relatório do primeiro projeto, todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e, neste caso, com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python', facilitou bastante o seu desenvolvimento.
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -2156,17 +2144,15 @@ Por fim, tal como ja tinha sido mencionado no relatório do primeiro projeto, to
 import ply.lex as lex
 import sys
 
+
 tokens = ('LCURLY','RCURLY','LPAREN','RPAREN','LBRACKET','RBRACKET','NUM','REAL',
-      'VAR','FLOAT','INT','SEMICOLON','COMMA','MAIN','WHILE','FOR','IF','ELSE',
+      'VAR','FLOAT','INT','SEMICOLON','MAIN','WHILE','FOR','IF','ELSE',
       'STRING','EQUAL','PLUS','MINUS','MUL','DIV','MOD','EQEQ','DIFF','GREATER',
-      'LESSER','GREATEQ','LESSEQ','SCAN','PRINT','PRINTLN')
+      'LESSER','GREATEQ','LESSEQ','OR','AND','SCAN','PRINT','PRINTLN')
+
 
 def t_SEMICOLON(t):
   r';'
-  return t
-
-def t_COMMA(t):
-  r','
   return t
 
 def t_LCURLY(t):
@@ -2270,6 +2256,14 @@ def t_LESSER(t):
   r'\<'
   return t
 
+def t_OR(t):
+  r'or'
+  return t
+
+def t_AND(t):
+  r'and'
+  return t
+
 def t_EQUAL(t):
   r'\='
   return t
@@ -2316,11 +2310,6 @@ import ply.yacc as yacc
 import sys
 import os.path
 from lexer import tokens
-
-precedence = (
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'MUL', 'DIV'),
-)
 
 
 def var_new(v):
@@ -2391,7 +2380,7 @@ def p_declarations_empty(p):
 
 def p_declarations(p):
   """
-  declarations : declaration  declarations
+  declarations : declarations  declaration
   """
   p[0] = p[1] + p[2]
 
@@ -2400,16 +2389,18 @@ def p_declaration_single(p):
   """
   declaration : type VAR SEMICOLON 
   """
+
   status = var_new((p[2],1,1,p[1]))
   if status == -1:
     p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = 'PUSHI 0\n'
- 
+  
 
 def p_declaration_array(p):
   """
   declaration : type LBRACKET NUM RBRACKET VAR SEMICOLON 
+
   """
   status = var_new((p[5],p[3],1,p[1]))
   if status == -1:
@@ -2436,7 +2427,6 @@ def p_type_int(p):
   """
   p[0] = f'{p[1]}'
 
-
 def p_type_float(p):
   """
   type : FLOAT
@@ -2449,15 +2439,15 @@ def p_variable_single(p):
   variable : VAR
   """
   p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]),var_size(p[1]))  
-
+  
 
 def p_variable_index_expression(p):
   """
   variable : VAR LBRACKET expression RBRACKET
   """
-  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 
-          'ADD\n',var_type(p[1]),var_size(p[1])) 
 
+  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+  
 
 def p_variable_index_expression_expression(p):
   """
@@ -2476,167 +2466,208 @@ def p_instructions_empty(p):
 
 def p_instructions(p):
   """
-  instructions : instruction  instructions
+  instructions : instructions  instruction
   """
   p[0] = p[1] + p[2]
 
 
-def p_instruction(p):
+def p_instruction_atribution(p):
   """
-  instruction : atributions SEMICOLON
-  """
-  p[0] = p[1]
-
-
-def p_atributions_empty(p):
-  """
-  atributions :  
-  """
-  p[0] = ""
-
-
-def p_atributions_single(p):
-  """
-  atributions : atribution 
+  instruction : atribution SEMICOLON
   """
   p[0] = p[1]
 
 
-def p_atributions_multiple(p):
-  """
-  atributions : atribution COMMA atributions 
-  """
-  p[0] = p[1] + p[3]
-
-
-def p_instruction_atribution_expression(p):
+def p_atribution(p):
   """
   atribution : variable EQUAL expression 
   """
+  
   if p[1][1] == None:
     p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = p[1][0] + p[3][0]+ 'FTOI\n' + 'STOREN\n'
+  
   elif p[1][1] == 'float' and p[3][1] == 'int':
     p[0] = p[1][0] + p[3][0]+ 'ITOF\n'  + 'STOREN\n'
+
   else:
     p[0] = p[1][0] + p[3][0] +  'STOREN\n'
 
 
-def p_instruction_atribution_condition(p):
+def p_expression_term(p):
   """
-  atribution : variable EQUAL condition 
+  expression : term
   """
-  if p[1][1] == None:
-    p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
-  elif p[1][1] == 'float':
-    p[0] = p[1][0] + p[3] + 'ITOF\n'  + 'STOREN\n'
-  else:
-    p[0] = p[1][0] + p[3] + 'STOREN\n'\
+  p[0] = p[1]
 
 
-def p_expression_var(p):
+def p_expression_plus_term(p):
   """
-  expression : variable
-  """
-  if p[1][1] == None:
-    p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
-  else:
-    p[0] = (p[1][0] + 'LOADN\n',p[1][1])
-
-
-def p_expression_num(p):
-  """
-  expression : NUM
-  """
-  p[0] = (f'PUSHI {p[1]}\n','int')
-
-
-def p_expression_float(p):
-  """
-  expression : REAL
-  """
-  p[0] = (f'PUSHF {p[1]}\n','float')
-
-
-def p_expression_between_parenthesis(p):
-  """
-  expression : LPAREN expression RPAREN
-  """
-  p[0] = p[2]
-
-
-def p_expression_plus_expression(p):
-  """
-  expression : expression PLUS expression
+  expression : expression PLUS term
   """
   if p[1][1] == 'int' and p[3][1] == 'int':
     p[0] = (p[1][0] + p[3][0] + 'ADD\n','int')
+  
   elif p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = (p[1][0] + p[3][0] + 'FADD\n','float')
+
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FADD\n','float')
+  
   else:
     p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FADD\n','float')
 
 
-def p_expression_minus_expression(p):
+def p_expression_minus_term(p):
   """
-  expression : expression MINUS expression
+  expression : expression MINUS term
   """
   if p[1][1] == 'int' and p[3][1] == 'int':
     p[0] = (p[1][0] + p[3][0] + 'SUB\n','int')
+  
   elif p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = (p[1][0] + p[3][0] + 'FSUB\n','float')
+
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FSUB\n','float')
+  
   else:
     p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FSUB\n','float')
 
 
-def p_expression_mul_expression(p):
+def p_expression_or_term(p):
   """
-  expression : expression MUL expression
+  expression : expression OR term
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'ADD\nPUSHI 0\nSUP\n','int')
+  
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FADD\nPUSHF 0.0\nFSUP\n','float')
+  
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FADD\nPUSHF 0.0\nFSUP\n','float')
+  
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FADD\nPUSHF 0.0\nFSUP\n','float')
+
+
+def p_term_factor(p):
+  """
+  term : factor
+  """
+  p[0] = p[1]
+
+
+def p_term_mul_factor(p):
+  """
+  term : term MUL factor
   """
   if p[1][1] == 'int' and p[3][1] == 'int':
     p[0] = (p[1][0] + p[3][0] + 'MUL\n','int')
+  
   elif p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = (p[1][0] + p[3][0] + 'FMUL\n','float')
+
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FMUL\n','float')
+  
   else:
     p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FMUL\n','float')
 
 
-def p_expression_div_expression(p):
+def p_term_div_factor(p):
   """
-  expression : expression DIV expression
+  term : term DIV factor
   """
   if p[1][1] == 'int' and p[3][1] == 'int':
     p[0] = (p[1][0] + p[3][0] + 'DIV\n','int')
+  
   elif p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = (p[1][0] + p[3][0] + 'FDIV\n','float')
+
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FDIV\n','float')
+  
   else:
     p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FDIV\n','float')
 
 
-def p_expression_mod_expression(p):
+def p_ter_mod_factor(p):
   """
-  expression : expression MOD expression
+  term : term MOD factor
   """
   if p[1][1] == 'int' and p[3][1] == 'int':
     p[0] = (p[1][0] + p[3][0] + 'MOD\n','int')
+
   elif p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = (p[1][0] + 'FTOI\n' + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+
+  
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = (p[1][0] + p[3][0] + 'FTOI\n' + 'MOD\n','int')
+  
   else:
     p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
 
 
-def p_instruction_while(p):
+def p_term_and_factor(p):
+  """
+  term : term AND factor
+  """
+  if p[1][1] == 'int' and p[3][1] == 'int':
+    p[0] = (p[1][0] + p[3][0] + 'MUL\nPUSHI 0\nSUP\n','int')
+  
+  elif p[1][1] == 'float' and p[3][1] == 'float':
+    p[0] = (p[1][0] + p[3][0] + 'FMUL\nPUSHF 0.0\nFSUP\n','float')
+  
+  
+  elif p[1][1] == 'int' and p[3][1] == 'float':
+    p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FMUL\nPUSHF 0.0\nFSUP\n','float')
+  
+  else:
+    p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FMUL\nPUSHF 0.0\nFSUP\n','float')
+
+
+def p_factor_var(p):
+  """
+  factor : variable
+  """
+  if p[1][1] == None:
+    p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
+  
+  else:
+    p[0] = (p[1][0] + 'LOADN\n',p[1][1])
+
+
+def p_factor_num(p):
+  """
+  factor : NUM
+  """
+  p[0] = (f'PUSHI {p[1]}\n','int')
+
+
+def p_factor_float(p):
+  """
+  factor : REAL
+  """
+  p[0] = (f'PUSHF {p[1]}\n','float')
+
+
+def p_factor_between_parenthesis(p):
+  """
+  factor : LPAREN expression RPAREN
+  """
+  p[0] = p[2]
+
+
+ def p_instruction_while(p):
   """
   instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
   """
@@ -2645,9 +2676,9 @@ def p_instruction_while(p):
   parser.labels +=1
 
 
-def p_instruction_for(p):
+ def p_instruction_for(p):
   """
-  instruction : FOR LPAREN atributions SEMICOLON condition SEMICOLON atributions RPAREN LCURLY instructions RCURLY
+  instruction : FOR LPAREN atribution SEMICOLON condition SEMICOLON atributions RPAREN LCURLY instructions RCURLY
   """
   p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] + 
   f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
@@ -2662,7 +2693,7 @@ def p_instruction_if(p):
   parser.labels +=1
 
 
-def p_instruction_if_else(p):
+ def p_instruction_if_else(p):
   """
   instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY instructions RCURLY
   """
@@ -2675,10 +2706,13 @@ def p_condition_expression_eqeq_expression(p):
   """
   condition : expression EQEQ expression
   """
+
   if p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'EQUAL\n'
+  
   elif p[1][1] == 'float' and p[3][1] == 'int':
     p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'EQUAL\n'
+
   else:
     p[0] = p[1][0] + p[3][0] + 'EQUAL\n'
   
@@ -2687,10 +2721,13 @@ def p_condition_expression_diff_expression(p):
   """
   condition : expression DIFF expression
   """
+
   if p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'EQUAL\nNOT\n'
+  
   elif p[1][1] == 'float' and p[3][1] == 'int':
     p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'EQUAL\nNOT\n'
+
   else:
     p[0] = p[1][0] + p[3][0] + 'EQUAL\nNOT\n'
 
@@ -2701,10 +2738,13 @@ def p_condition_expression_greater_expression(p):
   """
   if p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = p[1][0] + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  
   elif p[1][1] == 'float' and p[3][1] == 'int':
     p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
   else:
     p[0] = p[1][0] + p[3][0] + 'SUP\n'
 
@@ -2749,12 +2789,26 @@ def p_condition_expression_lesseq_expression(p):
   """
   if p[1][1] == 'float' and p[3][1] == 'float':
     p[0] = p[1][0] + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
   elif p[1][1] == 'int' and p[3][1] == 'float':
     p[0] = p[1][0] + 'ITOF\n' + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+  
   elif p[1][1] == 'float' and p[3][1] == 'int':
     p[0] = p[1][0] + p[3][0] + 'ITOF\n' + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
+
   else:
     p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
+
+
+def p_condition_expression(p):
+  """
+  condition : expression
+  """
+  if p[1][1] == 'float':
+    p[0] = p[1][0] + 'PUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
+  
+  else:
+    p[0] = p[1][0] + 'PUSHI 0\nSUP\n'
 
 
 def p_instruction_scan(p):
@@ -2763,11 +2817,13 @@ def p_instruction_scan(p):
   """
   if p[3][1] == None:
     p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  
   elif p[3][1] == 'int':
     p[0] = p[3][0]  + 'READ\nATOI\nSTOREN\n'
+  
   else:
     p[0] = p[3][0]  + 'READ\nATOF\nSTOREN\n'
-  
+
 
 def p_instruction_print_var(p):
   """
@@ -2775,8 +2831,10 @@ def p_instruction_print_var(p):
   """
   if p[3][1] == None:
     p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  
   elif p[3][1] == 'int':
     p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
+  
   else:
     p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
 
@@ -2787,9 +2845,11 @@ def p_instruction_println_var(p):
   """
   if p[3][1] == None:
     p[0] = f'ERR \"segmentation fault\\n\"\nSTOP\n'
+  
   elif p[3][1] == 'int':
     p[0] = p[3][0]  + 'LOADN\nWRITEI\n'
     p[0] += 'PUSHS\"\\n\"\nWRITES\n'
+  
   else:
     p[0] = p[3][0]  + 'LOADN\nWRITEF\n'
     p[0] += 'PUSHS\"\\n\"\nWRITES\n'
@@ -2814,12 +2874,16 @@ def p_error(p):
   parser.success = False
 
 
+
+
 parser = yacc.yacc()
 parser.success = True
 
 parser.prox_address = 0
 parser.tab_id = {}
 parser.labels = 0
+
+
 
 
 if len(sys.argv)!=2 and len(sys.argv)!=3:
@@ -2843,16 +2907,18 @@ if len(sys.argv)==3:
 else:
   file_output = "a.vm"
 
-
 fp = open(file_output,"w")
 
 parser.parse(source)
+
 
 
 if parser.success:
   print("Parsing successfully completed!")
 
 fp.close()
+
+
 \end{verbatim}
 \end{scriptsize}
 
