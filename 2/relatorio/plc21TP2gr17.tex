@@ -297,9 +297,77 @@ A implementação do analisador léxico pode ser encontrada no anexo A do docume
 
 \section{Parser e geração do codigo Assembly da VM}
 O analisador sintático, \verb parser, \ é responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, se respeita as regras gramaticais definidas. \\ \\
-Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sitático. \\ \\
-A implementação do analisador sintático pode ser encontrada no anexo A do documento. 
+Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sintático. \\ \\
+A implementação do analisador sintático pode ser encontrada no anexo A do documento.
+\subsection{Algumas notas sobre o código gerado}
 
+Na geração do código para obter o valor armazenado,por exemplo, numa variável do tipo inteiro optamos por realizar a seguinte operação:
+\begin{verbatim}
+PUSHGP 
+PUSHI <endereço da variável>
+LOADN
+\end{verbatim} 
+Ao inves de fazermos simplesmente:
+\begin{verbatim}
+PUSHG <endereço da variável>
+\end{verbatim}
+E para armazenar um valor inteiro numa variavel do tipo inteiro:
+\begin{verbatim}
+PUSHGP 
+PUSHI <endereço da variável>
+PUSHI <valor a guardar>
+STOREN
+\end{verbatim} 
+Ao inves de fazermos simplesmente:
+\begin{verbatim}
+PUSHI <valor a guardar>
+STOREG <endereço da variável>
+\end{verbatim}
+Apesar de parecer mais complicado, isto vai nos premitir por exemplo fazer as seguintes instruções na nossa linguagem:
+\begin{verbatim}
+int[5] array;
+int i;
+i = 2;
+array[i] = 4;
+\end{verbatim}
+Neste caso o código gerado será:
+\begin{verbatim}
+PUSHN 5
+PUSHI 0
+START
+PUSHGP
+PUSHI 5
+PUSHI 2
+STOREN
+PUSHGP
+PUSHI 0
+PUSHGP
+PUSHI 5
+LOADN
+ADD
+PUSHI 4
+STOREN
+STOP
+\end{verbatim}
+Se o nosso acesso às variaveis utilizasse o processo mais simples, nao iriamos conseguir aceder a \verb arrays \ com um indice cujo valor está armazenado tambem numa variável. Assim, achamos que a nossa linguagem fica mais completa.\\ \\
+Tambem se poderá verificar no anexo A, na geração de código, optamos por em cada produção envolvendo expressões númericas e variaveis, retornar sempre um tuplo com o código \verb Assembly \ da VM e um identificador do tipo de valor. Isto para nos premitir fazer conversão de valores de \verb int \ para \verb float \ e de \verb float \ para \verb int \ quando tal é necessário.
+Por exemplo:
+\begin{verbatim}
+int a;
+float b;
+a = 1.0;
+b = 1;
+println(a);
+println(b);
+b = b * 5;
+println(b);
+\end{verbatim}
+Em que o resultado da execução é:
+\begin{verbatim}
+1
+1.000000
+5.000000
+\end{verbatim}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo4%%%%%%%%
