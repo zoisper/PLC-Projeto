@@ -2188,7 +2188,42 @@ STOP
 >> ./vms a.vm
 segmentation fault
 >>
-\end{verbatim}  
+\end{verbatim}
+
+\section{Teste 11}
+Erro de aceso a array com indice não inteiro. \\
+\underline{Ficheiro de input:} 'erro3.txt'.
+
+\subsection{Conteúdo do ficheiro}
+
+\begin{verbatim}
+main
+{
+
+  int[5] a;
+  a[1.0] = 1;
+
+}
+\end{verbatim}
+
+
+\subsection{Código assembly gerado}
+\begin{verbatim}
+PUSHN 5
+START
+ERR "segmentation fault\n"
+STOP
+STOP
+\end{verbatim}
+
+
+\subsection{Execução da VM com o código gerado}
+
+\begin{verbatim}
+>> ./vms a.vm
+segmentation fault
+>>
+\end{verbatim}   
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo5%%%%%%%%
@@ -2513,16 +2548,23 @@ def p_variable_index_expression(p):
   """
   variable : VAR LBRACKET expression RBRACKET
   """
+  if p[3][1] == 'int':
+    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+ 
+  else:
+    p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 
-  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
-  
 
 def p_variable_index_expression_expression(p):
   """
   variable : VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
   """
-  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' 
+  if p[3][1] == 'int' and p[6][1] == 'int':
+    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' 
           + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+
+  else:
+    p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 
 
 def p_instructions_empty(p):
