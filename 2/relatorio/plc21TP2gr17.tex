@@ -2569,7 +2569,8 @@ def p_variable_index_expression_expression(p):
   variable : VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
   """
   if p[3][1] == 'int' and p[6][1] == 'int':
-    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1])) 
+    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' 
+    + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1])) 
   else:
     p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 
@@ -2753,7 +2754,8 @@ def p_instruction_while(p):
   """
   instruction : WHILE LPAREN condition RPAREN LCURLY instructions RCURLY
   """
-  p[0] = f'B{parser.labels}:\n' + p[3] + 'JZ ' + f'E{parser.labels}\n' + p[6] + f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
+  p[0] = f'B{parser.labels}:\n' + p[3] + 'JZ ' + f'E{parser.labels}\n' + p[6] + f'JUMP B{parser.labels}\n' 
+  + f'E{parser.labels}:\n' 
   parser.labels +=1
 
 
@@ -2761,7 +2763,8 @@ def p_instruction_for(p):
   """
   instruction : FOR LPAREN atribution SEMICOLON condition SEMICOLON atribution RPAREN LCURLY instructions RCURLY
   """
-  p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] + f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
+  p[0] = p[3] + f'B{parser.labels}:\n' + p[5] + 'JZ ' + f'E{parser.labels}\n' + p[10] + p[7] 
+  + f'JUMP B{parser.labels}\n' + f'E{parser.labels}:\n' 
   parser.labels +=1
 
 
@@ -2777,7 +2780,8 @@ def p_instruction_if_else(p):
   """
   instruction : IF LPAREN condition RPAREN LCURLY instructions RCURLY ELSE LCURLY instructions RCURLY
   """
-  p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'JUMP F{parser.labels}\n'  + f'E{parser.labels}:\n' + p[10] + f'F{parser.labels}:\n' 
+  p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'JUMP F{parser.labels}\n'  
+  + f'E{parser.labels}:\n' + p[10] + f'F{parser.labels}:\n' 
   parser.labels +=1
 
 
