@@ -130,7 +130,7 @@ def p_variable_single(p):
 	"""
 	variable : VAR
 	"""
-	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]),var_size(p[1]))  
+	p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]))  
 	
 
 def p_variable_index_expression(p):
@@ -139,7 +139,7 @@ def p_variable_index_expression(p):
 	"""
 
 	if p[3][1] == 'int':
-		p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+		p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1])) 
 	else:
 		p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 	
@@ -149,7 +149,7 @@ def p_variable_index_expression_expression(p):
 	variable : VAR LBRACKET expression RBRACKET LBRACKET expression RBRACKET
 	"""
 	if p[3][1] == 'int' and p[6][1] == 'int':
-		p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+		p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1])) 
 	else:
 		p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
 

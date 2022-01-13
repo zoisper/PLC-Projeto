@@ -116,7 +116,7 @@
 \chapter{Introdução} \label{chap:intro} %referência cruzada
 
 Este documento tem como objetivo explicar a solução que implementamos para a resolução do probelma proposto no âmbito da unidade curricular de Processsamento de Linguagens e Compiladores. \\ \\
-O problema consiste em implementar uma linguagem de programação imperativa simples, com regras sintáticas definidas pelo grupo. \\ \\ Para o desenvolvimento da nosso linguagem tivemos que definir uma gramática independente de contexto, \textbf{GIC}, e desenvolver um compilador que gera \textbf{pseudo-código} \verb Assembly \ para uma Máquina Virtual VM, que nos foi fornecida. \\ \\
+O problema consiste em implementar uma linguagem de programação imperativa simples, com regras sintáticas definidas pelo grupo. \\ \\ Para o desenvolvimento da nosso linguagem tivemos que definir uma gramática independente de contexto, \textbf{GIC}, e um compilador que gera \textbf{pseudo-código} \verb Assembly \ para uma Máquina Virtual VM, que nos foi fornecida. \\ \\
 O trabalho foi desenvolvido com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python'. \\ \\ 
 Esperamos que o resultado final cumpra todos os requisitos.  
 
@@ -178,13 +178,13 @@ o código Assembly gerado bem como o programa a correr na máquina virtual VM. E
 \section{Organização e estrutura}
 O nosso trabalho pode ser divido em \textbf{4} partes:
 \begin{itemize}
-\item Definição da \textbf{GIC} que define a estrura sintática da nossa liguaguem.
+\item Cosntrução da \textbf{GIC} que define a estrutura sintática da nossa liguaguem.
 \item Construção do analizador léxico, \verb lexer .
 \item Construção do analizador sintático, \verb parser .
 \item Conversão das instruções para código \verb Assembly \ da  VM.    
 \end{itemize}
 Todas as funcionalidades descritas neste capítulo podem ser encontradas no anexo A do documento.\\ \\
-No nosso trabalho optamos por implementar a funcionalidade de textit{declarar e manusear} variáveis estruturadas do tipo \textit{array (a 1 ou 2 dimensões)} de inteiros, em relação aos quais é apenas permitida a operação de indexação (ı́ndice inteiro).\\
+No nosso trabalho optamos por implementar a funcionalidade de \textit{declarar e manusear} variáveis estruturadas do tipo \textit{array (a 1 ou 2 dimensões)} de inteiros, em relação aos quais é apenas permitida a operação de indexação (índice inteiro).\\
 
 \section{GIC}
 A nossa linguagem é gerada pela seguinte grámatica independente de contexto:
@@ -295,13 +295,14 @@ VAR       : '\w+'
 \end{verbatim}
 A implementação do analisador léxico pode ser encontrada no anexo A do documento.   
 
-\section{Parser e geração do codigo Assembly da VM}
+\section{Parser e geração do código Assembly da VM}
 O analisador sintático, \verb parser, \ é responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, se respeita as regras gramaticais definidas. \\ \\
-Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em codigo \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sintático. \\ \\
+Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em código \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sintático. \\ \\
 A implementação do analisador sintático pode ser encontrada no anexo A do documento.
 \subsection{Algumas notas sobre o código gerado}
 
-Na geração do código para obter o valor armazenado,por exemplo, numa variável do tipo inteiro optamos por realizar a seguinte operação:
+\textbf{\underlina{Nota 1:}}
+Na geração do código para obter o valor armazenado numa variável, por exemplo, do tipo inteiro optamos por realizar a seguinte operação:
 \begin{verbatim}
 PUSHGP 
 PUSHI <endereço da variável>
@@ -311,7 +312,7 @@ Ao inves de fazermos simplesmente:
 \begin{verbatim}
 PUSHG <endereço da variável>
 \end{verbatim}
-E para armazenar um valor inteiro numa variavel do tipo inteiro:
+E para armazenar um valor numa variável, por exemplo, do tipo inteiro:
 \begin{verbatim}
 PUSHGP 
 PUSHI <endereço da variável>
@@ -349,8 +350,9 @@ PUSHI 4
 STOREN
 STOP
 \end{verbatim}
-Se o nosso acesso às variaveis utilizasse o processo mais simples, nao iriamos conseguir aceder a \verb arrays \ com um indice cujo valor está armazenado tambem numa variável. Assim, achamos que a nossa linguagem fica mais completa.\\ \\
-Tambem se poderá verificar no anexo A, na geração de código, optamos por em cada produção envolvendo expressões númericas e variaveis, retornar sempre um tuplo com o código \verb Assembly \ da VM e um identificador do tipo de valor. Isto para nos premitir fazer conversão de valores de \verb int \ para \verb float \ e de \verb float \ para \verb int \ quando tal é necessário.
+Se o nosso acesso às variáveis utilizasse o processo mais simples, nao iriamos conseguir aceder a \verb arrays \ com um índice cujo valor está armazenado tambem numa variável. Pensamos que assim a nossa linguagem fica mais completa.\\ \\
+\textbf{\underlina{Nota 2:}}
+Tambem se poderá verificar no anexo A, na geração de código, que optamos por em cada produção envolvendo expressões númericas e variáveis, retornar sempre um tuplo contendo o código \verb Assembly \ da VM e um identificador do tipo de valor. Isto permite-nos fazer conversão de valores de \verb int \ para \verb float \ e de \verb float \ para \verb int \ quando tal é necessário.
 Por exemplo:
 \begin{verbatim}
 int a;
@@ -386,10 +388,12 @@ Para utilizar a nossa linguagem, o utilizador tem que:
 \end{verbatim} 
 \underline{Nota:} Caso o utilizador opte pelo primeiro comando é criado um ficheiro denominado
 \verb a.vm  onde será colocado o código \verb Assembly \ gerado.
-\item Executar o comando:
+\item Executar um dos seguintes comandos:
 \begin{verbatim} 
->> ./vms <ficheiro gerado no comando anterior> 
-\end{verbatim} 
+>> ./vms <ficheiro gerado no comando anterior>
+>> ./vms -g a.vm  
+\end{verbatim}
+\underline{Nota:} Caso o utilizador opte pelo segundo comando a máquina virtual será executar em modo gráfio. 
 \end{enumerate}
 
 
@@ -2139,7 +2143,7 @@ main
 \subsection{Código assembly gerado}
 \begin{verbatim}
 PUSHI 0
-ERR "multipla declaração da variavel a\n"
+ERR "multipla declaração da variável a\n"
 STOP
 START
 STOP
@@ -2150,7 +2154,7 @@ STOP
 
 \begin{verbatim}
 >> ./vms a.vm
-multipla declaração da variavel a
+multipla declaração da variável a
 >>
 \end{verbatim}
 
@@ -2191,7 +2195,7 @@ segmentation fault
 \end{verbatim}
 
 \section{Teste 11}
-Erro de aceso a array com indice não inteiro. \\
+Erro de aceso a array com índice não inteiro. \\
 \underline{Ficheiro de input:} 'erro3.txt'.
 
 \subsection{Conteúdo do ficheiro}
@@ -2232,8 +2236,8 @@ segmentation fault
 \chapter{Conclusão} \label{concl}
 Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
 O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
-Achamos que há aspetos que poderiam ser melhorados. Por exemplp, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar erros no \verb parser \ com rejeição de produções. \\ \\
-Por fim, tal como ja tinha sido mencionado no relatório do primeiro projeto, todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e, neste caso, com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python', facilitou bastante o seu desenvolvimento.
+Achamos que há aspetos que poderiam ser melhorados. Por exemplp, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar alguns conflitos no \verb parser \ com a consequente rejeição de produções. \\ \\
+Por fim, tal como já tinha sido mencionado no relatório do primeiro projeto, todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e, neste caso, com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python', facilitou bastante o nosso trabalho.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo6%%%%%%%%
@@ -2495,7 +2499,7 @@ def p_declaration_single(p):
 
   status = var_new((p[2],1,1,p[1]))
   if status == -1:
-    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
+    p[0] = f'ERR \"múltipla declaração da variável {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = 'PUSHI 0\n'
   
@@ -2507,7 +2511,7 @@ def p_declaration_array(p):
   """
   status = var_new((p[5],p[3],1,p[1]))
   if status == -1:
-    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
+    p[0] = f'ERR \"múltipla declaração da variável {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = f'PUSHN {var_size(p[5])}\n'
 
@@ -2519,7 +2523,7 @@ def p_declaration_biarray(p):
   """
   status = var_new((p[8],p[6],p[3],p[1]))
   if status == -1:
-    p[0] = f'ERR \"múltipla declaração da variavel {p[2]}\\n\"\nSTOP\n'
+    p[0] = f'ERR \"múltipla declaração da variável {p[2]}\\n\"\nSTOP\n'
   else:
     p[0] = f'PUSHN {var_size(p[8])}\n'
 
@@ -2541,7 +2545,7 @@ def p_variable_single(p):
   """
   variable : VAR
   """
-  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]),var_size(p[1]))  
+  p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n',var_type(p[1]))  
   
 
 def p_variable_index_expression(p):
@@ -2549,7 +2553,7 @@ def p_variable_index_expression(p):
   variable : VAR LBRACKET expression RBRACKET
   """
   if p[3][1] == 'int':
-    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+    p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + p[3][0] + 'ADD\n',var_type(p[1])) 
  
   else:
     p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
@@ -2561,7 +2565,7 @@ def p_variable_index_expression_expression(p):
   """
   if p[3][1] == 'int' and p[6][1] == 'int':
     p[0] = ('PUSHGP\n' + f'PUSHI {var_address_base(p[1])}\n' + f'PUSHI {var_num_colums(p[1])}\n' 
-          + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1]),var_size(p[1])) 
+          + p[3][0] + 'MUL\n' + 'ADD\n' + p[6][0] + 'ADD\n',var_type(p[1])) 
 
   else:
     p[0] = (f'ERR \"segmentation fault\\n\"\nSTOP\n',None)
