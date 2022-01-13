@@ -2241,7 +2241,24 @@ segmentation fault
 \chapter{Conclusão} \label{concl}
 Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
 O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
-Achamos que há aspetos que poderiam ser melhorados. Por exemplp, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar alguns conflitos no \verb parser \ com a consequente rejeição de produções. \\ \\
+Achamos que há aspetos que poderiam ser melhorados. Por exemplo, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar alguns conflitos no \verb parser \ com a consequente rejeição de produções. \\ \\
+Também gostariamos que nossa linguagem fosse possível escrever condições lógicas com parentises para alterar a precedencia. Tal seria possível, no anexo A do documento temos comentada a produção seguinte:
+\begin{verbatim}
+def p_preposition_condition_between_parenthesis(p):
+ """
+ preposition : LPAREN condition RPAREN
+ """
+ p[0] = p[2]
+\end{verbatim}
+Bastaria 'descomentar' esta produção para que tal fosse possível, no entanto se o fizessemos, ao executarmos o \verb parser, \ iriamos gerar um conflito, muito provavelmente devido a outra produção que temos:
+\begin{verbatim}
+def p_factor_expression_between_parenthesis(p):
+  """
+  factor : LPAREN expression RPAREN
+  """
+  p[0] = p[2]
+\end{verbatim}
+Como não queremos que haja conflitos entre poduções, optamos por deixar a produção em comentário.  \\ \\
 Por fim, tal como já tinha sido mencionado no relatório do primeiro projeto, todos concordamos que o facto de o projecto ter sido desenvolvido na linguagem 'Python' e, neste caso, com recurso aos módulos 'Yacc/ Lex' do 'PLY/Python', facilitou bastante o nosso trabalho.
 
 %%%%%%%%%%%%%%%%%%%%%%
