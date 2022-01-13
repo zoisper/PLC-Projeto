@@ -236,23 +236,6 @@ def p_expression_minus_term(p):
 		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FSUB\n','float')
 
 
-def p_expression_or_term(p):
-	"""
-	expression : expression OR term
-	"""
-	if p[1][1] == 'int' and p[3][1] == 'int':
-		p[0] = (p[1][0] + p[3][0] + 'ADD\nPUSHI 0\nSUP\n','int')
-	
-	elif p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = (p[1][0] + p[3][0] + 'FADD\nPUSHF 0.0\nFSUP\n','float')
-	
-	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FADD\nPUSHF 0.0\nFSUP\n','float')
-	
-	else:
-		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FADD\nPUSHF 0.0\nFSUP\n','float')
-
-
 def p_term_factor(p):
 	"""
 	term : factor
@@ -314,24 +297,6 @@ def p_ter_mod_factor(p):
 		p[0] = (p[1][0] + 'FTOI\n' + p[3][0] +'MOD\n','int')
 
 
-def p_term_and_factor(p):
-	"""
-	term : term AND factor
-	"""
-	if p[1][1] == 'int' and p[3][1] == 'int':
-		p[0] = (p[1][0] + p[3][0] + 'MUL\nPUSHI 0\nSUP\n','int')
-	
-	elif p[1][1] == 'float' and p[3][1] == 'float':
-		p[0] = (p[1][0] + p[3][0] + 'FMUL\nPUSHF 0.0\nFSUP\n','float')
-	
-	
-	elif p[1][1] == 'int' and p[3][1] == 'float':
-		p[0] = (p[1][0] + 'ITOF\n' + p[3][0] + 'FMUL\nPUSHF 0.0\nFSUP\n','float')
-	
-	else:
-		p[0] = (p[1][0] + p[3][0] + 'ITOF\n' +'FMUL\nPUSHF 0.0\nFSUP\n','float')
-
-
 def p_factor_var(p):
 	"""
 	factor : variable
@@ -357,7 +322,7 @@ def p_factor_float(p):
 	p[0] = (f'PUSHF {p[1]}\n','float')
 
 
-def p_factor_between_parenthesis(p):
+def p_factor_expression_between_parenthesis(p):
 	"""
 	factor : LPAREN expression RPAREN
 	"""
@@ -395,10 +360,38 @@ def p_instruction_if_else(p):
 	p[0] = p[3] + 'JZ '+ f'E{parser.labels}\n' + p[6] + f'JUMP F{parser.labels}\n'  + f'E{parser.labels}:\n' + p[10] + f'F{parser.labels}:\n' 
 	parser.labels +=1
 
-	
-def p_condition_expression_eqeq_expression(p):
+
+def p_condition_formula(p):
 	"""
-	condition : expression EQEQ expression
+	condition : formula
+	"""
+	p[0] = p[1]
+
+def p_condition_or_formula(p):
+	"""
+	condition : condition OR formula
+	"""
+	p[0] = p[1] + p[3] +  'ADD\nPUSHI 0\nSUP\n'
+
+
+def p_formula_preposition(p):
+	"""
+	formula : preposition
+	"""
+	p[0] = p[1]
+
+
+def p_formula_and_preposition(p):
+	"""
+	formula : formula AND preposition
+	"""
+	p[0] = p[1] + p[3]  + 'MUL\nPUSHI 0\nSUP\n'
+
+
+
+def p_preposition_expression_eqeq_expression(p):
+	"""
+	preposition : expression EQEQ expression
 	"""
 
 	if p[1][1] == 'int' and p[3][1] == 'float':
@@ -411,9 +404,9 @@ def p_condition_expression_eqeq_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'EQUAL\n'
 	
 
-def p_condition_expression_diff_expression(p):
+def p_preposition_expression_diff_expression(p):
 	"""
-	condition : expression DIFF expression
+	preposition : expression DIFF expression
 	"""
 
 	if p[1][1] == 'int' and p[3][1] == 'float':
@@ -426,9 +419,9 @@ def p_condition_expression_diff_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'EQUAL\nNOT\n'
 
 
-def p_condition_expression_greater_expression(p):
+def p_preposition_expression_greater_expression(p):
 	"""
-	condition : expression GREATER expression
+	preposition : expression GREATER expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
 		p[0] = p[1][0] + p[3][0] + 'FSUP\n' + 'FTOI\nPUSHI 0\nSUP\n'
@@ -443,9 +436,9 @@ def p_condition_expression_greater_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'SUP\n'
 
 
-def p_condition_expression_lesser_expression(p):
+def p_preposition_expression_lesser_expression(p):
 	"""
-	condition : expression LESSER expression
+	preposition : expression LESSER expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
 		p[0] = p[1][0] + p[3][0] + 'FINF\n' + 'FTOI\nPUSHI 0\nSUP\n'
@@ -460,9 +453,9 @@ def p_condition_expression_lesser_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'INF\n'
 
 
-def p_condition_expression_greateq_expression(p):
+def p_preposition_expression_greateq_expression(p):
 	"""
-	condition : expression GREATEQ expression
+	preposition : expression GREATEQ expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
 		p[0] = p[1][0] + p[3][0] + 'FSUPEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
@@ -477,9 +470,9 @@ def p_condition_expression_greateq_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'SUPEQ\n'
 
 
-def p_condition_expression_lesseq_expression(p):
+def p_preposition_expression_lesseq_expression(p):
 	"""
-	condition : expression LESSEQ expression
+	preposition : expression LESSEQ expression
 	"""
 	if p[1][1] == 'float' and p[3][1] == 'float':
 		p[0] = p[1][0] + p[3][0] + 'FINFEQ\n' + 'FTOI\nPUSHI 0\nSUP\n'
@@ -494,15 +487,22 @@ def p_condition_expression_lesseq_expression(p):
 		p[0] = p[1][0] + p[3][0] + 'INFEQ\n'
 
 
-def p_condition_expression(p):
+def p_preposition_expression(p):
 	"""
-	condition : expression
+	preposition : expression
 	"""
 	if p[1][1] == 'float':
 		p[0] = p[1][0] + 'PUSHF 0.0\nFSUP\nFTOI\nPUSHI 0\nSUP\n'
 	
 	else:
 		p[0] = p[1][0] + 'PUSHI 0\nSUP\n'
+
+
+#def p_preposition_condition_between_parenthesis(p):
+#	"""
+#	preposition : LPAREN condition RPAREN
+#	"""
+#	p[0] = p[2]
 
 
 def p_instruction_scan(p):
