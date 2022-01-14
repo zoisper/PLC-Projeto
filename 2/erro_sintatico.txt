@@ -1,0 +1,44 @@
+main{
+	
+	int a;
+	int b;
+
+	b = 1;
+	a = 0;
+
+	print("a = ");
+	println(a);
+	print("b = ");
+	println(b);
+
+	
+	print("((b < 0 and a > 0) or b == 1) = ");
+
+	if((b <0 and a>0) or b==1)
+	{
+		
+		println("True");
+
+	}
+	
+	else
+	{
+		println("False");
+	}
+
+	
+	
+	print("((b < 0 or a > 0) and b == 1) = ");
+
+	if((b <0 or a>0) and b==1)
+	{
+		
+		println("True");
+	}
+	
+	else
+	{
+		println("False");
+	}
+
+}
