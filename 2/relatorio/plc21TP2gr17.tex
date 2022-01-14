@@ -297,11 +297,13 @@ DIV       : '\/'
 MOD       : '\%'
 VAR       : '\w+'
 \end{verbatim}
-A implementação do analisador léxico pode ser encontrada no anexo A do documento.   
+A implementação do analisador léxico pode ser encontrada no anexo A do documento. 
+\\ \\
+\textbf{\underlina{Nota:}} na nossa linguagem não temos o tipo \verb booleano \ implementado. No seu lugar, tal como na linguagem \verb C, \ um valor superior a 0 é considerado \verb True \ e um valor inferior ou igual a 0 é considerado \verb False.  
 
 \section{Parser e geração do código Assembly da VM}
 O analisador sintático, \verb parser, \ é responsavel por verificar se o código que foi escrito na nossa linguagem está sintaticamente correto, isto é, se respeita as regras gramaticais definidas. \\ \\
-Caso não haja erros sintáticos o \parser converte o código da nossa linguagem em código \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sintático. \\ \\
+Caso não haja erros sintáticos o \verb parser \ converte o código da nossa linguagem em código \verb Assembly \ da máquina virtual. Se houver erros, é mostrado ao utilizador uma mensagem de erro sintático. \\ \\
 A implementação do analisador sintático pode ser encontrada no anexo A do documento.
 \subsection{Algumas notas sobre o código gerado}
 
@@ -312,7 +314,7 @@ PUSHGP
 PUSHI <endereço da variável>
 LOADN
 \end{verbatim} 
-Ao inves de fazermos simplesmente:
+Em vez de fazermos simplesmente:
 \begin{verbatim}
 PUSHG <endereço da variável>
 \end{verbatim}
@@ -323,7 +325,7 @@ PUSHI <endereço da variável>
 PUSHI <valor a guardar>
 STOREN
 \end{verbatim} 
-Ao inves de fazermos simplesmente:
+Em vez de fazermos simplesmente:
 \begin{verbatim}
 PUSHI <valor a guardar>
 STOREG <endereço da variável>
@@ -354,9 +356,9 @@ PUSHI 4
 STOREN
 STOP
 \end{verbatim}
-Se o nosso acesso às variáveis utilizasse o processo mais simples, nao iriamos conseguir aceder a \verb arrays \ com um índice cujo valor está armazenado tambem numa variável. Pensamos que assim a nossa linguagem fica mais completa.\\ \\
+Se o nosso acesso às variáveis utilizasse o processo mais simples, nao iriamos conseguir aceder a \verb arrays \ com um índice cujo valor está armazenado também numa variável. Tomamos esta decisão, apesar de não ser pedido no enunciado do trabalho, pois assim a nossa linguagem fica mais completa.\\ \\
 \textbf{\underlina{Nota 2:}}
-Tambem se poderá verificar no anexo A, na geração de código, que optamos por em cada produção envolvendo expressões númericas e variáveis, retornar sempre um tuplo contendo o código \verb Assembly \ da VM e um identificador do tipo de valor. Isto permite-nos fazer conversão de valores de \verb int \ para \verb float \ e de \verb float \ para \verb int \ quando tal é necessário.
+Também se poderá verificar no anexo A, na geração de código, que optamos por em cada produção envolvendo expressões númericas e variáveis, retornar sempre um tuplo contendo o código \verb Assembly \ da VM e um identificador do tipo de valor. Isto permite-nos fazer conversão de valores de \verb int \ para \verb float \ e de \verb float \ para \verb int \ quando tal é necessário e com isso realizar operações entre variáveis de tipos diferentes.
 Por exemplo:
 \begin{verbatim}
 int a;
@@ -374,7 +376,6 @@ Em que o resultado da execução é:
 1.000000
 5.000000
 \end{verbatim}
-
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%Capitulo4%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -2240,9 +2241,9 @@ segmentation fault
 
 \chapter{Conclusão} \label{concl}
 Com o projeto concluído esperamos ter cumprido todos os requisitos que nos foram propostos. \\ \\
-O facto de produzirmos a nossa própria linguagem tornou a experiencia bastante interessante, apesar de a sintaxe escolhida para a linguagem desenvolvida se aproximar muito da linguagem \verb C.  \\ \\
+O facto de produzirmos a nossa própria linguagem tornou a experiência bastante interessante, apesar de as regras gramaticais escolhidas a tornarem bastante parecida com a linguagem \verb C.  \\ \\
 Achamos que há aspetos que poderiam ser melhorados. Por exemplo, gostariamos que fosse possível atribuir o valor de uma condição a uma variável mas isso estava a gerar alguns conflitos no \verb parser \ com a consequente rejeição de produções. \\ \\
-Também gostariamos que nossa linguagem fosse possível escrever condições lógicas com parentises para alterar a precedencia. Tal seria possível, no anexo A do documento temos comentada a produção seguinte:
+Também gostariamos que nossa linguagem fosse possível colocar parênteses entre condições lógicas por forma a alterar a precedencia dos operadores \verb or \ e \verb and. \ Tal seria possível, no anexo A do documento temos a seguinte produção em comentário: 
 \begin{verbatim}
 def p_preposition_condition_between_parenthesis(p):
  """
@@ -2250,7 +2251,7 @@ def p_preposition_condition_between_parenthesis(p):
  """
  p[0] = p[2]
 \end{verbatim}
-Bastaria 'descomentar' esta produção para que tal fosse possível, no entanto se o fizessemos, ao executarmos o \verb parser, \ iriamos gerar um conflito, muito provavelmente devido a outra produção que temos:
+Bastaria 'descomentar' esta produção para que tal fosse possível. No entanto se o fizessemos, ao executarmos o \verb parser, \ iriamos gerar um conflito, muito provavelmente devido a outra produção que temos:
 \begin{verbatim}
 def p_factor_expression_between_parenthesis(p):
   """
