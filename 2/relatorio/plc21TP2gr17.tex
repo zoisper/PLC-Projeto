@@ -3056,6 +3056,386 @@ fp.close()
 \end{verbatim}
 \end{scriptsize}
 
+\textbf{Ficheiro de teste quadrado.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  float[4] lados;
+  int i;
+  int j;
+  int r;
+  i = 4;
+  
+  while(i>0)
+  {
+    print("Digite lado: ");
+    scan(lados[4 - i]);
+    i = i - 1;  
+  }
+  
+  
+
+    r= 1;
+    for(i=0;i<4;i=i+1)
+    {
+      for(j=i+1;j<4;j=j+1)
+      {
+        if(lados[i] != lados[j])
+        {
+          r = 0;
+        }
+      }
+    }
+
+    if(r and lados[0])
+    {
+      println("Podem ser os lados de um quadrado!");
+    }
+    else
+    {
+      println("Não podem ser os lados de um quadrado!");
+    }
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste menor.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  
+  int menor;
+  int N;
+  int i;
+  int aux;
+  
+  i = 0;
+  
+  print("Digite número: ");
+  scan(menor);
+  
+
+  print("Digite quantos números quer ler: ");
+  scan(N);
+
+
+  while(i<N){
+    print("Digite número: ");
+    scan(aux);
+
+    if(aux < menor){
+      menor = aux;
+    }
+    i = i +1;
+  }
+  print("O menor número é: ");
+  println(menor);
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste produto.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  
+  int N;
+  int r;
+  int[5] a;
+  int i;
+
+  i = 0;
+  N = 5;
+  r = 1;
+  
+  while(i<N){
+    print("Digite um número: ");
+    scan(a[i]);
+    i = i + 1;
+
+  }
+  i = 0;
+
+  while(i<N){
+    print(a[i]);
+    print(" x ");
+    r = r * a[i];
+    i = i + 1;
+  }
+  
+  print(" = ");
+  println(r);
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste impares.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  
+  int count;
+  int aux;
+  count = 0;
+  aux = 1;
+  println("Digite 0 para parar!");
+  
+  while(aux != 0){
+    print("Digite número: ");
+    scan(aux);
+    if(aux % 2 == 1){
+      print(aux);
+      println(" é impar!");
+      count = count +1;
+    }
+  }
+  print("Foram lidos ");
+  print(count);
+  println(" números impares!");
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste inversa.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  int N;
+  int i;
+  int[10] a;
+  N = 5;
+  i = 0;
+
+  print("Neste programa vamos digitar ");
+  print(N);
+  println(" números e imprimi-los por ordem inversa.");
+
+  while(i<N){
+    print("Digite número: ");
+    scan(a[i]); 
+    i = i +1;
+  }
+
+  i = N - 1;
+
+  while(i>=0){
+    print(a[i]);
+    print(" ");
+    i = i - 1;
+  }
+
+  println("");
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste calculo.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  int a;
+
+
+  a = 2 * 3 + 4 * 5 - 1;
+  
+  print("a = 2 * 3 + 4 * 5 - 1 = ");
+  println(a);
+  
+
+  a = (1 + a) * a;
+  
+  print("a = (1 + a) * a = ");
+  println(a);
+
+  a = a %(a - 1);
+  print("a = a % (a-1) = ");
+  println(a); 
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste ordena.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  int N;
+  int i;
+  int j;
+  int menor;
+  int aux;
+  int[5] a;
+  
+
+  N = 5;
+
+  print("Neste programa vamos digitar ");
+  print(N);
+  println(" números e imprimi-los por ordem crescente.");
+
+  for(i=0;i<N;i=i+1){
+    print("Digite número: ");
+    scan(a[i]); 
+  }
+  
+
+  for(i=0;i<N;i=i+1)
+  {
+    menor = i;
+
+    for(j=i+1;j<N;j=j+1)
+    {
+      if(a[j]<a[menor])
+      {
+        menor = j;
+      }
+    }
+    
+    if(menor !=i)
+    {
+      aux = a[i];
+      a[i] = a[menor];
+      a[menor] = aux;
+
+    }
+
+  } 
+
+  for(i=0;i<N; i=i+1)
+  {
+    print(a[i]);
+    print(" ");
+  }
+
+  println("");
+  
+}
+\end{verbatim}
+\end{scriptsize}
+
+\textbf{Ficheiro de teste transposta.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  
+  int[3][3] matriz;
+  int i;
+  int j;
+  int aux;
+
+  println("Neste programa vamos transpor uma matriz M 3x3.");
+  println("Digite valores a armazenar em M[linha][coluna]:");
+  for(i=0;i<3;i=i+1)
+  {
+    for(j=0;j<3;j=j+1)
+    {
+      print("[");
+      print(i);
+      print("][");
+      print(j);
+      print("] = ");
+
+      scan(matriz[i][j]);
+    }
+  }
+
+  println("\nMatriz M lida:");
+
+  for(i=0;i<3;i=i+1)
+  {
+    for(j=0;j<3;j=j+1)
+    {
+      print(matriz[i][j]);
+      print(" ");
+    }
+    println("");
+  }
+
+
+  for(i=0;i<3;i=i+1)
+  {
+    for(j=0;j<i;j=j+1)
+    {
+      aux = matriz[i][j];
+      matriz[i][j] = matriz[j][i];
+      matriz[j][i] = aux;
+    }
+  } 
+
+
+  println("\nMatriz M' transposta:");
+
+  for(i=0;i<3;i=i+1)
+  {
+    for(j=0;j<3;j=j+1)
+    {
+      print(matriz[i][j]);
+      print(" ");
+    }
+    println("");
+  } 
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+\textbf{Ficheiro de teste erro1.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  int a;
+  int a;
+
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste erro2.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+  int a;
+  a = b;  
+}
+\end{verbatim}
+\end{scriptsize}
+
+
+\textbf{Ficheiro de teste erro3.txt}
+\begin{scriptsize}
+\begin{verbatim}
+main
+{
+
+  int[5] a;
+  a[1.0] = 1;
+
+}
+\end{verbatim}
+\end{scriptsize}
+
 
 
 \lstinputlisting[caption={Exemplo de uma importação}, label={lstExe2}]{listagemImportadaLayout.l} %input de um ficheiro da listagem
