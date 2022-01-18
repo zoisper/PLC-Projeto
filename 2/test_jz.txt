@@ -1,0 +1,7 @@
+main{
+	float i;
+	i=1;
+	if(i){
+		println("ola mundo");
+	}
+}
